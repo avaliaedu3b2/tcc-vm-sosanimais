@@ -75,6 +75,9 @@ Este projeto tem como objetivo incentivar a participação da comunidade no comb
 <br>
 <img width="1000" height="1000" alt="WhatsApp Image 2026-04-17 at 17 13 52" src="https://github.com/user-attachments/assets/c371bd0e-e043-4e54-b6a3-8f8f0ce7549c" />
 
+## Persona
+
+<img width="1414" height="2000" alt="White Pink Modern Elegant Personal Assistant Resume" src="https://github.com/user-attachments/assets/def0ea29-1f5c-43a8-ba50-8a670262c54d" />
 
 
 
