@@ -6,7 +6,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    nome  = 'SOSanimais.com.br'
+    return render_template('index.html', site = nome)
+
+@app.route("/login")
+def login():
+    return render_template("login/login.html")
 
 
 def main():
