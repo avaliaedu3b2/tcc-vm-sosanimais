@@ -37,6 +37,100 @@ Criar uma aplicação web funcional para o registro e acompanhamento de denúnci
 | Google Cloud (GCP) | Infraestrutura em nuvem e deploy |
 
 ---
+## ▶️ Como executar o projeto
+
+### Pré-requisitos
+
+- Python 3.11 ou superior
+- Node.js
+- Firebase CLI
+- Conta no Firebase
+
+### Instalação
+
+```bash
+git clone https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git
+cd SEU-REPOSITORIO
+pip install -r requirements.txt
+npm install
+```
+
+### Executar o projeto
+
+```bash
+python main.py
+```
+
+---
+
+## 🔥 Configuração do Firebase
+
+O projeto utiliza os seguintes serviços do Firebase:
+
+- Firebase Authentication
+- Cloud Firestore
+- Firebase Hosting
+
+As regras de segurança do Firestore estão definidas no arquivo:
+
+```text
+firestore.rules
+```
+
+Os índices utilizados pelo Firestore estão definidos em:
+
+```text
+firestore.indexes.json
+```
+
+Para aplicar as regras e índices no Firebase, utilize:
+
+```bash
+firebase deploy --only firestore
+```
+
+---
+
+## 🚀 Deploy
+
+Para publicar a aplicação no Firebase:
+
+```bash
+firebase login
+firebase use <id-do-projeto>
+firebase deploy
+```
+
+Mais detalhes sobre o processo de deploy encontram-se em:
+
+```text
+docs/deploy.md
+```
+
+---
+
+## ⚙️ Integração Contínua (CI/CD)
+
+O projeto utiliza GitHub Actions para validar automaticamente a documentação.
+
+Workflow utilizado:
+
+```text
+.github/workflows/docs.yml
+```
+
+Executado automaticamente em eventos de **Push** e **Pull Request**.
+
+---
+
+## 📚 Documentação
+
+| Arquivo | Descrição |
+|---------|-----------|
+| README.md | Documentação principal do projeto |
+| docs/deploy.md | Manual de deploy |
+| docFirestore.md | Configuração do Firestore |
+| doclog.md | Documentação da esteira de automação |
 
 ## 🚀 Contribuição  
 
