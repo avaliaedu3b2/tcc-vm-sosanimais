@@ -13,8 +13,13 @@ def index():
 def login():
     return render_template("login/login.html")
 
+@app.route("/login/orgaos")
+def login_orgaos():
+    return render_template("login/loginorgao.html")
 
-
+@app.route("/register")
+def register():
+    return render_template("login/register.html")
 
 def main():
     app.run(port=int(os.environ.get('PORT', 80)))

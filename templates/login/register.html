@@ -1,0 +1,42 @@
+<form id="registerForm">
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="email" id="email" placeholder="E-mail" required>
+    <input type="password" id="senha" placeholder="Senha" required minlength="6">
+    <button type="submit" class="btn-primary-custom">Criar conta</button>
+    <p id="erroMsg" style="color:red;"></p>
+  </form>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
+      authDomain: "projetoeq2alexandremarra.firebaseapp.com",
+      projectId: "projetoeq2alexandremarra",
+      storageBucket: "projetoeq2alexandremarra.firebasestorage.app",
+      messagingSenderId: "242522510582",
+      appId: "1:242522510582:web:f8bda55c7bf29b189b48d7"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+  
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      const erroMsg = document.getElementById("erroMsg");
+      erroMsg.textContent = "";
+  
+      try {
+        await createUserWithEmailAndPassword(auth, email, senha);
+        window.location.href = "/login";
+      } catch (error) {
+        erroMsg.textContent = "Erro ao criar conta: " + error.message;
+      }
+    });
+  </script>
