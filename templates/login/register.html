@@ -1,42 +1,331 @@
-<form id="registerForm">
-    <input type="text" id="nome" placeholder="Nome" required>
-    <input type="email" id="email" placeholder="E-mail" required>
-    <input type="password" id="senha" placeholder="Senha" required minlength="6">
-    <button type="submit" class="btn-primary-custom">Criar conta</button>
-    <p id="erroMsg" style="color:red;"></p>
-  </form>
-  
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  
-    const firebaseConfig = {
-      apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
-      authDomain: "projetoeq2alexandremarra.firebaseapp.com",
-      projectId: "projetoeq2alexandremarra",
-      storageBucket: "projetoeq2alexandremarra.firebasestorage.app",
-      messagingSenderId: "242522510582",
-      appId: "1:242522510582:web:f8bda55c7bf29b189b48d7"
-    };
-  
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-  
-    document.getElementById("registerForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      const erroMsg = document.getElementById("erroMsg");
-      erroMsg.textContent = "";
-  
-      try {
-        await createUserWithEmailAndPassword(auth, email, senha);
-        window.location.href = "/login";
-      } catch (error) {
-        erroMsg.textContent = "Erro ao criar conta: " + error.message;
-      }
-    });
-  </script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Criar conta - SOS Animais</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .campo {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #9d59d6;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #9d59d6;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background-color: #9d59d6;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #8545bd;
+        }
+
+        #erroMsg {
+            margin-top: 15px;
+            color: red;
+        }
+
+        .voltar {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #9d59d6;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>Criar conta</h1>
+
+            <p class="subtitle">
+                Cadastre-se no SOS Animais
+            </p>
+
+            <form id="registerForm">
+
+                <div class="campo">
+                    <label for="nome">Nome completo</label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Digite seu nome"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="seu@email.com"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="senha">Senha</label>
+
+                    <input
+                        type="password"
+                        id="senha"
+                        placeholder="Digite sua senha"
+                        minlength="6"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="confirmarSenha">Confirmar senha</label>
+
+                    <input
+                        type="password"
+                        id="confirmarSenha"
+                        placeholder="Digite a senha novamente"
+                        minlength="6"
+                        required>
+                </div>
+
+                <button type="submit">
+                    Criar conta
+                </button>
+
+                <p id="erroMsg"></p>
+
+            </form>
+
+            <a href="/login" class="voltar">
+                Já tenho uma conta
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
+
+            authDomain:
+                "projetoeq2alexandremarra.firebaseapp.com",
+
+            projectId:
+                "projetoeq2alexandremarra",
+
+            storageBucket:
+                "projetoeq2alexandremarra.firebasestorage.app",
+
+            messagingSenderId:
+                "242522510582",
+
+            appId:
+                "1:242522510582:web:f8bda55c7bf29b189b48d7"
+
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+
+        const auth = getAuth(app);
+
+        const db = getFirestore(app);
+
+
+        const form =
+            document.getElementById("registerForm");
+
+        const erroMsg =
+            document.getElementById("erroMsg");
+
+
+        form.addEventListener("submit", async (e) => {
+
+            e.preventDefault();
+
+            erroMsg.textContent = "";
+
+
+            const nome =
+                document.getElementById("nome").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const senha =
+                document.getElementById("senha").value;
+
+            const confirmarSenha =
+                document.getElementById("confirmarSenha").value;
+
+
+            if (senha !== confirmarSenha) {
+
+                erroMsg.textContent =
+                    "As senhas não são iguais.";
+
+                return;
+            }
+
+
+            try {
+
+                // Cria usuário no Firebase Authentication
+                const resultado =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        senha
+                    );
+
+
+                const usuario = resultado.user;
+
+
+                // Salva o nome no perfil do Firebase
+                await updateProfile(usuario, {
+                    displayName: nome
+                });
+
+
+                // Salva os dados no Firestore
+                await setDoc(
+                    doc(db, "users", usuario.uid),
+                    {
+                        nome: nome,
+                        email: email,
+                        tipo: "usuario",
+                        criadoEm: serverTimestamp()
+                    }
+                );
+
+
+                // Vai para o login
+                window.location.href = "/login";
+
+
+              } catch (error) {
+
+console.error("ERRO COMPLETO:", error);
+console.error("Código:", error.code);
+console.error("Mensagem:", error.message);
+
+if (error.code === "auth/email-already-in-use") {
+
+    erroMsg.textContent =
+        "Este e-mail já possui uma conta. Tente outro e-mail.";
+
+} else if (error.code === "auth/invalid-email") {
+
+    erroMsg.textContent =
+        "Digite um e-mail válido.";
+
+} else if (error.code === "auth/weak-password") {
+
+    erroMsg.textContent =
+        "A senha precisa ter pelo menos 6 caracteres.";
+
+} else {
+
+    erroMsg.textContent =
+        "Não foi possível criar a conta. Código: " +
+        error.code;
+
+}
+
+}
+
+
+        });
+
+    </script>
+
+</body>
+
+</html>
