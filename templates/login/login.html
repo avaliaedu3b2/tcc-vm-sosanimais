@@ -16,46 +16,58 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #f8f3fc, #ffffff);
+      background: #ffffff;
       color: #2d1b36;
     }
 
     .page-container {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
     }
 
     /* =========================
-       HEADER
+       LADO ESQUERDO - FORMULÁRIO
     ========================= */
 
-    .header {
+    .form-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 60px;
+    }
+
+    .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 24px 40px;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 60px;
     }
 
     .logo {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
       color: #7b3fb3;
     }
 
     .logo-icon {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
     }
 
     .btn-voltar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       text-decoration: none;
       color: #9d59d6;
       border: 2px solid #9d59d6;
-      padding: 9px 22px;
+      padding: 8px 18px;
       border-radius: 25px;
+      font-size: 0.85rem;
       font-weight: bold;
       transition: 0.2s;
     }
@@ -65,53 +77,29 @@
       color: white;
     }
 
-    /* =========================
-       ÁREA DO LOGIN
-    ========================= */
-
-    .login-wrapper {
+    .form-content {
       flex: 1;
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      align-items: center;
-      padding: 30px 20px 60px;
-    }
-
-    .login-card {
+      max-width: 380px;
       width: 100%;
-      max-width: 430px;
-      background: white;
-      padding: 42px;
-      border-radius: 20px;
-      box-shadow: 0 15px 45px rgba(120, 70, 150, 0.12);
-      border: 1px solid #eee3f5;
+      margin: 0 auto;
     }
 
-    .welcome-icon {
-      width: 65px;
-      height: 65px;
-      margin: 0 auto 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f1e5fa;
-      border-radius: 50%;
+    h1 {
       font-size: 2rem;
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
       margin-bottom: 8px;
-      color: #2d1b36;
+      color: #1a1123;
     }
 
     .subtitle {
-      text-align: center;
       color: #777;
       font-size: 0.92rem;
       line-height: 1.5;
-      margin-bottom: 30px;
+      margin-bottom: 36px;
     }
 
     /* =========================
@@ -119,15 +107,16 @@
     ========================= */
 
     .input-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .input-group label {
-      color: #69408a;
-      font-size: 0.85rem;
+      display: block;
+      color: #9d59d6;
+      font-size: 0.78rem;
       font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
       margin-bottom: 8px;
     }
 
@@ -137,8 +126,8 @@
 
     .input-wrapper input {
       width: 100%;
-      padding: 14px 45px 14px 14px;
-      border: 1px solid #dfd0e8;
+      padding: 14px 45px 14px 16px;
+      border: 1px solid #ddd;
       border-radius: 10px;
       outline: none;
       font-size: 0.95rem;
@@ -159,26 +148,18 @@
       border: none;
       background: transparent;
       cursor: pointer;
-      font-size: 1.1rem;
-      color: #777;
-    }
-
-    /* =========================
-       CHECKBOX
-    ========================= */
-
-    .checkbox-group {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 25px;
-      color: #555;
-      font-size: 0.85rem;
+      justify-content: center;
+      color: #888;
+      padding: 4px;
+      border-radius: 6px;
+      transition: 0.15s;
     }
 
-    .checkbox-group input {
-      accent-color: #9d59d6;
-      cursor: pointer;
+    .password-toggle:hover {
+      color: #7b3fb3;
+      background: #f4ecfb;
     }
 
     /* =========================
@@ -190,13 +171,15 @@
       border: none;
       background: linear-gradient(135deg, #9d59d6, #7f43b8);
       color: white;
-      padding: 14px;
+      padding: 15px;
       border-radius: 10px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
       cursor: pointer;
       transition: 0.2s;
-      box-shadow: 0 6px 15px rgba(126, 67, 184, 0.2);
+      margin-top: 6px;
     }
 
     .btn-submit:hover {
@@ -226,54 +209,93 @@
     }
 
     /* =========================
-       CADASTRO
+       LINKS
     ========================= */
 
-    .signup-text {
+    .links {
       text-align: center;
-      margin-top: 25px;
-      color: #777;
-      font-size: 0.88rem;
+      margin-top: 26px;
     }
 
-    .signup-text a {
-      color: #9d59d6;
-      text-decoration: none;
+    .links a {
+      display: block;
+      color: #555;
+      text-decoration: underline;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .links a.destaque {
+      color: #7b3fb3;
       font-weight: bold;
     }
 
-    .signup-text a:hover {
-      text-decoration: underline;
+    /* =========================
+       LADO DIREITO - ILUSTRAÇÃO
+    ========================= */
+
+    .image-side {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .image-side img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-side::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(106,47,158,0.15) 0%, rgba(106,47,158,0.55) 65%, rgba(90,35,140,0.88) 100%);
+    }
+
+    .illustration-wrap {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 40px 40px 56px;
+    }
+
+    .image-side h2 {
+      color: white;
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .image-side p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      max-width: 320px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
 
     /* =========================
        RESPONSIVO
     ========================= */
 
-    @media (max-width: 600px) {
+    @media (max-width: 860px) {
 
-      .header {
-        padding: 20px;
+      .image-side {
+        display: none;
       }
 
-      .logo {
-        font-size: 1rem;
+      .form-side {
+        padding: 30px 24px;
       }
 
-      .btn-voltar {
-        padding: 8px 16px;
-      }
-
-      .login-wrapper {
-        padding: 20px 15px 40px;
-      }
-
-      .login-card {
-        padding: 30px 22px;
-      }
-
-      h2 {
-        font-size: 1.7rem;
+      .form-content {
+        max-width: 420px;
       }
     }
   </style>
@@ -283,49 +305,38 @@
 
   <div class="page-container">
 
-    <!-- HEADER -->
-    <header class="header">
+    <!-- LADO ESQUERDO -->
+    <div class="form-side">
 
-      <div class="logo">
-        <span class="logo-icon">🐾</span>
-        <span>SOS Animais Matão</span>
-      </div>
+      <div class="top-bar">
 
-      <a href="/" class="btn-voltar">
-        Voltar
-      </a>
-
-    </header>
-
-
-    <!-- LOGIN -->
-    <main class="login-wrapper">
-
-      <div class="login-card">
-
-        <div class="welcome-icon">
-          🐶
+        <div class="logo">
+          <span class="logo-icon">🐾</span>
+          <span>SOS Animais Matão</span>
         </div>
 
-        <h2>Bem-vindo!</h2>
+        <a href="/" class="btn-voltar">
+          ← Voltar
+        </a>
+
+      </div>
+
+      <div class="form-content">
+
+        <h1>SEJA BEM-VINDO!</h1>
 
         <p class="subtitle">
-          Entre na sua conta para acessar o painel
-          do SOS Animais Matão.
+          Entre na sua conta para acessar o painel do SOS Animais Matão.
         </p>
-
 
         <form id="loginForm">
 
           <!-- EMAIL -->
           <div class="input-group">
 
-            <label for="email">
-              E-mail
-            </label>
+            <label for="email">E-mail</label>
 
             <div class="input-wrapper">
-
               <input
                 type="email"
                 id="email"
@@ -333,21 +344,16 @@
                 autocomplete="email"
                 required
               >
-
             </div>
 
           </div>
 
-
           <!-- SENHA -->
           <div class="input-group">
 
-            <label for="senha">
-              Senha
-            </label>
+            <label for="senha">Senha</label>
 
             <div class="input-wrapper">
-
               <input
                 type="password"
                 id="senha"
@@ -362,28 +368,14 @@
                 id="toggleSenha"
                 aria-label="Mostrar senha"
               >
-                👁️
+                <svg id="iconEye" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
               </button>
-
             </div>
 
           </div>
-
-
-          <!-- LEMBRAR -->
-          <div class="checkbox-group">
-
-            <input
-              type="checkbox"
-              id="remember"
-            >
-
-            <label for="remember">
-              Manter-me conectado
-            </label>
-
-          </div>
-
 
           <!-- BOTÃO -->
           <button
@@ -391,30 +383,40 @@
             class="btn-submit"
             id="btnLogin"
           >
-            Entrar
+            Acessar site
           </button>
-
 
           <!-- ERRO -->
           <p id="erroMsg"></p>
 
         </form>
 
-
-        <!-- CADASTRO -->
-        <p class="signup-text">
-
-          Ainda não tem uma conta?
-
-          <a href="/register">
-            Crie uma agora
-          </a>
-
-        </p>
+        <!-- LINKS -->
+        <div class="links">
+          <a href="/register">Não possui uma conta? Criar</a>
+          <a href="#" class="destaque">Esqueci minha senha</a>
+        </div>
 
       </div>
 
-    </main>
+    </div>
+
+    <!-- LADO DIREITO -->
+    <div class="image-side">
+
+      <img
+        src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?fm=jpg&q=80&w=1200&auto=format&fit=crop"
+        alt="Filhote de cachorro"
+      >
+
+      <div class="illustration-wrap">
+
+        <h2>Cada login aproxima um focinho de um lar</h2>
+        <p>Acesse o painel e ajude a conectar animais resgatados a famílias que esperam por eles em Matão.</p>
+
+      </div>
+
+    </div>
 
   </div>
 
@@ -436,152 +438,78 @@
 
 
     const firebaseConfig = {
-
       apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
-
-      authDomain:
-        "projetoeq2alexandremarra.firebaseapp.com",
-
-      projectId:
-        "projetoeq2alexandremarra",
-
-      storageBucket:
-        "projetoeq2alexandremarra.firebasestorage.app",
-
-      messagingSenderId:
-        "242522510582",
-
-      appId:
-        "1:242522510582:web:f8bda55c7bf29b189b48d7"
-
+      authDomain: "projetoeq2alexandremarra.firebaseapp.com",
+      projectId: "projetoeq2alexandremarra",
+      storageBucket: "projetoeq2alexandremarra.firebasestorage.app",
+      messagingSenderId: "242522510582",
+      appId: "1:242522510582:web:f8bda55c7bf29b189b48d7"
     };
 
 
     const app = initializeApp(firebaseConfig);
-
     const auth = getAuth(app);
 
 
-    /* =========================
-       MOSTRAR / OCULTAR SENHA
-    ========================= */
+    /* MOSTRAR / OCULTAR SENHA */
 
-    const senhaInput =
-      document.getElementById("senha");
+    const senhaInput = document.getElementById("senha");
+    const toggleSenha = document.getElementById("toggleSenha");
+    const iconEye = document.getElementById("iconEye");
 
-    const toggleSenha =
-      document.getElementById("toggleSenha");
-
+    const eyeOpenPath = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>';
+    const eyeOffPath = '<path d="M3 3l18 18"/><path d="M10.6 5.2A11.6 11.6 0 0 1 12 5c7 0 11 7 11 7a17.6 17.6 0 0 1-4.1 4.9M6.6 6.6C3.4 8.6 1 12 1 12s4 7 11 7a10.6 10.6 0 0 0 5.4-1.5"/><path d="M9.5 9.5a3 3 0 0 0 4.2 4.2"/>';
 
     toggleSenha.addEventListener("click", () => {
-
       if (senhaInput.type === "password") {
-
         senhaInput.type = "text";
-
-        toggleSenha.textContent = "🙈";
-
-        toggleSenha.setAttribute(
-          "aria-label",
-          "Ocultar senha"
-        );
-
+        iconEye.innerHTML = eyeOffPath;
+        toggleSenha.setAttribute("aria-label", "Ocultar senha");
       } else {
-
         senhaInput.type = "password";
-
-        toggleSenha.textContent = "👁️";
-
-        toggleSenha.setAttribute(
-          "aria-label",
-          "Mostrar senha"
-        );
-
+        iconEye.innerHTML = eyeOpenPath;
+        toggleSenha.setAttribute("aria-label", "Mostrar senha");
       }
-
     });
 
 
-    /* =========================
-       LOGIN
-    ========================= */
+    /* LOGIN */
 
-    document
-      .getElementById("loginForm")
-      .addEventListener("submit", async (e) => {
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
+      const erroMsg = document.getElementById("erroMsg");
+      const btnLogin = document.getElementById("btnLogin");
 
+      erroMsg.textContent = "";
+      erroMsg.style.display = "none";
 
-        const email =
-          document
-            .getElementById("email")
-            .value
-            .trim();
+      btnLogin.disabled = true;
+      btnLogin.textContent = "Entrando...";
 
+      try {
+        await signInWithEmailAndPassword(auth, email, senha);
 
-        const senha =
-          document
-            .getElementById("senha")
-            .value;
+        /*
+         * Login realizado com sucesso.
+         * Envia o usuário para o dashboard.
+         */
+        window.location.href = "/dashboard";
 
+      } catch (error) {
+        console.error(error);
 
-        const erroMsg =
-          document.getElementById("erroMsg");
+        erroMsg.textContent = "E-mail ou senha inválidos.";
+        erroMsg.style.display = "block";
 
-
-        const btnLogin =
-          document.getElementById("btnLogin");
-
-
-        erroMsg.textContent = "";
-
-        erroMsg.style.display = "none";
-
-
-        btnLogin.disabled = true;
-
-        btnLogin.textContent = "Entrando...";
-
-
-        try {
-
-          await signInWithEmailAndPassword(
-            auth,
-            email,
-            senha
-          );
-
-
-          /*
-           * Login realizado com sucesso.
-           * Envia o usuário para o dashboard.
-           */
-
-          window.location.href = "/dashboard";
-
-
-        } catch (error) {
-
-          console.error(error);
-
-
-          erroMsg.textContent =
-            "E-mail ou senha inválidos.";
-
-
-          erroMsg.style.display = "block";
-
-
-          btnLogin.disabled = false;
-
-          btnLogin.textContent = "Entrar";
-
-        }
-
-      });
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Acessar site";
+      }
+    });
 
   </script>
-<!-- aha -->
+
 </body>
 </html>
