@@ -1,9 +1,13 @@
-from dataclass import dataclasss
+from dataclasses import dataclass
+from typing import Optional
+
 
 @dataclass
-class user:
+class User:
     uid: str
-    nome:str
+    nome: str
     email: str
-    created_at: str = None
-    update_at: str = None
+    senha: Optional[str] = None
+    telefone: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
