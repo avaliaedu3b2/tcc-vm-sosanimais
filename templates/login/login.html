@@ -383,7 +383,7 @@
             class="btn-submit"
             id="btnLogin"
           >
-            Acessar site
+            Realizar denúncia
           </button>
 
           <!-- ERRO -->
@@ -496,8 +496,7 @@
          * Login realizado com sucesso.
          * Envia o usuário para o dashboard.
          */
-        window.location.href = "/dashboard";
-
+         window.location.href = "/?abrirDenuncia=1";
       } catch (error) {
         console.error(error);
 
