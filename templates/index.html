@@ -603,6 +603,9 @@
   <li><button class="dropdown-item" id="btnSair" type="button"><i class="bi bi-box-arrow-right me-2"></i>Sair</button></li>
   </ul>
   </div>
+  <button type="button" class="btn-outline-custom mt-3 d-none" id="btnRealizarDenuncia" style="align-self: flex-start; width: fit-content;" data-bs-toggle="modal" data-bs-target="#denunciaModal">
+  <i class="bi bi-megaphone-fill me-1"></i> Realizar denúncia
+  </button>
   </div>
   <div class="hero-right">
   <img
@@ -972,13 +975,16 @@
   onAuthStateChanged(auth, (user) => {
     const areaLogado = document.getElementById("areaLogado");
     const areaDeslogado = document.getElementById("areaDeslogado");
+    const btnDenuncia = document.getElementById("btnRealizarDenuncia");
     if (user) {
       areaDeslogado.classList.add("d-none");
       areaLogado.classList.remove("d-none");
+      btnDenuncia.classList.remove("d-none");
       document.getElementById("usuarioEmailLabel").textContent = user.email;
     } else {
       areaDeslogado.classList.remove("d-none");
       areaLogado.classList.add("d-none");
+      btnDenuncia.classList.add("d-none");
     }
   });
   
@@ -1028,4 +1034,4 @@
   </script>
   </body>
   </html>
-  //
+  

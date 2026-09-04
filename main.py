@@ -31,7 +31,14 @@ def dashboard():
     nome = "SOSanimais.com.br"
     return render_template("dashboard/dashboard.html", site=nome)
 
+@app.route('/recovery')
+def recovery():
+    return render_template('login/recovery.html')
 
+@app.route('/redefinir-senha')
+def redefinir_senha():
+    return render_template('login/redefinir-senha.html')
+    
 def main():
     app.run(host="0.0.0.0", port = int(os.environ.get("PORT", 10000)))
 
