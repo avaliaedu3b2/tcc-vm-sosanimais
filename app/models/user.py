@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from datatime import Optional
 
 
 @dataclass
@@ -9,5 +9,4 @@ class User:
     email: str
     senha: Optional[str] = None
     telefone: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: datatime = field(default_factory=datatime.utcnow) 
