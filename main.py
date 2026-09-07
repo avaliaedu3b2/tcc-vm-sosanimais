@@ -1,6 +1,6 @@
 import os
 
-from flask import render_template, Flask
+from flask import render_template, Flask, request
 
 app = Flask(__name__)
 
@@ -38,7 +38,16 @@ def recovery():
 @app.route('/redefinir-senha')
 def redefinir_senha():
     return render_template('login/redefinir-senha.html')
-    
+
+@app.route('/denuncia-enviada')
+def denuncia_enviada():
+    codigo = request.args.get('codigo', '')
+    return render_template('denuncia-enviada.html', codigo=codigo)
+
+@app.route('/consultar-denuncia')
+def consultar_denuncia():
+    return render_template('consultar-denuncia.html')
+
 def main():
     app.run(host="0.0.0.0", port = int(os.environ.get("PORT", 10000)))
 

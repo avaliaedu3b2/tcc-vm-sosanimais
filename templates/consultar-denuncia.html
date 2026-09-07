@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Consultar denúncia - SOS Animais Matão</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+  :root {
+    --purple-light: #ede7f6;
+    --purple-main: #9c27b0;
+    --purple-dark: #6a1b9a;
+    --purple-accent: #ce93d8;
+    --text-dark: #1a1a2e;
+    --text-muted: #555;
+    --white: #fff;
+    --gray-bg: #f8f6fb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-dark);
+    background: var(--gray-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 48px;
+  }
+  h1, .display-font { font-family: 'Fraunces', serif; }
+
+  header.top-bar {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+  }
+  header.top-bar .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.05rem;
+  }
+  header.top-bar a.menu-link {
+    font-weight: 700;
+    font-size: .85rem;
+    letter-spacing: .06em;
+    color: var(--text-dark);
+    text-decoration: none;
+  }
+  header.top-bar a.menu-link:hover { color: var(--purple-main); }
+
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(106, 27, 154, 0.08);
+    max-width: 480px;
+    width: 100%;
+    padding: 40px;
+    margin-top: 20px;
+  }
+  h2.title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--purple-dark);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  p.subtitle {
+    color: var(--text-muted);
+    font-size: .95rem;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  label {
+    font-weight: 600;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--purple-dark);
+    display: block;
+    margin-bottom: 8px;
+  }
+  input#codigoInput {
+    width: 100%;
+    border: 1px solid #e2d9ec;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: .95rem;
+    text-transform: uppercase;
+    outline: none;
+  }
+  input#codigoInput:focus {
+    border-color: var(--purple-main);
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.12);
+  }
+  button#btnBuscar {
+    width: 100%;
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 13px;
+    border-radius: 12px;
+    margin-top: 18px;
+    cursor: pointer;
+  }
+  button#btnBuscar:disabled { opacity: .6; cursor: not-allowed; }
+
+  .resultado {
+    margin-top: 26px;
+    display: none;
+  }
+  .resultado.show { display: block; }
+  .status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .85rem;
+    margin-bottom: 16px;
+  }
+  .status-recebida { background: #ede7f6; color: var(--purple-dark); }
+  .status-analise { background: #fff3cd; color: #8a6d1a; }
+  .status-atendida, .status-resolvida { background: #e8f5e9; color: #2e7d32; }
+  .status-arquivada { background: #eee; color: #666; }
+
+  .detalhe-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0eef5;
+    font-size: .9rem;
+  }
+  .detalhe-row span.label-item { color: var(--text-muted); }
+  .detalhe-row span.valor-item { font-weight: 600; text-align: right; }
+
+  .erro-msg {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fdecea;
+    color: #c62828;
+    font-size: .9rem;
+    display: none;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+  <span class="brand">SOS ANIMAIS MATÃO</span>
+  <a href="/" class="menu-link">MENU</a>
+</header>
+
+<div class="card">
+  <h2 class="title">Consultar denúncia</h2>
+  <p class="subtitle">Digite o código do protocolo que você recebeu ao enviar a denúncia.</p>
+
+  <label for="codigoInput">Código do protocolo</label>
+  <input type="text" id="codigoInput" placeholder="SOS-2026-XXXXXX">
+  <button id="btnBuscar">Consultar status</button>
+
+  <div class="erro-msg" id="erroMsg"></div>
+
+  <div class="resultado" id="resultado">
+    <span class="status-badge" id="statusBadge"></span>
+    <div class="detalhe-row"><span class="label-item">Protocolo</span><span class="valor-item" id="rCodigo"></span></div>
+    <div class="detalhe-row"><span class="label-item">Tipo de animal</span><span class="valor-item" id="rTipoAnimal"></span></div>
+    <div class="detalhe-row"><span class="label-item">Urgência</span><span class="valor-item" id="rUrgencia"></span></div>
+    <div class="detalhe-row"><span class="label-item">Endereço</span><span class="valor-item" id="rEndereco"></span></div>
+    <div class="detalhe-row"><span class="label-item">Enviada em</span><span class="valor-item" id="rData"></span></div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
+    authDomain: "projetoeq2alexandremarra.firebaseapp.com",
+    projectId: "projetoeq2alexandremarra",
+    storageBucket: "projetoeq2alexandremarra.firebasestorage.app",
+    messagingSenderId: "242522510582",
+    appId: "1:242522510582:web:f8bda55c7bf29b189b48d7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const codigoInput = document.getElementById("codigoInput");
+  const btnBuscar = document.getElementById("btnBuscar");
+  const erroMsg = document.getElementById("erroMsg");
+  const resultado = document.getElementById("resultado");
+
+  function statusClasse(status) {
+    const s = (status || "").toLowerCase();
+    if (s.includes("recebida")) return "status-recebida";
+    if (s.includes("análise") || s.includes("analise")) return "status-analise";
+    if (s.includes("atendida") || s.includes("resolvida")) return "status-atendida";
+    if (s.includes("arquivada")) return "status-arquivada";
+    return "status-recebida";
+  }
+
+  async function buscar() {
+    const codigo = codigoInput.value.trim().toUpperCase();
+    erroMsg.style.display = "none";
+    resultado.classList.remove("show");
+
+    if (!codigo) return;
+
+    btnBuscar.disabled = true;
+    btnBuscar.textContent = "Buscando...";
+
+    try {
+      const snap = await getDoc(doc(db, "denuncias", codigo));
+      if (!snap.exists()) {
+        erroMsg.textContent = "Nenhuma denúncia encontrada com esse código. Confira e tente de novo.";
+        erroMsg.style.display = "block";
+        return;
+      }
+      const d = snap.data();
+      const badge = document.getElementById("statusBadge");
+      badge.textContent = d.status || "Recebida";
+      badge.className = "status-badge " + statusClasse(d.status);
+
+      document.getElementById("rCodigo").textContent = codigo;
+      document.getElementById("rTipoAnimal").textContent = d.tipoAnimal || "-";
+      document.getElementById("rUrgencia").textContent = d.urgencia || "-";
+      document.getElementById("rEndereco").textContent = d.endereco || "-";
+      document.getElementById("rData").textContent = d.criadoEm ? new Date(d.criadoEm).toLocaleString("pt-BR") : "-";
+
+      resultado.classList.add("show");
+    } catch (erro) {
+      console.error(erro);
+      erroMsg.textContent = "Não foi possível consultar agora. Tente novamente em instantes.";
+      erroMsg.style.display = "block";
+    } finally {
+      btnBuscar.disabled = false;
+      btnBuscar.textContent = "Consultar status";
+    }
+  }
+
+  btnBuscar.addEventListener("click", buscar);
+  codigoInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") buscar();
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  const codigoParam = params.get("codigo");
+  if (codigoParam) {
+    codigoInput.value = codigoParam;
+    buscar();
+  }
+</script>
+
+</body>
+</html>
