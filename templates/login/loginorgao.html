@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SOS Animais Matão - Login Órgãos</title>
-
   <style>
     * {
       box-sizing: border-box;
@@ -12,20 +11,17 @@
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
-
     body, html {
       height: 100%;
       background-color: #ffffff;
       color: #1a1a1a;
     }
-
     /* Container principal: duas colunas (formulário / imagem) */
     .page-container {
       display: flex;
       min-height: 100vh;
       width: 100%;
     }
-
     /* Botão Voltar */
     .btn-voltar {
       position: absolute;
@@ -43,11 +39,9 @@
       transition: background-color 0.2s ease;
       z-index: 10;
     }
-
     .btn-voltar:hover {
       background-color: #7e3eb8;
     }
-
     /* Coluna esquerda: formulário */
     .form-side {
       flex: 1;
@@ -57,12 +51,10 @@
       padding: 60px 80px;
       position: relative;
     }
-
     .form-content {
       width: 100%;
       max-width: 420px;
     }
-
     .form-content h1 {
       font-size: 2rem;
       font-weight: 800;
@@ -71,12 +63,10 @@
       margin-bottom: 32px;
       text-transform: uppercase;
     }
-
     /* Campos de input */
     .input-group {
       margin-bottom: 20px;
     }
-
     .input-group label {
       display: block;
       font-size: 0.75rem;
@@ -86,7 +76,6 @@
       text-transform: uppercase;
       margin-bottom: 8px;
     }
-
     .input-group input {
       width: 100%;
       border: 1px solid #d1d5db;
@@ -97,24 +86,19 @@
       outline: none;
       transition: border-color 0.2s;
     }
-
     .input-group input:focus {
       border-color: #9353d3;
     }
-
     .input-group input::placeholder {
       color: #a1a1aa;
     }
-
     /* Campo de senha com ícone de olho */
     .password-field {
       position: relative;
     }
-
     .password-field input {
       padding-right: 44px;
     }
-
     .toggle-password {
       position: absolute;
       right: 14px;
@@ -128,7 +112,6 @@
       align-items: center;
       padding: 0;
     }
-
     /* Botão principal */
     .btn-entrar {
       width: 100%;
@@ -145,11 +128,42 @@
       margin-top: 12px;
       transition: background-color 0.2s ease;
     }
-
     .btn-entrar:hover {
       background-color: #9353d3;
     }
-
+    /* Link para cadastro */
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .register-link a {
+      color: #9353d3;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+    .login-message {
+      display: none;
+      font-size: 0.85rem;
+      margin-top: 16px;
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+    .login-message.show {
+      display: block;
+    }
+    .login-message.erro {
+      background-color: #fef2f2;
+      color: #dc2626;
+    }
+    .login-message.info {
+      background-color: #fffbeb;
+      color: #b45309;
+    }
     /* Coluna direita: imagem com overlay roxo e canto arredondado */
     .image-side {
       flex: 1;
@@ -158,33 +172,28 @@
       border-top-left-radius: 60px;
       border-bottom-left-radius: 60px;
     }
-
     .image-side img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
-
     .image-side::after {
       content: "";
       position: absolute;
       inset: 0;
       background: linear-gradient(135deg, rgba(147, 83, 211, 0.55), rgba(124, 58, 178, 0.35));
     }
-
     /* Responsivo */
     @media (max-width: 900px) {
       .page-container {
         flex-direction: column;
       }
-
       .image-side {
         min-height: 260px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
       }
-
       .form-side {
         padding: 40px 24px;
         order: 2;
@@ -193,20 +202,18 @@
   </style>
 </head>
 <body>
-
   <div class="page-container">
     <!-- Coluna esquerda: formulário -->
     <div class="form-side">
       <a href="/" class="btn-voltar">Voltar</a>
+
       <div class="form-content">
         <h1>Seja bem vindo!</h1>
-
-        <form>
+        <form id="formLogin">
           <div class="input-group">
             <label for="email">Email</label>
             <input type="email" id="email" placeholder="seuemail@exemplo.com" required />
           </div>
-
           <div class="input-group">
             <label for="cnpj">CNPJ</label>
             <input
@@ -217,7 +224,6 @@
               required
             />
           </div>
-
           <div class="input-group password-field">
             <label for="senha">Senha</label>
             <input type="password" id="senha" placeholder="Senha" required />
@@ -230,15 +236,19 @@
               </svg>
             </button>
           </div>
-
           <button type="submit" class="btn-entrar">Acessar Denúncias</button>
+          <p class="login-message" id="loginMessage"></p>
         </form>
+
+        <p class="register-link">Não tem uma conta? <a href="/login/cadastroorgao">Cadastre-se</a></p>
       </div>
     </div>
 
     <!-- Coluna direita: imagem -->
     <div class="image-side">
-      <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1000&q=80" alt="Pessoa com cachorro">
+      <img
+        src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1000&q=80"
+        alt="Pessoa com cachorro">
     </div>
   </div>
 
@@ -248,21 +258,61 @@
     cnpjInput.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
       if (value.length > 14) value = value.slice(0, 14);
-
       value = value.replace(/^(\d{2})(\d)/, '$1.$2');
       value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
       value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
       value = value.replace(/(\d{4})(\d)/, '$1-$2');
-
       e.target.value = value;
     });
 
     const senhaInput = document.getElementById('senha');
     const btnToggle = document.getElementById('btnToggle');
-
     btnToggle.addEventListener('click', () => {
       const isPassword = senhaInput.type === 'password';
       senhaInput.type = isPassword ? 'text' : 'password';
+    });
+
+    // Envio do login
+    const formLogin = document.getElementById('formLogin');
+    const loginMessage = document.getElementById('loginMessage');
+    const emailInput = document.getElementById('email');
+
+    formLogin.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      loginMessage.className = 'login-message';
+      loginMessage.textContent = '';
+
+      const btnSubmit = formLogin.querySelector('.btn-entrar');
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Entrando...';
+
+      try {
+        const resposta = await fetch('/api/login-orgao', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput.value.trim(),
+            cnpj: cnpjInput.value,
+            senha: senhaInput.value
+          })
+        });
+        const dados = await resposta.json();
+
+        if (resposta.ok && dados.sucesso) {
+          window.location.href = dados.redirect || '/dashboard';
+        } else {
+          const ehPendente = resposta.status === 403;
+          loginMessage.className = 'login-message show ' + (ehPendente ? 'info' : 'erro');
+          loginMessage.textContent = dados.erro || 'Não foi possível entrar. Tente novamente.';
+        }
+      } catch (err) {
+        loginMessage.className = 'login-message show erro';
+        loginMessage.textContent = 'Erro de conexão. Tente novamente.';
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Acessar Denúncias';
+      }
     });
   </script>
 </body>
