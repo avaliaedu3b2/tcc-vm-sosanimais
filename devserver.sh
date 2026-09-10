@@ -11,4 +11,7 @@ pip install fire base
 pip install flask
 pip install flask-cors
 pip install google-generativeai
+pip install --upgrade firebase-admin google-cloud-firestore google-api-core
+pip install -r requirements.txt
 npm install update
+export FIREBASE_WEB_API_KEY="AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw"
