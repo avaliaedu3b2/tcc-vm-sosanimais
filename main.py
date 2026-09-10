@@ -1,9 +1,9 @@
 import os
 
 import requests
-from flask import render_template, Flask, request, jsonify, session
+from flask import render_template, Flask, request, jsonify, session, redirect, url_for
 import firebase_admin
-from firebase_admin import auth, credentials
+from firebase_admin import auth, credentials, firestore
 
 from app.repositories.orgao_repository import OrgaoRepository
 
@@ -14,6 +14,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "troque-por-uma-chave-secreta-bem-longa")
 
 orgao_repository = OrgaoRepository()
+db = firestore.client()
 
 
 @app.route("/")
@@ -39,8 +40,24 @@ def register():
 
 @app.route("/dashboard")
 def dashboard():
-    nome = "SOSanimais.com.br"
-    return render_template("dashboard/dashboard.html", site=nome)
+    if 'orgao_id' not in session:
+        return redirect(url_for('login_orgaos'))
+
+    orgao = orgao_repository.get_orgao(session['orgao_id'])
+
+    denuncias = []
+    for doc in db.collection('denuncias').stream():
+        dado = doc.to_dict()
+        dado['id'] = doc.id
+        denuncias.append(dado)
+
+    return render_template("dashboard/dashboard.html", orgao=orgao, denuncias=denuncias)
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login_orgaos'))
 
 
 @app.route('/recovery')
