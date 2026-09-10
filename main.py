@@ -54,6 +54,50 @@ def dashboard():
     return render_template("dashboard/dashboard.html", orgao=orgao, denuncias=denuncias)
 
 
+@app.route("/dashboard/denuncia/<codigo>")
+def detalhe_denuncia(codigo):
+    if 'orgao_id' not in session:
+        return redirect(url_for('login_orgaos'))
+
+    doc = db.collection('denuncias').document(codigo).get()
+    if not doc.exists:
+        return "Denúncia não encontrada", 404
+
+    denuncia = doc.to_dict()
+    denuncia['id'] = doc.id
+
+    return render_template("dashboard/denuncia.html", denuncia=denuncia)
+
+
+@app.route("/api/denuncia/<codigo>/status", methods=['POST'])
+def atualizar_status_denuncia(codigo):
+    if 'orgao_id' not in session:
+        return jsonify({'sucesso': False, 'erro': 'Não autenticado.'}), 401
+
+    dados = request.get_json(silent=True) or {}
+    status = dados.get('status', '').strip()
+    observacoes = dados.get('observacoes', '')
+    mensagem = dados.get('mensagemDenunciante', '')
+
+    status_validos = {'Em análise', 'Aprovada', 'Recusada', 'Resolvida'}
+    if status not in status_validos:
+        return jsonify({'sucesso': False, 'erro': 'Status inválido.'}), 400
+
+    ref = db.collection('denuncias').document(codigo)
+    if not ref.get().exists:
+        return jsonify({'sucesso': False, 'erro': 'Denúncia não encontrada.'}), 404
+
+    ref.update({
+        'status': status,
+        'observacoes': observacoes,
+        'mensagemDenunciante': mensagem,
+        'atualizadoEm': firestore.SERVER_TIMESTAMP,
+        'atualizadoPor': session['orgao_id']
+    })
+
+    return jsonify({'sucesso': True}), 200
+
+
 @app.route('/logout')
 def logout():
     session.clear()

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Denúncia {{ denuncia.id }} — SOS Animais Matão</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --purple-light: #ede7f6;
+  --purple-main: #9c27b0;
+  --purple-dark: #6a1b9a;
+  --purple-accent: #ce93d8;
+  --text-dark: #1a1a2e;
+  --text-muted: #555;
+  --white: #fff;
+  --gray-bg: #f8f6fb;
+  --amarelo-bg: #fff8e6; --amarelo-fg: #8a6d1a; --amarelo-line: #f3e2ad;
+  --verde-bg: #eaf7ec; --verde-fg: #2e7d32; --verde-line: #bfe3c4;
+  --vermelho-bg: #fdecea; --vermelho-fg: #c62828; --vermelho-line: #f3c6c1;
+  --azul-bg: #eaf1fd; --azul-fg: #1565c0; --azul-line: #bcd6f5;
+}
+* { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background: var(--gray-bg); }
+h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
+
+.navbar { background: #fff; border-bottom: 1px solid #ede0f3; padding: 14px 0; }
+.navbar-brand {
+  font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 900;
+  color: var(--purple-dark) !important; display: flex; align-items: center; gap: 10px;
+}
+.navbar-brand .logo-icon {
+  width: 38px; height: 38px; background: var(--purple-main); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.navbar-brand .logo-icon i { color: #fff; font-size: 1.1rem; }
+.btn-sair { color: var(--text-dark); font-weight: 600; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.btn-sair:hover { color: var(--purple-main); }
+
+.voltar-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--purple-main); font-weight: 700; font-size: 0.88rem; text-decoration: none;
+  margin: 28px 0 6px;
+}
+.voltar-link:hover { color: var(--purple-dark); }
+
+.protocolo-titulo { font-size: 1.6rem; font-weight: 900; margin-bottom: 28px; }
+.protocolo-titulo small { display: block; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.03em; }
+
+.painel {
+  background: #fff; border-radius: 16px; border: 1px solid #eee;
+  padding: 24px; margin-bottom: 24px;
+}
+.painel h6 { font-weight: 700; font-size: 0.95rem; margin-bottom: 16px; }
+.painel .foto-animal { width: 100%; border-radius: 12px; object-fit: cover; max-height: 320px; margin-bottom: 4px; background: var(--purple-light); }
+
+.linha-info { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f3f1f7; font-size: 0.9rem; }
+.linha-info:last-child { border-bottom: none; }
+.linha-info i { color: var(--purple-main); margin-top: 2px; }
+.linha-info .rotulo { color: var(--text-muted); font-weight: 600; min-width: 130px; }
+.badge-especie { background: var(--purple-light); color: var(--purple-dark); font-weight: 700; padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; }
+.badge-urgencia { font-weight: 700; padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; }
+
+textarea.form-control { resize: vertical; }
+
+.anexos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 700px) { .anexos-grid { grid-template-columns: 1fr; } }
+.anexo-box {
+  border: 2px dashed #d8d3e0; border-radius: 12px; padding: 20px 12px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  color: var(--text-muted); cursor: pointer; transition: border-color .2s, background .2s;
+  font-size: 0.82rem;
+}
+.anexo-box:hover { border-color: var(--purple-main); background: var(--purple-light); }
+.anexo-box i { font-size: 1.4rem; color: var(--purple-main); margin-bottom: 6px; }
+.anexo-box strong { color: var(--text-dark); font-size: 0.85rem; }
+.anexo-box small { margin-top: 2px; }
+
+/* Opções de status */
+.opcao-status {
+  display: flex; align-items: center; gap: 14px;
+  border: 1.5px solid; border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 10px; cursor: pointer; transition: box-shadow .15s;
+}
+.opcao-status input { width: 18px; height: 18px; accent-color: var(--purple-main); margin-left: auto; }
+.opcao-status .icone-status { font-size: 1.15rem; flex-shrink: 0; }
+.opcao-status .texto-status strong { display: block; font-size: 0.92rem; }
+.opcao-status .texto-status span { font-size: 0.8rem; opacity: 0.85; }
+
+.opcao-status.analise { background: var(--amarelo-bg); border-color: var(--amarelo-line); color: var(--amarelo-fg); }
+.opcao-status.aprovar { background: var(--verde-bg); border-color: var(--verde-line); color: var(--verde-fg); }
+.opcao-status.recusar { background: var(--vermelho-bg); border-color: var(--vermelho-line); color: var(--vermelho-fg); }
+.opcao-status.resolvido { background: var(--azul-bg); border-color: var(--azul-line); color: var(--azul-fg); }
+.opcao-status.selecionada { box-shadow: 0 0 0 2px currentColor inset; }
+
+.btn-salvar-status {
+  width: 100%; background: var(--purple-dark); color: #fff; border: none;
+  padding: 13px; border-radius: 10px; font-weight: 700; font-size: 0.92rem;
+  transition: background .2s;
+}
+.btn-salvar-status:hover { background: var(--purple-main); }
+.btn-salvar-status:disabled { opacity: 0.6; }
+
+.accordion-button { font-weight: 700; font-size: 0.9rem; }
+.accordion-button:not(.collapsed) { background: var(--purple-light); color: var(--purple-dark); box-shadow: none; }
+.accordion-button:focus { box-shadow: none; }
+
+.evidencias-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.evidencias-grid img { width: 96px; height: 96px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
+
+.status-atual-badge { font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 50px; display: inline-block; margin-bottom: 4px; }
+
+.toast-salvo {
+  position: fixed; bottom: 24px; right: 24px; background: var(--purple-dark); color: #fff;
+  padding: 14px 22px; border-radius: 10px; font-weight: 600; font-size: 0.88rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2); opacity: 0; transform: translateY(10px);
+  transition: opacity .25s, transform .25s; pointer-events: none;
+}
+.toast-salvo.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container d-flex justify-content-between align-items-center">
+    <span class="navbar-brand">
+      <span class="logo-icon"><i class="bi bi-heart-fill"></i></span>
+      SOS Animais Matão
+    </span>
+    <a class="btn-sair" href="{{ url_for('logout') if url_for else '#' }}">Sair <i class="bi bi-box-arrow-right"></i></a>
+  </div>
+</nav>
+
+<div class="container" style="max-width: 1040px;">
+  <a href="{{ url_for('dashboard') if url_for else '#' }}" class="voltar-link"><i class="bi bi-arrow-left"></i> Voltar para o painel</a>
+
+  <div class="protocolo-titulo">
+    <small>{{ denuncia.id }}</small>
+    Detalhes da denúncia
+  </div>
+
+  <div class="row g-4 pb-5">
+    <!-- Coluna esquerda -->
+    <div class="col-lg-7">
+      <div class="painel">
+        <h6>Foto do animal</h6>
+        {% if denuncia.fotoUrl %}
+          <img class="foto-animal" src="{{ denuncia.fotoUrl }}" alt="Foto da denúncia {{ denuncia.id }}">
+        {% else %}
+          <div class="foto-animal d-flex align-items-center justify-content-center" style="height:220px; color:var(--purple-main);">
+            <i class="bi bi-image" style="font-size:2rem;"></i>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="painel">
+        <h6>Informações da denúncia</h6>
+        <div class="linha-info">
+          <i class="bi bi-tag"></i>
+          <span class="rotulo">Tipo de animal</span>
+          <span class="badge-especie">{{ denuncia.tipoAnimal }}</span>
+        </div>
+        <div class="linha-info">
+          <i class="bi bi-exclamation-triangle"></i>
+          <span class="rotulo">Urgência</span>
+          <span class="badge-urgencia" style="background:var({{ '--vermelho-bg' if 'Alta' in denuncia.urgencia else ('--amarelo-bg' if 'édia' in denuncia.urgencia or 'edia' in denuncia.urgencia else '--verde-bg') }}); color:var({{ '--vermelho-fg' if 'Alta' in denuncia.urgencia else ('--amarelo-fg' if 'édia' in denuncia.urgencia or 'edia' in denuncia.urgencia else '--verde-fg') }});">
+            {{ denuncia.urgencia.split('—')[0].strip() if '—' in denuncia.urgencia else denuncia.urgencia }}
+          </span>
+        </div>
+        <div class="linha-info">
+          <i class="bi bi-geo-alt"></i>
+          <span class="rotulo">Local</span>
+          <span>{{ denuncia.endereco }}</span>
+        </div>
+        <div class="linha-info">
+          <i class="bi bi-clock"></i>
+          <span class="rotulo">Data e hora</span>
+          <span>{{ denuncia.criadoEm }}</span>
+        </div>
+        <div class="linha-info">
+          <i class="bi bi-file-text"></i>
+          <span class="rotulo">Descrição</span>
+          <span>{{ denuncia.descricao }}</span>
+        </div>
+        {% if not denuncia.anonimo %}
+        <div class="linha-info">
+          <i class="bi bi-person"></i>
+          <span class="rotulo">Denunciante</span>
+          <span>{{ denuncia.nome or denuncia.emailUsuario or '—' }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="painel">
+        <h6>Observações do órgão</h6>
+        <p class="text-muted small mb-2">Adicione observações sobre a análise da denúncia</p>
+        <textarea id="observacoesInput" class="form-control" rows="4" maxlength="500" placeholder="Ex: equipe realizou a análise e constatou...">{{ denuncia.observacoes or '' }}</textarea>
+      </div>
+
+      <div class="painel">
+        <h6>Anexos</h6>
+        <p class="text-muted small mb-3">Anexe documentos, fotos ou relatórios relacionados à denúncia</p>
+        <div class="anexos-grid">
+          <label class="anexo-box">
+            <i class="bi bi-paperclip"></i>
+            <strong>Anexar documento</strong>
+            <small id="labelDocumento">PDF, DOC, DOCX</small>
+            <input type="file" accept=".pdf,.doc,.docx" class="d-none" data-label="labelDocumento" data-padrao="PDF, DOC, DOCX">
+          </label>
+          <label class="anexo-box">
+            <i class="bi bi-camera"></i>
+            <strong>Anexar foto da vistoria</strong>
+            <small id="labelFoto">JPG, PNG</small>
+            <input type="file" accept="image/*" class="d-none" data-label="labelFoto" data-padrao="JPG, PNG">
+          </label>
+          <label class="anexo-box">
+            <i class="bi bi-file-earmark-text"></i>
+            <strong>Anexar relatório final</strong>
+            <small id="labelRelatorio">PDF, DOC, DOCX</small>
+            <input type="file" accept=".pdf,.doc,.docx" class="d-none" data-label="labelRelatorio" data-padrao="PDF, DOC, DOCX">
+          </label>
+        </div>
+        <p class="text-muted small mt-2 mb-0"><i class="bi bi-info-circle"></i> O upload ainda não está conectado ao armazenamento — por enquanto os arquivos só são exibidos localmente.</p>
+      </div>
+    </div>
+
+    <!-- Coluna direita -->
+    <div class="col-lg-5">
+      <div class="painel">
+        <h6>Alterar status da denúncia</h6>
+
+        <label class="opcao-status analise" data-msg="msgAnalise">
+          <i class="bi bi-clock icone-status"></i>
+          <span class="texto-status"><strong>Em análise</strong><span>A denúncia está sendo analisada</span></span>
+          <input type="radio" name="statusDenuncia" value="Em análise">
+        </label>
+
+        <label class="opcao-status aprovar" data-msg="msgAprovada">
+          <i class="bi bi-check-circle-fill icone-status"></i>
+          <span class="texto-status"><strong>Aprovar denúncia</strong><span>Reconhecer como procedente</span></span>
+          <input type="radio" name="statusDenuncia" value="Aprovada">
+        </label>
+
+        <label class="opcao-status recusar" data-msg="msgRecusada">
+          <i class="bi bi-x-circle-fill icone-status"></i>
+          <span class="texto-status"><strong>Recusar denúncia</strong><span>Não procedente</span></span>
+          <input type="radio" name="statusDenuncia" value="Recusada">
+        </label>
+
+        <label class="opcao-status resolvido" data-msg="msgResolvida">
+          <i class="bi bi-flag-fill icone-status"></i>
+          <span class="texto-status"><strong>Caso resolvido</strong><span>Providências tomadas</span></span>
+          <input type="radio" name="statusDenuncia" value="Resolvida">
+        </label>
+
+        <button class="btn-salvar-status mt-2" id="btnSalvarStatus">Salvar status</button>
+      </div>
+
+      <div class="painel">
+        <h6>Mensagem para o denunciante</h6>
+        <p class="text-muted small mb-3">Esta mensagem será exibida para o usuário de acordo com o status selecionado.</p>
+
+        <div class="accordion" id="acordeaoMensagens">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colApro">
+                <i class="bi bi-check-circle-fill text-success me-2"></i> Aprovada / Em análise
+              </button>
+            </h2>
+            <div id="colApro" class="accordion-collapse collapse" data-bs-parent="#acordeaoMensagens">
+              <div class="accordion-body">
+                <textarea id="msgAnalise" class="form-control" rows="3">Sua denúncia foi reconhecida como procedente e está sendo analisada pelos órgãos responsáveis. Agradecemos sua colaboração na proteção dos animais.</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colEnc">
+                <i class="bi bi-arrow-down-circle-fill text-primary me-2"></i> Encaminhada
+              </button>
+            </h2>
+            <div id="colEnc" class="accordion-collapse collapse" data-bs-parent="#acordeaoMensagens">
+              <div class="accordion-body">
+                <textarea id="msgAprovada" class="form-control" rows="3">Sua denúncia foi encaminhada para averiguação in loco pela equipe responsável.</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colRes">
+                <i class="bi bi-check-circle-fill text-success me-2"></i> Resolvida
+              </button>
+            </h2>
+            <div id="colRes" class="accordion-collapse collapse" data-bs-parent="#acordeaoMensagens">
+              <div class="accordion-body">
+                <textarea id="msgResolvida" class="form-control" rows="3">As providências necessárias foram tomadas e o caso foi encerrado. Agradecemos por denunciar.</textarea>
+                {% if denuncia.evidencias %}
+                <div class="evidencias-grid">
+                  {% for ev in denuncia.evidencias %}
+                    <img src="{{ ev }}" alt="Evidência">
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#colNao">
+                <i class="bi bi-x-circle-fill text-danger me-2"></i> Não confirmada
+              </button>
+            </h2>
+            <div id="colNao" class="accordion-collapse collapse" data-bs-parent="#acordeaoMensagens">
+              <div class="accordion-body">
+                <textarea id="msgRecusada" class="form-control" rows="3">Após análise, não foi possível confirmar os fatos descritos na denúncia.</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-salvo" id="toastSalvo">Status salvo com sucesso.</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Marca visualmente a opção de status selecionada
+  document.querySelectorAll('.opcao-status').forEach(opcao => {
+    opcao.addEventListener('click', () => {
+      document.querySelectorAll('.opcao-status').forEach(o => o.classList.remove('selecionada'));
+      opcao.classList.add('selecionada');
+    });
+  });
+
+  // Atualiza o nome do arquivo exibido em cada caixa de anexo (só interface, sem upload real)
+  document.querySelectorAll('.anexo-box input[type="file"]').forEach(input => {
+    input.addEventListener('change', (e) => {
+      const label = document.getElementById(input.dataset.label);
+      label.textContent = e.target.files.length > 0 ? e.target.files[0].name : input.dataset.padrao;
+    });
+  });
+</script>
+
+<!-- Salvar status + observações (via backend, que tem permissão de administrador no Firestore) -->
+<script>
+  const codigoDenuncia = {{ denuncia.id | tojson }};
+  const btnSalvar = document.getElementById('btnSalvarStatus');
+  const toast = document.getElementById('toastSalvo');
+
+  btnSalvar.addEventListener('click', async () => {
+    const radioSelecionado = document.querySelector('input[name="statusDenuncia"]:checked');
+    if (!radioSelecionado) {
+      alert('Selecione um status antes de salvar.');
+      return;
+    }
+
+    const opcaoEl = radioSelecionado.closest('.opcao-status');
+    const idMensagem = opcaoEl.dataset.msg;
+    const mensagem = document.getElementById(idMensagem) ? document.getElementById(idMensagem).value : '';
+    const observacoes = document.getElementById('observacoesInput').value;
+
+    btnSalvar.disabled = true;
+    btnSalvar.textContent = 'Salvando...';
+
+    try {
+      const resposta = await fetch(`/api/denuncia/${codigoDenuncia}/status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: radioSelecionado.value,
+          observacoes: observacoes,
+          mensagemDenunciante: mensagem
+        })
+      });
+      const dados = await resposta.json();
+
+      if (resposta.ok && dados.sucesso) {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      } else {
+        alert(dados.erro || 'Não foi possível salvar agora. Tente novamente.');
+      }
+    } catch (erro) {
+      console.error(erro);
+      alert('Erro de conexão. Tente novamente.');
+    } finally {
+      btnSalvar.disabled = false;
+      btnSalvar.textContent = 'Salvar status';
+    }
+  });
+</script>
+
+</body>
+</html>
