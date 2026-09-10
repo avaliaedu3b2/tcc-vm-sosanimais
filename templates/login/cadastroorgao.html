@@ -308,7 +308,7 @@
     // Máscara de CNPJ
     const cnpjInput = document.getElementById('cnpj');
     const cnpjStatus = document.getElementById('cnpjStatus');
-    let cnpjConfirmado = false; // true somente quando a Receita Federal confirma o CNPJ
+    let cnpjEstado = null; // null | 'confirmado' | 'nao_encontrado' | 'indisponivel'
 
     cnpjInput.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
@@ -320,7 +320,7 @@
       e.target.value = value;
 
       // Reseta o status enquanto o CNPJ ainda está sendo digitado/alterado
-      cnpjConfirmado = false;
+      cnpjEstado = null;
       cnpjStatus.className = 'cnpj-status';
       cnpjStatus.textContent = '';
 
@@ -339,7 +339,7 @@
         const dados = await resposta.json();
 
         if (resposta.ok && dados.valido) {
-          cnpjConfirmado = true;
+          cnpjEstado = 'confirmado';
           cnpjStatus.className = 'cnpj-status show found';
           cnpjStatus.textContent = `✓ ${dados.razao_social || 'CNPJ encontrado'}`;
           setInvalid(cnpjInput, false);
@@ -348,15 +348,21 @@
           if (nomeOrgao.value.trim() === '' && dados.razao_social) {
             nomeOrgao.value = dados.razao_social;
           }
-        } else {
-          cnpjConfirmado = false;
+        } else if (resposta.status === 404) {
+          cnpjEstado = 'nao_encontrado';
           cnpjStatus.className = 'cnpj-status show not-found';
           cnpjStatus.textContent = dados.erro || 'CNPJ não encontrado na Receita Federal.';
+        } else {
+          // Receita indisponível/instável: não bloqueia o cadastro, só avisa.
+          // A conferência final é feita manualmente na hora da aprovação.
+          cnpjEstado = 'indisponivel';
+          cnpjStatus.className = 'cnpj-status show checking';
+          cnpjStatus.textContent = 'Não foi possível confirmar automaticamente agora — o CNPJ será conferido na aprovação.';
         }
       } catch (err) {
-        cnpjConfirmado = false;
-        cnpjStatus.className = 'cnpj-status show not-found';
-        cnpjStatus.textContent = 'Não foi possível verificar o CNPJ agora. Tente novamente.';
+        cnpjEstado = 'indisponivel';
+        cnpjStatus.className = 'cnpj-status show checking';
+        cnpjStatus.textContent = 'Não foi possível confirmar automaticamente agora — o CNPJ será conferido na aprovação.';
       }
     }
 
@@ -395,15 +401,9 @@
       setInvalid(email, !emailValido);
       if (!emailValido) valido = false;
 
-      const cnpjValido = validarCNPJ(cnpjInput.value) && cnpjConfirmado;
+      const cnpjValido = validarCNPJ(cnpjInput.value) && cnpjEstado !== 'nao_encontrado';
       setInvalid(cnpjInput, !cnpjValido);
-      if (!cnpjValido) {
-        valido = false;
-        if (!cnpjConfirmado) {
-          cnpjStatus.className = 'cnpj-status show not-found';
-          cnpjStatus.textContent = 'Aguarde a confirmação do CNPJ na Receita Federal antes de continuar.';
-        }
-      }
+      if (!cnpjValido) valido = false;
 
       const senhaValida = senha.value.length >= 8;
       setInvalid(senha, !senhaValida);
@@ -426,7 +426,8 @@
               nomeOrgao: nomeOrgao.value.trim(),
               email: email.value.trim(),
               cnpj: cnpjInput.value,
-              senha: senha.value
+              senha: senha.value,
+              cnpjVerificado: cnpjEstado === 'confirmado'
             })
           });
           const dados = await resposta.json();

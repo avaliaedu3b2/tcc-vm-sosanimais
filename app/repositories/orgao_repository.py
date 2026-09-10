@@ -15,13 +15,14 @@ class OrgaoRepository:
 
         return user_record.uid
 
-    def save_orgao_data(self, uid: str, nome_orgao: str, email: str, cnpj: str) -> None:
+    def save_orgao_data(self, uid: str, nome_orgao: str, email: str, cnpj: str, cnpj_verificado: bool = False) -> None:
         db = firestore.client()
 
         db.collection("orgaos").document(uid).set({
             "nome_orgao": nome_orgao,
             "email": email,
             "cnpj": cnpj,
+            "cnpj_verificado": cnpj_verificado,
             "status": "pendente",
             "created_at": firestore.SERVER_TIMESTAMP,
             "updated_at": firestore.SERVER_TIMESTAMP
@@ -60,7 +61,7 @@ class OrgaoRepository:
         Por isso o login é feito chamando a API pública do Firebase Auth.
         Retorna (uid, erro) -- um dos dois sempre é None.
         """
-        api_key = "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw"
+        api_key = os.environ.get("FIREBASE_WEB_API_KEY")
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
 
         try:
@@ -74,5 +75,7 @@ class OrgaoRepository:
 
         if resposta.status_code == 200:
             return resposta.json()["localId"], None
+        
+        
 
         return None, "Email ou senha incorretos."

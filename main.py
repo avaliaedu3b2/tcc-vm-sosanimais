@@ -2,9 +2,13 @@ import os
 
 import requests
 from flask import render_template, Flask, request, jsonify, session
-from firebase_admin import auth
+import firebase_admin
+from firebase_admin import auth, credentials
 
 from app.repositories.orgao_repository import OrgaoRepository
+
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "troque-por-uma-chave-secreta-bem-longa")
@@ -93,7 +97,12 @@ def consultar_cnpj(cnpj):
                 'situacao': dados.get('descricao_situacao_cadastral')
             })
 
-        return jsonify({'valido': False, 'erro': 'CNPJ não encontrado na Receita Federal'}), 404
+        print(f'[consultar_cnpj] BrasilAPI retornou status {resposta.status_code}: {resposta.text[:300]}')
+
+        if resposta.status_code == 404:
+            return jsonify({'valido': False, 'erro': 'CNPJ não encontrado na Receita Federal'}), 404
+
+        return jsonify({'valido': False, 'erro': 'A Receita Federal está temporariamente indisponível. Tente novamente em instantes.'}), 502
 
     except requests.RequestException as erro:
         print(f'[consultar_cnpj] Erro ao chamar BrasilAPI: {erro}')
@@ -116,6 +125,8 @@ def cadastro_orgao():
     if orgao_repository.cnpj_ja_cadastrado(cnpj):
         return jsonify({'sucesso': False, 'erro': 'Este CNPJ já está cadastrado.'}), 409
 
+    cnpj_verificado = bool(dados.get('cnpjVerificado', False))
+
     try:
         uid = orgao_repository.create_orgao_auth(
             email=email,
@@ -129,7 +140,8 @@ def cadastro_orgao():
         uid=uid,
         nome_orgao=nome_orgao,
         email=email,
-        cnpj=cnpj
+        cnpj=cnpj,
+        cnpj_verificado=cnpj_verificado
     )
 
     return jsonify({
@@ -149,6 +161,8 @@ def login_orgao():
 
     uid, erro = orgao_repository.verificar_login(email, senha)
 
+    print(f'[login_orgao] email={email} cnpj={cnpj} uid={uid} erro={erro}')
+
     erro_generico = {'sucesso': False, 'erro': 'Email, CNPJ ou senha incorretos.'}
 
     if erro:
@@ -156,7 +170,10 @@ def login_orgao():
 
     orgao = orgao_repository.get_orgao(uid)
 
+    print(f'[login_orgao] orgao encontrado no Firestore: {orgao}')
+
     if orgao is None or orgao.cnpj != cnpj:
+        print(f'[login_orgao] comparando cnpj -> recebido={cnpj} salvo={orgao.cnpj if orgao else None}')
         return jsonify(erro_generico), 401
 
     if orgao.status == 'pendente':
