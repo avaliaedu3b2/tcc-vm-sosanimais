@@ -1,14 +1,26 @@
 import os
 
 import requests
+import cloudinary
+import cloudinary.uploader
+from dotenv import load_dotenv
 from flask import render_template, Flask, request, jsonify, session, redirect, url_for
 import firebase_admin
 from firebase_admin import auth, credentials, firestore
 
 from app.repositories.orgao_repository import OrgaoRepository
 
+load_dotenv()
+
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+    secure=True
+)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "troque-por-uma-chave-secreta-bem-longa")
@@ -66,6 +78,14 @@ def detalhe_denuncia(codigo):
     denuncia = doc.to_dict()
     denuncia['id'] = doc.id
 
+    urgencia_texto = (denuncia.get('urgencia') or '').lower()
+    if 'alta' in urgencia_texto:
+        denuncia['urgencia_nivel'] = 'alta'
+    elif 'édia' in urgencia_texto or 'edia' in urgencia_texto:
+        denuncia['urgencia_nivel'] = 'media'
+    else:
+        denuncia['urgencia_nivel'] = 'baixa'
+
     return render_template("dashboard/denuncia.html", denuncia=denuncia)
 
 
@@ -98,10 +118,59 @@ def atualizar_status_denuncia(codigo):
     return jsonify({'sucesso': True}), 200
 
 
+# --- Upload de anexo (documento/foto/relatório) para uma denúncia, via Cloudinary ---
+@app.route('/api/denuncia/<codigo>/upload', methods=['POST'])
+def upload_anexo_denuncia(codigo):
+    if 'orgao_id' not in session:
+        return jsonify({'sucesso': False, 'erro': 'Não autenticado.'}), 401
+
+    campo_por_tipo = {
+        'documento': 'anexoDocumentoUrl',
+        'foto': 'anexoFotoUrl',
+        'relatorio': 'anexoRelatorioUrl'
+    }
+
+    tipo_anexo = request.form.get('tipo', '')
+    campo_firestore = campo_por_tipo.get(tipo_anexo)
+
+    if not campo_firestore:
+        return jsonify({'sucesso': False, 'erro': 'Tipo de anexo inválido.'}), 400
+
+    arquivo = request.files.get('arquivo')
+    if not arquivo or arquivo.filename == '':
+        return jsonify({'sucesso': False, 'erro': 'Nenhum arquivo enviado.'}), 400
+
+    ref = db.collection('denuncias').document(codigo)
+    if not ref.get().exists:
+        return jsonify({'sucesso': False, 'erro': 'Denúncia não encontrada.'}), 404
+
+    tipo_recurso = 'video' if (arquivo.mimetype or '').startswith('video') else 'auto'
+
+    try:
+        resultado = cloudinary.uploader.upload(
+            arquivo,
+            folder=f'sosanimais/denuncias/{codigo}',
+            resource_type=tipo_recurso
+        )
+    except Exception as erro:
+        print(f'[upload_anexo_denuncia] Erro ao enviar para o Cloudinary: {erro}')
+        return jsonify({'sucesso': False, 'erro': 'Não foi possível enviar o arquivo. Tente novamente.'}), 500
+
+    url_arquivo = resultado.get('secure_url')
+
+    ref.update({
+        campo_firestore: url_arquivo,
+        'atualizadoEm': firestore.SERVER_TIMESTAMP,
+        'atualizadoPor': session['orgao_id']
+    })
+
+    return jsonify({'sucesso': True, 'url': url_arquivo}), 200
+
+
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login_orgaos'))
+    return redirect(url_for('index'))
 
 
 @app.route('/recovery')

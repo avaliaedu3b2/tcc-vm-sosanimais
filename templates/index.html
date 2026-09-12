@@ -600,7 +600,7 @@ Login para Orgãos <i class="bi bi-arrow-down"></i>
 <i class="bi bi-person-circle me-1"></i> <span id="usuarioEmailLabel"></span>
 </button>
 <ul class="dropdown-menu dropdown-menu-end">
-<li><button class="dropdown-item" id="btnSair" type="button"><i class="bi bi-box-arrow-right me-2"></i>Sair</button></li>
+<li><button class=z"dropdown-item" id="btnSair" type="button"><i class="bi bi-box-arrow-right me-2"></i>Sair</button></li>
 </ul>
 </div>
 <button type="button" class="btn-outline-custom mt-3 d-none" id="btnRealizarDenuncia" style="align-self: flex-start; width: fit-content;" data-bs-toggle="modal" data-bs-target="#denunciaModal">
@@ -839,6 +839,8 @@ style="border: 2px dashed #ccc; border-radius: 10px; padding: 24px; cursor: poin
 <small class="mt-1">Envie imagens ou vídeos que ajudem a comprovar a denúncia</small>
 </label>
 <input type="file" id="anexoInput" accept="image/*,video/*" class="d-none"/>
+<input type="file" id="anexoInput" accept="image/*,video/*" class="d-none"/>
+<small class="text-danger d-none" id="anexoErro">Arquivo muito grande. O limite é 25MB.</small>
 </div>
 <div class="col-12">
 <div class="form-check">
@@ -954,7 +956,7 @@ window.history.replaceState({}, document.title, window.location.pathname);
 }
 }); </script>
 
-<!-- ══ FIREBASE AUTH + DENÚNCIA ══ -->
+<!-- ══ FIREBASE AUTH + DENÚNCIA (upload via Cloudinary) ══ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -974,6 +976,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ── Configuração do Cloudinary (troque pelos seus valores) ──
+const CLOUDINARY_CLOUD_NAME = "c4rfqhdm";
+const CLOUDINARY_UPLOAD_PRESET = "fatvhpsj";
+
+const TAMANHO_MAXIMO_MB = 10;
+
 onAuthStateChanged(auth, (user) => {
   const areaLogado = document.getElementById("areaLogado");
   const areaDeslogado = document.getElementById("areaDeslogado");
@@ -992,7 +1000,7 @@ onAuthStateChanged(auth, (user) => {
 
 document.getElementById("btnSair").addEventListener("click", () => {
   signOut(auth).then(() => {
-    window.location.href = "{{ url_for('login') }}";
+    window.location.href = "{{ url_for('index') }}";
   });
 });
 
@@ -1001,7 +1009,53 @@ function gerarCodigoDenuncia() {
   return `SOS-${new Date().getFullYear()}-${sufixo}`;
 }
 
+// Valida o tamanho do arquivo assim que ele é escolhido (antes de tentar enviar)
+document.getElementById("anexoInput").addEventListener("change", function (e) {
+  const label = document.getElementById("anexoLabel");
+  const erro = document.getElementById("anexoErro");
+  const arquivo = e.target.files[0];
+
+  erro.classList.add("d-none");
+
+  if (!arquivo) {
+    label.textContent = "Clique ou arraste um arquivo aqui";
+    return;
+  }
+
+  const tamanhoMB = arquivo.size / (1024 * 1024);
+  if (tamanhoMB > TAMANHO_MAXIMO_MB) {
+    erro.classList.remove("d-none");
+    e.target.value = "";
+    label.textContent = "Clique ou arraste um arquivo aqui";
+    return;
+  }
+
+  label.textContent = arquivo.name;
+});
+
+// Sobe o arquivo pro Cloudinary (upload direto do navegador, sem servidor) e devolve a URL pública
+async function subirAnexoCloudinary(arquivo) {
+  const formData = new FormData();
+  formData.append("file", arquivo);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const resposta = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
+    { method: "POST", body: formData }
+  );
+
+  if (!resposta.ok) {
+    throw new Error("Falha no upload do anexo");
+  }
+
+  const dados = await resposta.json();
+  return dados.secure_url;
+}
+
 window.enviarDenuncia = async function () {
+  const arquivo = document.getElementById("anexoInput").files[0];
+  const btnEnviar = document.querySelector(".btn-submit");
+
   const dados = {
     nome: document.getElementById("nomeInput").value || null,
     contato: document.getElementById("contatoInput").value || null,
@@ -1022,14 +1076,29 @@ window.enviarDenuncia = async function () {
     return;
   }
 
-  
-  const codigo = gerarCodigoDenuncia();
+  const textoOriginalBtn = btnEnviar.innerHTML;
+  btnEnviar.disabled = true;
+
   try {
+    const codigo = gerarCodigoDenuncia();
+
+    if (arquivo) {
+      btnEnviar.innerHTML = "Enviando anexo...";
+      const url = await subirAnexoCloudinary(arquivo);
+
+      dados.anexoUrl = url;
+      dados.anexoTipo = arquivo.type.startsWith("video/") ? "video" : "imagem";
+      dados.anexoNome = arquivo.name;
+    }
+
+    btnEnviar.innerHTML = "Enviando denúncia...";
     await setDoc(doc(db, "denuncias", codigo), dados);
     window.location.href = "/denuncia-enviada?codigo=" + codigo;
   } catch (erro) {
     console.error(erro);
     alert("Ocorreu um erro ao enviar a denúncia. Tente novamente.");
+    btnEnviar.disabled = false;
+    btnEnviar.innerHTML = textoOriginalBtn;
   }
 };
 </script>

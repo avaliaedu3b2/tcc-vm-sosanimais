@@ -7,6 +7,7 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
 <style>
@@ -56,16 +57,105 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 }
 .navbar-brand .logo-icon i { color: #fff; font-size: 1.1rem; }
 
-.btn-sair {
-  color: var(--text-dark);
-  font-weight: 600;
-  font-size: 0.88rem;
-  text-decoration: none;
-  display: inline-flex;
+.perfil-dropdown { position: relative; }
+.perfil-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--purple-main);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow .2s;
 }
-.btn-sair:hover { color: var(--purple-main); }
+.perfil-btn:hover,
+.perfil-btn:focus {
+  box-shadow: 0 0 0 4px var(--purple-light);
+  outline: none;
+}
+.perfil-menu {
+  min-width: 260px;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+  padding: 10px;
+  margin-top: 12px !important;
+}
+.perfil-info { padding: 10px 14px 6px; }
+.perfil-nome { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
+.perfil-email { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.perfil-menu .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.perfil-menu .dropdown-item i { width: 18px; text-align: center; color: var(--purple-main); }
+.perfil-menu .dropdown-item:hover { background: var(--purple-light); }
+.perfil-menu .dropdown-item.text-danger { color: var(--alta); }
+.perfil-menu .dropdown-item.text-danger i { color: var(--alta); }
+.perfil-menu .dropdown-item.text-danger:hover { background: #fdecea; }
+
+.confirm-modal { border-radius: 20px; border: none; padding: 12px 6px; }
+.confirm-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fdecea;
+  color: var(--alta);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px auto 16px;
+  font-size: 1.4rem;
+}
+
+.toast-email {
+  position: fixed;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 480px;
+  background: linear-gradient(135deg, #0e2a1f 0%, #12141c 55%);
+  border-radius: 16px;
+  padding: 18px 22px;
+  display: none;
+  align-items: flex-start;
+  gap: 14px;
+  color: #fff;
+  box-shadow: 0 20px 40px -12px rgba(0,0,0,0.35);
+  z-index: 2000;
+  font-family: 'DM Sans', sans-serif;
+}
+.toast-email.show { display: flex; animation: toastSlideDown .4s ease; }
+@keyframes toastSlideDown {
+  from { opacity: 0; transform: translate(-50%, -14px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+.toast-email-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1e8a4c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.toast-email-title { font-size: 14px; font-weight: 700; margin: 0 0 4px; }
+.toast-email-text { font-size: 12.5px; line-height: 1.5; color: #c7c7d4; margin: 0; }
 
 .painel-header { padding: 44px 0 8px; }
 .painel-header h1 {
@@ -86,12 +176,54 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
   margin-top: 6px;
 }
 
+/* Busca por protocolo/ID */
+.busca-protocolo {
+  margin-top: 26px;
+  max-width: 420px;
+}
+.busca-protocolo .input-group {
+  background: #fff;
+  border-radius: 50px;
+  border: 1.5px solid var(--purple-accent);
+  overflow: hidden;
+  padding: 4px 6px 4px 18px;
+}
+.busca-protocolo .input-group:focus-within {
+  border-color: var(--purple-main);
+  box-shadow: 0 0 0 3px rgba(156,39,176,0.12);
+}
+.busca-protocolo .input-group-text {
+  background: transparent;
+  border: none;
+  color: var(--purple-main);
+  padding: 0 8px 0 0;
+}
+.busca-protocolo input {
+  border: none;
+  outline: none;
+  box-shadow: none !important;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  background: transparent;
+}
+.busca-protocolo .btn-limpar {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 50px;
+  display: none;
+}
+.busca-protocolo .btn-limpar:hover { color: var(--purple-dark); }
+.busca-protocolo .btn-limpar.show { display: inline-flex; align-items: center; gap: 4px; }
+
 /* Filtro multi-seleção */
 .filtro-especies {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 28px 0 8px;
+  margin: 20px 0 8px;
 }
 .chip-filtro {
   font-family: 'DM Sans', sans-serif;
@@ -138,16 +270,53 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
   height: 190px;
   background: var(--purple-light);
 }
-.animal-card .card-img-wrap img {
+.animal-card .card-img-wrap img,
+.animal-card .card-img-wrap video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.animal-card .card-img-wrap .sem-anexo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.animal-card .card-img-wrap .sem-anexo .icone-animal {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(156,39,176,0.18);
+}
+.animal-card .card-img-wrap .sem-anexo .icone-animal i {
+  font-size: 1.9rem;
+  color: var(--purple-main);
+}
+.animal-card .card-img-wrap .play-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(26,26,46,0.7);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 .animal-card .card-badge {
   position: absolute;
   top: 14px;
   left: 14px;
   background: var(--purple-main);
+
   color: #fff;
   font-size: 0.7rem;
   font-weight: 700;
@@ -173,6 +342,12 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 .animal-card .card-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .animal-card .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0; }
 .animal-card .protocolo { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; color: var(--text-muted); }
+.animal-card .protocolo mark {
+  background: var(--purple-accent);
+  color: var(--purple-dark);
+  padding: 0 2px;
+  border-radius: 3px;
+}
 
 .urgencia { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; }
 .urgencia .ponto { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
@@ -226,15 +401,74 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
       <span class="logo-icon"><i class="bi bi-heart-fill"></i></span>
       SOS Animais Matão
     </span>
-    <a class="btn-sair" href="{{ url_for('logout') if url_for else '#' }}">
-      Sair <i class="bi bi-box-arrow-right"></i>
-    </a>
+
+    <div class="dropdown perfil-dropdown">
+      <button class="perfil-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ (orgao.nome_orgao[0] if orgao and orgao.nome_orgao else 'I')|upper }}
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end perfil-menu">
+        <li class="perfil-info">
+          <div class="perfil-nome">{{ orgao.nome_orgao if orgao else "Instituto Guarda Animal" }}</div>
+          <div class="perfil-email">{{ orgao.email if orgao and orgao.email else '' }}</div>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item" href="#" id="btnRedefinirSenha">
+            <i class="fa-solid fa-key"></i> Redefinir senha
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item text-danger" href="#" id="btnAbrirConfirmSair">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
+
+<!-- Modal de confirmação de saída -->
+<div class="modal fade" id="modalConfirmSair" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content confirm-modal">
+      <div class="modal-body text-center">
+        <div class="confirm-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <h5 class="mb-1">Tem certeza?</h5>
+        <p class="text-muted mb-4">Você será desconectado da sua conta.</p>
+        <div class="d-flex gap-2 justify-content-center">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Não</button>
+          <a href="{{ url_for('logout') if url_for else '#' }}" class="btn btn-danger rounded-pill px-4">Sim</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast exibido ao voltar da tela "Esqueci minha senha" -->
+<div class="toast-email" id="toastEmailEnviado">
+  <div class="toast-email-icon">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="toast-email-body">
+    <p class="toast-email-title">E-mail enviado!</p>
+    <p class="toast-email-text">Verifique sua caixa de entrada (e o spam) e clique no link para redefinir sua senha.</p>
+  </div>
+</div>
 
 <div class="container painel-header">
   <h1>Denúncias pendentes</h1>
   <span class="orgao-tag"><i class="bi bi-building"></i> {{ orgao.nome_orgao if orgao else "Instituto Guarda Animal" }}</span>
+
+  <!-- Busca por protocolo/ID -->
+  <div class="busca-protocolo">
+    <div class="input-group">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" id="buscaId" class="form-control" placeholder="Buscar por número da denúncia (protocolo)...">
+      <button type="button" id="btnLimparBusca" class="btn-limpar">
+        <i class="bi bi-x-circle"></i> Limpar
+      </button>
+    </div>
+  </div>
 
   <div class="filtro-especies" id="filtroEspecies">
     <button type="button" class="chip-filtro ativo" data-especie="todos"><i class="bi bi-check2-all"></i> Todos</button>
@@ -248,11 +482,24 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 <div class="container cards-wrap">
   <div class="row g-4" id="gridDenuncias">
     {% for d in denuncias %}
-    <div class="col-md-6 col-lg-4 item-denuncia" data-especie="{{ d.tipoAnimal|lower }}">
+    <div class="col-md-6 col-lg-4 item-denuncia" data-especie="{{ d.tipoAnimal|lower }}" data-id="{{ d.id|lower }}">
       <div class="animal-card">
         <div class="card-img-wrap">
-          {% if d.fotoUrl %}
-            <img src="{{ d.fotoUrl }}" alt="Foto da denúncia {{ d.id }}">
+          {% if d.anexoUrl and d.anexoTipo == 'video' %}
+            <video src="{{ d.anexoUrl }}" muted preload="metadata"></video>
+            <span class="play-badge"><i class="bi bi-play-fill"></i> Vídeo</span>
+          {% elif d.anexoUrl %}
+            <img src="{{ d.anexoUrl }}" alt="Foto da denúncia {{ d.id }}">
+          {% else %}
+            <div class="sem-anexo">
+              <span class="icone-animal">
+                {% if d.tipoAnimal|lower in ['cão', 'cao'] %}<i class="fa-solid fa-dog"></i>
+                {% elif d.tipoAnimal|lower == 'gato' %}<i class="fa-solid fa-cat"></i>
+                {% elif d.tipoAnimal|lower == 'ave' %}<i class="fa-solid fa-dove"></i>
+                {% else %}<i class="fa-solid fa-paw"></i>
+                {% endif %}
+              </span>
+            </div>
           {% endif %}
           <span class="card-badge">
             {% if d.tipoAnimal|lower == 'cão' or d.tipoAnimal|lower == 'cao' %}<i class="bi bi-emoji-smile"></i> Cão
@@ -292,29 +539,57 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
     </div>
     {% endfor %}
   </div>
+
+  <!-- Mensagem exibida quando a busca não encontra nada -->
+  <div class="vazio d-none" id="vazioBusca">
+    <h5>Nenhuma denúncia encontrada</h5>
+    <p class="mb-0">Confira o número do protocolo e tente novamente.</p>
+  </div>
 </div>
 
 <script>
   const chips = document.querySelectorAll('.chip-filtro');
   const chipTodos = document.querySelector('.chip-filtro[data-especie="todos"]');
   const itens = document.querySelectorAll('.item-denuncia');
+  const inputBusca = document.getElementById('buscaId');
+  const btnLimparBusca = document.getElementById('btnLimparBusca');
+  const vazioBusca = document.getElementById('vazioBusca');
 
   function aplicarFiltro() {
     const ativos = [...chips].filter(c => c !== chipTodos && c.classList.contains('ativo')).map(c => c.dataset.especie);
+    const termoBusca = inputBusca.value.trim().toLowerCase();
 
     if (ativos.length === 0) {
       chipTodos.classList.add('ativo');
-      itens.forEach(item => item.style.display = '');
-      return;
+    } else {
+      chipTodos.classList.remove('ativo');
     }
 
-    chipTodos.classList.remove('ativo');
+    let algumVisivel = false;
+
     itens.forEach(item => {
       const tipo = item.dataset.especie;
       const cao = tipo === 'cão' || tipo === 'cao';
-      const corresponde = ativos.includes('cao') && cao ? true : ativos.includes(tipo);
-      item.style.display = corresponde ? '' : 'none';
+
+      const passaEspecie = ativos.length === 0
+        ? true
+        : (ativos.includes('cao') && cao ? true : ativos.includes(tipo));
+
+      const passaBusca = termoBusca === '' || item.dataset.id.includes(termoBusca);
+
+      const visivel = passaEspecie && passaBusca;
+      item.style.display = visivel ? '' : 'none';
+      if (visivel) algumVisivel = true;
     });
+
+    // Só mostra a mensagem de "não encontrado" quando há busca ativa
+    if (termoBusca !== '' && !algumVisivel) {
+      vazioBusca.classList.remove('d-none');
+    } else {
+      vazioBusca.classList.add('d-none');
+    }
+
+    btnLimparBusca.classList.toggle('show', termoBusca !== '');
   }
 
   chips.forEach(chip => {
@@ -322,7 +597,7 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
       if (chip === chipTodos) {
         chips.forEach(c => c.classList.remove('ativo'));
         chipTodos.classList.add('ativo');
-        itens.forEach(item => item.style.display = '');
+        aplicarFiltro();
         return;
       }
       chip.classList.toggle('ativo');
@@ -332,12 +607,73 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
       if (todasAtivas) {
         chips.forEach(c => c.classList.remove('ativo'));
         chipTodos.classList.add('ativo');
-        itens.forEach(item => item.style.display = '');
-        return;
       }
 
       aplicarFiltro();
     });
+  });
+
+  inputBusca.addEventListener('input', aplicarFiltro);
+  btnLimparBusca.addEventListener('click', () => {
+    inputBusca.value = '';
+    aplicarFiltro();
+    inputBusca.focus();
+  });
+
+  // Abre o modal de confirmação ao clicar em "Sair" no menu de perfil
+  const btnAbrirConfirmSair = document.getElementById('btnAbrirConfirmSair');
+  if (btnAbrirConfirmSair) {
+    btnAbrirConfirmSair.addEventListener('click', (e) => {
+      e.preventDefault();
+      const modalEl = document.getElementById('modalConfirmSair');
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    });
+  }
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ══ FIREBASE — redefinir senha direto pelo menu de perfil ══ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
+    authDomain: "projetoeq2alexandremarra.firebaseapp.com",
+    projectId: "projetoeq2alexandremarra",
+    storageBucket: "projetoeq2alexandremarra.firebasestorage.app",
+    messagingSenderId: "242522510582",
+    appId: "1:242522510582:web:f8bda55c7bf29b189b48d7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const orgaoEmail = "{{ orgao.email if orgao and orgao.email else '' }}";
+  const btnRedefinirSenha = document.getElementById("btnRedefinirSenha");
+  const toastEmail = document.getElementById("toastEmailEnviado");
+
+  btnRedefinirSenha.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    if (!orgaoEmail) {
+      alert("Não encontramos um e-mail cadastrado para esta conta.");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, orgaoEmail, {
+        url: window.location.origin + "/redefinir-senha"
+      });
+      toastEmail.classList.add("show");
+      setTimeout(() => toastEmail.classList.remove("show"), 5000);
+    } catch (erro) {
+      console.error(erro);
+      alert("Não foi possível enviar o e-mail de redefinição. Tente novamente em instantes.");
+    }
   });
 </script>
 

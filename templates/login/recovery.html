@@ -55,6 +55,11 @@ body{
 .toast-body{flex:1;}
 .toast-title{font-size:15px;font-weight:600;margin:0 0 4px;}
 .toast-text{font-size:13px;line-height:1.5;color:#c7c7d4;margin:0;}
+.toast-voltar{
+  margin-top:10px;
+  font-size:12px;
+  color:#9ca3af;
+}
 .card{
   width:100%;
   max-width:420px;
@@ -136,16 +141,6 @@ button.submit:disabled{opacity:.55; cursor:not-allowed;}
 </head>
 <body>
 
-<div class="toast" id="toast">
-  <div class="toast-icon">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-  <div class="toast-body">
-    <p class="toast-title">E-mail enviado!</p>
-    <p class="toast-text">Verifique sua caixa de entrada (e o spam) e clique no link para redefinir sua senha.</p>
-  </div>
-</div>
-
 <div class="card" id="card">
   <h1>Esqueci minha senha</h1>
   <p class="sub">Digite seu e-mail para receber o link de redefinição.</p>
@@ -180,11 +175,21 @@ button.submit:disabled{opacity:.55; cursor:not-allowed;}
   const submitBtn = document.getElementById("submitBtn");
   const erroMsg = document.getElementById("erroMsg");
   const card = document.getElementById("card");
-  const toast = document.getElementById("toast");
 
   const actionCodeSettings = {
     url: window.location.origin + "/redefinir-senha",
   };
+
+  // marca que o e-mail foi enviado e volta pra tela anterior,
+  // que vai mostrar o alert() ao carregar (ver trecho adicionado no dashboard.html)
+  function avisarEVoltar() {
+    sessionStorage.setItem("sosanimais_email_redefinicao_enviado", "1");
+    if (document.referrer && document.referrer.startsWith(window.location.origin)) {
+      window.history.back();
+    } else {
+      window.location.href = "{{ url_for('login') }}";
+    }
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -196,8 +201,7 @@ button.submit:disabled{opacity:.55; cursor:not-allowed;}
 
     try {
       await sendPasswordResetEmail(auth, email, actionCodeSettings);
-      card.style.display = "none";
-      toast.classList.add("show");
+      avisarEVoltar();
     } catch (erro) {
       console.error(erro);
       let texto = "Não foi possível enviar o e-mail. Tente novamente.";
@@ -205,8 +209,7 @@ button.submit:disabled{opacity:.55; cursor:not-allowed;}
         texto = "E-mail inválido. Confira e tente de novo.";
       } else if (erro.code === "auth/user-not-found") {
         // por segurança, não revela se o e-mail existe ou não
-        card.style.display = "none";
-        toast.classList.add("show");
+        avisarEVoltar();
         return;
       } else if (erro.code === "auth/too-many-requests") {
         texto = "Muitas tentativas. Aguarde um pouco antes de tentar de novo.";

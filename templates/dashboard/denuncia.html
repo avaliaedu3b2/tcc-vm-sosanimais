@@ -64,6 +64,9 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 .linha-info .rotulo { color: var(--text-muted); font-weight: 600; min-width: 130px; }
 .badge-especie { background: var(--purple-light); color: var(--purple-dark); font-weight: 700; padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; }
 .badge-urgencia { font-weight: 700; padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; }
+.badge-urgencia.urgencia-alta { background: var(--vermelho-bg); color: var(--vermelho-fg); }
+.badge-urgencia.urgencia-media { background: var(--amarelo-bg); color: var(--amarelo-fg); }
+.badge-urgencia.urgencia-baixa { background: var(--verde-bg); color: var(--verde-fg); }
 
 textarea.form-control { resize: vertical; }
 
@@ -73,12 +76,16 @@ textarea.form-control { resize: vertical; }
   border: 2px dashed #d8d3e0; border-radius: 12px; padding: 20px 12px;
   display: flex; flex-direction: column; align-items: center; text-align: center;
   color: var(--text-muted); cursor: pointer; transition: border-color .2s, background .2s;
-  font-size: 0.82rem;
+  font-size: 0.82rem; position: relative;
 }
 .anexo-box:hover { border-color: var(--purple-main); background: var(--purple-light); }
 .anexo-box i { font-size: 1.4rem; color: var(--purple-main); margin-bottom: 6px; }
 .anexo-box strong { color: var(--text-dark); font-size: 0.85rem; }
 .anexo-box small { margin-top: 2px; }
+.anexo-box.enviando { opacity: 0.6; pointer-events: none; }
+.anexo-box.enviado { border-color: var(--verde-line); background: var(--verde-bg); }
+.anexo-box.erro-upload { border-color: var(--vermelho-line); background: var(--vermelho-bg); }
+.anexo-box a.ver-anexo { font-size: 0.78rem; color: var(--purple-main); font-weight: 700; margin-top: 4px; }
 
 /* Opções de status */
 .opcao-status {
@@ -131,12 +138,12 @@ textarea.form-control { resize: vertical; }
       <span class="logo-icon"><i class="bi bi-heart-fill"></i></span>
       SOS Animais Matão
     </span>
-    <a class="btn-sair" href="{{ url_for('logout') if url_for else '#' }}">Sair <i class="bi bi-box-arrow-right"></i></a>
+    <a class="btn-sair" href="{{ url_for('logout') }}">Sair <i class="bi bi-box-arrow-right"></i></a>
   </div>
 </nav>
 
 <div class="container" style="max-width: 1040px;">
-  <a href="{{ url_for('dashboard') if url_for else '#' }}" class="voltar-link"><i class="bi bi-arrow-left"></i> Voltar para o painel</a>
+  <a href="{{ url_for('dashboard') }}" class="voltar-link"><i class="bi bi-arrow-left"></i> Voltar para o painel</a>
 
   <div class="protocolo-titulo">
     <small>{{ denuncia.id }}</small>
@@ -147,9 +154,11 @@ textarea.form-control { resize: vertical; }
     <!-- Coluna esquerda -->
     <div class="col-lg-7">
       <div class="painel">
-        <h6>Foto do animal</h6>
-        {% if denuncia.fotoUrl %}
-          <img class="foto-animal" src="{{ denuncia.fotoUrl }}" alt="Foto da denúncia {{ denuncia.id }}">
+        <h6>{{ 'Vídeo enviado' if denuncia.anexoTipo == 'video' else 'Foto do animal' }}</h6>
+        {% if denuncia.anexoUrl and denuncia.anexoTipo == 'video' %}
+          <video class="foto-animal" src="{{ denuncia.anexoUrl }}" controls></video>
+        {% elif denuncia.anexoUrl %}
+          <img class="foto-animal" src="{{ denuncia.anexoUrl }}" alt="Foto da denúncia {{ denuncia.id }}">
         {% else %}
           <div class="foto-animal d-flex align-items-center justify-content-center" style="height:220px; color:var(--purple-main);">
             <i class="bi bi-image" style="font-size:2rem;"></i>
@@ -167,7 +176,7 @@ textarea.form-control { resize: vertical; }
         <div class="linha-info">
           <i class="bi bi-exclamation-triangle"></i>
           <span class="rotulo">Urgência</span>
-          <span class="badge-urgencia" style="background:var({{ '--vermelho-bg' if 'Alta' in denuncia.urgencia else ('--amarelo-bg' if 'édia' in denuncia.urgencia or 'edia' in denuncia.urgencia else '--verde-bg') }}); color:var({{ '--vermelho-fg' if 'Alta' in denuncia.urgencia else ('--amarelo-fg' if 'édia' in denuncia.urgencia or 'edia' in denuncia.urgencia else '--verde-fg') }});">
+          <span class="badge-urgencia urgencia-{{ denuncia.urgencia_nivel }}">
             {{ denuncia.urgencia.split('—')[0].strip() if '—' in denuncia.urgencia else denuncia.urgencia }}
           </span>
         </div>
@@ -203,28 +212,31 @@ textarea.form-control { resize: vertical; }
 
       <div class="painel">
         <h6>Anexos</h6>
-        <p class="text-muted small mb-3">Anexe documentos, fotos ou relatórios relacionados à denúncia</p>
+        <p class="text-muted small mb-3">Anexe documentos, fotos ou relatórios relacionados à denúncia. O envio é feito assim que você escolhe o arquivo.</p>
         <div class="anexos-grid">
-          <label class="anexo-box">
+          <label class="anexo-box" id="boxDocumento">
             <i class="bi bi-paperclip"></i>
             <strong>Anexar documento</strong>
-            <small id="labelDocumento">PDF, DOC, DOCX</small>
-            <input type="file" accept=".pdf,.doc,.docx" class="d-none" data-label="labelDocumento" data-padrao="PDF, DOC, DOCX">
+            <small id="labelDocumento">{{ 'Enviado ✓' if denuncia.anexoDocumentoUrl else 'PDF, DOC, DOCX' }}</small>
+            {% if denuncia.anexoDocumentoUrl %}<a href="{{ denuncia.anexoDocumentoUrl }}" target="_blank" class="ver-anexo" onclick="event.stopPropagation()">Ver arquivo</a>{% endif %}
+            <input type="file" accept=".pdf,.doc,.docx" class="d-none" data-tipo="documento" data-label="labelDocumento">
           </label>
-          <label class="anexo-box">
+          <label class="anexo-box" id="boxFoto">
             <i class="bi bi-camera"></i>
             <strong>Anexar foto da vistoria</strong>
-            <small id="labelFoto">JPG, PNG</small>
-            <input type="file" accept="image/*" class="d-none" data-label="labelFoto" data-padrao="JPG, PNG">
+            <small id="labelFoto">{{ 'Enviada ✓' if denuncia.anexoFotoUrl else 'JPG, PNG' }}</small>
+            {% if denuncia.anexoFotoUrl %}<a href="{{ denuncia.anexoFotoUrl }}" target="_blank" class="ver-anexo" onclick="event.stopPropagation()">Ver foto</a>{% endif %}
+            <input type="file" accept="image/*" class="d-none" data-tipo="foto" data-label="labelFoto">
           </label>
-          <label class="anexo-box">
+          <label class="anexo-box" id="boxRelatorio">
             <i class="bi bi-file-earmark-text"></i>
             <strong>Anexar relatório final</strong>
-            <small id="labelRelatorio">PDF, DOC, DOCX</small>
-            <input type="file" accept=".pdf,.doc,.docx" class="d-none" data-label="labelRelatorio" data-padrao="PDF, DOC, DOCX">
+            <small id="labelRelatorio">{{ 'Enviado ✓' if denuncia.anexoRelatorioUrl else 'PDF, DOC, DOCX' }}</small>
+            {% if denuncia.anexoRelatorioUrl %}<a href="{{ denuncia.anexoRelatorioUrl }}" target="_blank" class="ver-anexo" onclick="event.stopPropagation()">Ver relatório</a>{% endif %}
+            <input type="file" accept=".pdf,.doc,.docx" class="d-none" data-tipo="relatorio" data-label="labelRelatorio">
           </label>
         </div>
-        <p class="text-muted small mt-2 mb-0"><i class="bi bi-info-circle"></i> O upload ainda não está conectado ao armazenamento — por enquanto os arquivos só são exibidos localmente.</p>
+        <p class="text-muted small mt-2 mb-0" id="statusUpload"></p>
       </div>
     </div>
 
@@ -337,19 +349,72 @@ textarea.form-control { resize: vertical; }
       opcao.classList.add('selecionada');
     });
   });
+</script>
 
-  // Atualiza o nome do arquivo exibido em cada caixa de anexo (só interface, sem upload real)
+<!-- Upload real dos anexos para o Cloudinary (via backend) -->
+<script>
+  const codigoDenuncia = {{ denuncia.id | tojson }};
+  const statusUpload = document.getElementById('statusUpload');
+
   document.querySelectorAll('.anexo-box input[type="file"]').forEach(input => {
-    input.addEventListener('change', (e) => {
+    input.addEventListener('change', async (e) => {
+      const arquivo = e.target.files[0];
+      if (!arquivo) return;
+
+      const tipo = input.dataset.tipo;
+      const box = input.closest('.anexo-box');
       const label = document.getElementById(input.dataset.label);
-      label.textContent = e.target.files.length > 0 ? e.target.files[0].name : input.dataset.padrao;
+      const labelOriginal = label.textContent;
+
+      box.classList.remove('erro-upload', 'enviado');
+      box.classList.add('enviando');
+      label.textContent = 'Enviando...';
+      statusUpload.textContent = '';
+
+      const formData = new FormData();
+      formData.append('tipo', tipo);
+      formData.append('arquivo', arquivo);
+
+      try {
+        const resposta = await fetch(`/api/denuncia/${codigoDenuncia}/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const dados = await resposta.json();
+
+        if (resposta.ok && dados.sucesso) {
+          box.classList.remove('enviando');
+          box.classList.add('enviado');
+          label.textContent = 'Enviado ✓';
+
+          let link = box.querySelector('a.ver-anexo');
+          if (!link) {
+            link = document.createElement('a');
+            link.className = 'ver-anexo';
+            link.target = '_blank';
+            link.textContent = tipo === 'foto' ? 'Ver foto' : (tipo === 'relatorio' ? 'Ver relatório' : 'Ver arquivo');
+            link.addEventListener('click', (ev) => ev.stopPropagation());
+            box.appendChild(link);
+          }
+          link.href = dados.url;
+        } else {
+          box.classList.remove('enviando');
+          box.classList.add('erro-upload');
+          label.textContent = labelOriginal;
+          statusUpload.textContent = dados.erro || 'Não foi possível enviar o arquivo.';
+        }
+      } catch (erro) {
+        box.classList.remove('enviando');
+        box.classList.add('erro-upload');
+        label.textContent = labelOriginal;
+        statusUpload.textContent = 'Erro de conexão ao enviar o arquivo. Tente novamente.';
+      }
     });
   });
 </script>
 
-<!-- Salvar status + observações (via backend, que tem permissão de administrador no Firestore) -->
+<!-- Salvar status + observações -->
 <script>
-  const codigoDenuncia = {{ denuncia.id | tojson }};
   const btnSalvar = document.getElementById('btnSalvarStatus');
   const toast = document.getElementById('toastSalvo');
 

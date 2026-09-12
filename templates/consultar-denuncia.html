@@ -139,6 +139,42 @@
   .detalhe-row span.label-item { color: var(--text-muted); }
   .detalhe-row span.valor-item { font-weight: 600; text-align: right; }
 
+  .foto-vistoria {
+    margin-top: 18px;
+  }
+  .foto-vistoria .rotulo-foto {
+    font-weight: 600;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--purple-dark);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .foto-vistoria img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .mensagem-orgao {
+    margin-top: 18px;
+    background: var(--purple-light);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: .88rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+  .mensagem-orgao strong {
+    display: block;
+    color: var(--purple-dark);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+  }
+
   .erro-msg {
     margin-top: 18px;
     padding: 12px 14px;
@@ -175,6 +211,16 @@
     <div class="detalhe-row"><span class="label-item">Urgência</span><span class="valor-item" id="rUrgencia"></span></div>
     <div class="detalhe-row"><span class="label-item">Endereço</span><span class="valor-item" id="rEndereco"></span></div>
     <div class="detalhe-row"><span class="label-item">Enviada em</span><span class="valor-item" id="rData"></span></div>
+
+    <div class="foto-vistoria" id="fotoVistoriaBox" style="display:none;">
+      <span class="rotulo-foto">Foto da vistoria</span>
+      <img id="rFotoVistoria" src="" alt="Foto enviada pelo órgão responsável">
+    </div>
+
+    <div class="mensagem-orgao" id="mensagemOrgaoBox" style="display:none;">
+      <strong>Mensagem do órgão responsável</strong>
+      <span id="rMensagemOrgao"></span>
+    </div>
   </div>
 </div>
 
@@ -235,6 +281,28 @@
       document.getElementById("rUrgencia").textContent = d.urgencia || "-";
       document.getElementById("rEndereco").textContent = d.endereco || "-";
       document.getElementById("rData").textContent = d.criadoEm ? new Date(d.criadoEm).toLocaleString("pt-BR") : "-";
+
+      // Foto da vistoria: só aparece depois que o órgão analisou a denúncia
+      // (status diferente de "Recebida") e anexou uma foto.
+      const fotoBox = document.getElementById("fotoVistoriaBox");
+      const statusAtual = (d.status || "").toLowerCase();
+      const jaAnalisada = statusAtual && statusAtual !== "recebida";
+
+      if (jaAnalisada && d.anexoFotoUrl) {
+        document.getElementById("rFotoVistoria").src = d.anexoFotoUrl;
+        fotoBox.style.display = "block";
+      } else {
+        fotoBox.style.display = "none";
+      }
+
+      // Mensagem do órgão para o denunciante, se houver
+      const mensagemBox = document.getElementById("mensagemOrgaoBox");
+      if (jaAnalisada && d.mensagemDenunciante) {
+        document.getElementById("rMensagemOrgao").textContent = d.mensagemDenunciante;
+        mensagemBox.style.display = "block";
+      } else {
+        mensagemBox.style.display = "none";
+      }
 
       resultado.classList.add("show");
     } catch (erro) {
