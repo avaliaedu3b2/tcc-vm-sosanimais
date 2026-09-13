@@ -62,104 +62,101 @@ margin: 0 4px;
 transition: color .2s;
 }
 .nav-link:hover { color: var(--purple-main) !important; }
-
 /* ══ Menu de usuário (perfil) ══ */
 .perfil-dropdown { position: relative; }
 .perfil-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--purple-main);
-  color: #fff;
-  border: none;
-  font-weight: 700;
-  font-size: 1rem;
-  font-family: 'DM Sans', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: box-shadow .2s;
+width: 42px;
+height: 42px;
+border-radius: 50%;
+background: var(--purple-main);
+color: #fff;
+border: none;
+font-weight: 700;
+font-size: 1rem;
+font-family: 'DM Sans', sans-serif;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: box-shadow .2s;
 }
 .perfil-btn:hover,
 .perfil-btn:focus {
-  box-shadow: 0 0 0 4px var(--purple-light);
-  outline: none;
+box-shadow: 0 0 0 4px var(--purple-light);
+outline: none;
 }
 .perfil-menu {
-  min-width: 260px;
-  border: none;
-  border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.14);
-  padding: 10px;
-  margin-top: 12px !important;
+min-width: 260px;
+border: none;
+border-radius: 16px;
+box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+padding: 10px;
+margin-top: 12px !important;
 }
 .perfil-info { padding: 10px 14px 6px; }
 .perfil-nome { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
 .perfil-email { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 .perfil-menu .dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-dark);
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 10px 14px;
+border-radius: 10px;
+font-size: 0.88rem;
+font-weight: 600;
+color: var(--text-dark);
 }
 .perfil-menu .dropdown-item i { width: 18px; text-align: center; color: var(--purple-main); }
 .perfil-menu .dropdown-item:hover { background: var(--purple-light); }
 .perfil-menu .dropdown-item.text-danger { color: var(--alta); }
 .perfil-menu .dropdown-item.text-danger i { color: var(--alta); }
 .perfil-menu .dropdown-item.text-danger:hover { background: #fdecea; }
-
 .confirm-modal { border-radius: 20px; border: none; padding: 12px 6px; }
 .confirm-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #fdecea;
-  color: var(--alta);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 4px auto 16px;
-  font-size: 1.4rem;
+width: 60px;
+height: 60px;
+border-radius: 50%;
+background: #fdecea;
+color: var(--alta);
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 4px auto 16px;
+font-size: 1.4rem;
 }
-
 .toast-email {
-  position: fixed;
-  top: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-  max-width: 480px;
-  background: linear-gradient(135deg, #0e2a1f 0%, #12141c 55%);
-  border-radius: 16px;
-  padding: 18px 22px;
-  display: none;
-  align-items: flex-start;
-  gap: 14px;
-  color: #fff;
-  box-shadow: 0 20px 40px -12px rgba(0,0,0,0.35);
-  z-index: 2000;
-  font-family: 'DM Sans', sans-serif;
+position: fixed;
+top: 22px;
+left: 50%;
+transform: translateX(-50%);
+width: 92%;
+max-width: 480px;
+background: linear-gradient(135deg, #0e2a1f 0%, #12141c 55%);
+border-radius: 16px;
+padding: 18px 22px;
+display: none;
+align-items: flex-start;
+gap: 14px;
+color: #fff;
+box-shadow: 0 20px 40px -12px rgba(0,0,0,0.35);
+z-index: 2000;
+font-family: 'DM Sans', sans-serif;
 }
 .toast-email.show { display: flex; animation: toastSlideDown .4s ease; }
 @keyframes toastSlideDown {
-  from { opacity: 0; transform: translate(-50%, -14px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+from { opacity: 0; transform: translate(-50%, -14px); }
+to { opacity: 1; transform: translate(-50%, 0); }
 }
 .toast-email-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #1e8a4c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 2px;
+width: 26px;
+height: 26px;
+border-radius: 50%;
+background: #1e8a4c;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+margin-top: 2px;
 }
 .toast-email-title { font-size: 14px; font-weight: 700; margin: 0 0 4px; }
 .toast-email-text { font-size: 12.5px; line-height: 1.5; color: #c7c7d4; margin: 0; }
@@ -653,16 +650,49 @@ transform: translateY(0);
 }
 </style> </head> <body>
 <nav class="navbar navbar-expand-lg sticky-top">
-<div class="container">
-<a class="navbar-brand" href="#">
-<div class="logo-icon"><i class="bi bi-heart-fill"></i></div>
-SOS Animais Matão
-</a>
-<button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navMenu">
-<ul class="navbar-nav ms-auto align-items-center gap-1">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <div class="logo-icon"><i class="bi bi-heart-fill"></i></div>
+      SOS Animais Matão
+    </a>
+
+    <!-- Menu de perfil: fica sempre visível no canto direito, mesmo com o menu mobile fechado -->
+    <div class="d-flex align-items-center order-lg-3 ms-auto">
+      <div class="dropdown perfil-dropdown d-none js-area-logado" id="areaLogadoNav">
+        <button class="perfil-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="js-usuario-avatar">U</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end perfil-menu">
+          <li class="perfil-info">
+            <div class="perfil-nome js-usuario-nome">Usuário</div>
+            <div class="perfil-email js-usuario-email"></div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item js-btn-trocar-nome" href="#">
+              <i class="bi bi-pencil-fill"></i> Trocar nome
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item js-btn-redefinir-senha" href="#">
+              <i class="bi bi-key-fill"></i> Redefinir senha
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item text-danger js-btn-abrir-confirm-sair" href="#">
+              <i class="bi bi-box-arrow-right"></i> Sair
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <button class="navbar-toggler border-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
 <!-- <li class="nav-item"><a class="nav-link" href="/login">Login</a></li> -->
 <!-- <li class="nav-item"><a class="nav-link" href="#como-funciona">Como funciona</a></li>
 <li class="nav-item"><a class="nav-link" href="#ajuda">Buscar ajuda</a></li>
@@ -671,10 +701,10 @@ SOS Animais Matão
 <!-- <a class="nav-link btn-nav-primary" href="#" data-bs-toggle="modal" data-bs-target="#denunciaModal">
 Denunciar agora
 </a> -->
-</li>
-</ul>
-</div>
-</div> </nav>
+      </ul>
+    </div>
+  </div>
+</nav>
 <section class="hero-section">
 <div class="hero-left">
 <span class="eyebrow">
@@ -697,33 +727,10 @@ Login para Empresas <i class="bi bi-arrow-down"></i>
 Login para Orgãos <i class="bi bi-arrow-down"></i>
 </a>
 </div>
-<div class="dropdown perfil-dropdown d-none" id="areaLogado">
-<button class="perfil-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-<span id="usuarioAvatarLabel">U</span>
-</button>
-<ul class="dropdown-menu dropdown-menu-end perfil-menu">
-<li class="perfil-info">
-<div class="perfil-nome" id="usuarioNomeLabel">Usuário</div>
-<div class="perfil-email" id="usuarioEmailLabel"></div>
-</li>
-<li><hr class="dropdown-divider"></li>
-<li>
-<a class="dropdown-item" href="#" id="btnRedefinirSenha">
-<i class="bi bi-key-fill"></i> Redefinir senha
-</a>
-</li>
-<li>
-<a class="dropdown-item text-danger" href="#" id="btnAbrirConfirmSair">
-<i class="bi bi-box-arrow-right"></i> Sair
-</a>
-</li>
-</ul>
-</div>
 <button type="button" class="btn-outline-custom mt-3 d-none" id="btnRealizarDenuncia" style="align-self: flex-start; width: fit-content;" data-bs-toggle="modal" data-bs-target="#denunciaModal">
 <i class="bi bi-megaphone-fill me-1"></i> Realizar denúncia
 </button>
 </div>
-
 <!-- Modal de confirmação de saída -->
 <div class="modal fade" id="modalConfirmSair" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -740,7 +747,23 @@ Login para Orgãos <i class="bi bi-arrow-down"></i>
 </div>
 </div>
 </div>
-
+<!-- Modal para trocar o nome de exibição -->
+<div class="modal fade" id="modalTrocarNome" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-sm">
+<div class="modal-content confirm-modal">
+<div class="modal-body text-center">
+<div class="confirm-icon"><i class="bi bi-pencil-fill"></i></div>
+<h5 class="mb-3">Trocar nome</h5>
+<input type="text" class="form-control mb-2" id="inputNovoNome" placeholder="Digite o novo nome" maxlength="60">
+<p class="text-danger small mb-3 d-none" id="erroNovoNome">Digite um nome válido.</p>
+<div class="d-flex gap-2 justify-content-center">
+<button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+<button type="button" class="btn btn-primary rounded-pill px-4" id="btnSalvarNovoNome">Salvar</button>
+</div>
+</div>
+</div>
+</div>
+</div>
 <!-- Toast exibido ao enviar o e-mail de redefinição de senha -->
 <div class="toast-email" id="toastEmailEnviado">
 <div class="toast-email-icon">
@@ -889,7 +912,6 @@ SOS Animais Matão</div>
 <li><a href="#como-funciona">Como funciona</a></li>
 <li><a href="#ajuda">Buscar ajuda</a></li>
 <li><a href="/templates/consultar-denuncia.html">Acompanhar</a></li>
-
 </ul>
 </div>
 <div class="col-md-2">
@@ -1099,192 +1121,192 @@ modal.show();
 window.history.replaceState({}, document.title, window.location.pathname);
 }
 }); </script>
-
 <!-- ══ FIREBASE AUTH + DENÚNCIA (upload via Cloudinary) ══ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
 // cole aqui o MESMO objeto firebaseConfig que você usa no login.html / register.html
-  const firebaseConfig = {
-    apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
-    authDomain: "projetoeq2alexandremarra.firebaseapp.com",
-    projectId: "projetoeq2alexandremarra",
-    storageBucket: "projetoeq2alexandremarra.firebasestorage.app",
-    messagingSenderId: "242522510582",
-    appId: "1:242522510582:web:f8bda55c7bf29b189b48d7"
-  };
-
+const firebaseConfig = {
+apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
+authDomain: "projetoeq2alexandremarra.firebaseapp.com",
+projectId: "projetoeq2alexandremarra",
+storageBucket: "projetoeq2alexandremarra.firebasestorage.app",
+messagingSenderId: "242522510582",
+appId: "1:242522510582:web:f8bda55c7bf29b189b48d7"
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
 // ── Configuração do Cloudinary (troque pelos seus valores) ──
 const CLOUDINARY_CLOUD_NAME = "c4rfqhdm";
 const CLOUDINARY_UPLOAD_PRESET = "fatvhpsj";
-
 const TAMANHO_MAXIMO_MB = 10;
-
 onAuthStateChanged(auth, (user) => {
-  const areaLogado = document.getElementById("areaLogado");
-  const areaDeslogado = document.getElementById("areaDeslogado");
-  const btnDenuncia = document.getElementById("btnRealizarDenuncia");
-  if (user) {
-    areaDeslogado.classList.add("d-none");
-    areaLogado.classList.remove("d-none");
-    btnDenuncia.classList.remove("d-none");
-
-    const nome = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
-    document.getElementById("usuarioNomeLabel").textContent = nome;
-    document.getElementById("usuarioEmailLabel").textContent = user.email || "";
-    document.getElementById("usuarioAvatarLabel").textContent = nome.charAt(0).toUpperCase();
-  } else {
-    areaDeslogado.classList.remove("d-none");
-    areaLogado.classList.add("d-none");
-    btnDenuncia.classList.add("d-none");
-  }
+const areasLogado = document.querySelectorAll(".js-area-logado");
+const areaDeslogado = document.getElementById("areaDeslogado");
+const btnDenuncia = document.getElementById("btnRealizarDenuncia");
+if (user) {
+areaDeslogado.classList.add("d-none");
+areasLogado.forEach(el => el.classList.remove("d-none"));
+btnDenuncia.classList.remove("d-none");
+const nome = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+document.querySelectorAll(".js-usuario-nome").forEach(el => el.textContent = nome);
+document.querySelectorAll(".js-usuario-email").forEach(el => el.textContent = user.email || "");
+document.querySelectorAll(".js-usuario-avatar").forEach(el => el.textContent = nome.charAt(0).toUpperCase());
+} else {
+areaDeslogado.classList.remove("d-none");
+areasLogado.forEach(el => el.classList.add("d-none"));
+btnDenuncia.classList.add("d-none");
+}
 });
-
 // Abre o modal de confirmação ao clicar em "Sair" no menu de perfil
-const btnAbrirConfirmSair = document.getElementById("btnAbrirConfirmSair");
-if (btnAbrirConfirmSair) {
-  btnAbrirConfirmSair.addEventListener("click", (e) => {
-    e.preventDefault();
-    const modalEl = document.getElementById("modalConfirmSair");
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-  });
-}
-
+document.querySelectorAll(".js-btn-abrir-confirm-sair").forEach(btnAbrirConfirmSair => {
+btnAbrirConfirmSair.addEventListener("click", (e) => {
+e.preventDefault();
+const modalEl = document.getElementById("modalConfirmSair");
+const modal = new bootstrap.Modal(modalEl);
+modal.show();
+});
+});
 document.getElementById("btnSair").addEventListener("click", () => {
-  signOut(auth).then(() => {
-    window.location.href = "{{ url_for('index') }}";
-  });
+signOut(auth).then(() => {
+window.location.href = "{{ url_for('index') }}";
 });
-
-// Redefinir senha diretamente pelo menu de perfil
-const btnRedefinirSenha = document.getElementById("btnRedefinirSenha");
-const toastEmail = document.getElementById("toastEmailEnviado");
-
-btnRedefinirSenha.addEventListener("click", async (e) => {
-  e.preventDefault();
-
-  const emailUsuario = auth.currentUser ? auth.currentUser.email : null;
-
-  if (!emailUsuario) {
-    alert("Não encontramos um e-mail cadastrado para esta conta.");
-    return;
-  }
-
-  try {
-    await sendPasswordResetEmail(auth, emailUsuario, {
-      url: window.location.origin + "/redefinir-senha"
-    });
-    toastEmail.classList.add("show");
-    setTimeout(() => toastEmail.classList.remove("show"), 5000);
-  } catch (erro) {
-    console.error(erro);
-    alert("Não foi possível enviar o e-mail de redefinição. Tente novamente em instantes.");
-  }
 });
-
-function gerarCodigoDenuncia() {
-  const sufixo = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `SOS-${new Date().getFullYear()}-${sufixo}`;
+// Abre o modal para trocar o nome de exibição pelo menu de perfil
+document.querySelectorAll(".js-btn-trocar-nome").forEach(btnTrocarNome => {
+btnTrocarNome.addEventListener("click", (e) => {
+e.preventDefault();
+const inputNovoNome = document.getElementById("inputNovoNome");
+const erroNovoNome = document.getElementById("erroNovoNome");
+inputNovoNome.value = (auth.currentUser && auth.currentUser.displayName) || "";
+erroNovoNome.classList.add("d-none");
+const modalEl = document.getElementById("modalTrocarNome");
+const modal = new bootstrap.Modal(modalEl);
+modal.show();
+});
+});
+document.getElementById("btnSalvarNovoNome").addEventListener("click", async () => {
+const inputNovoNome = document.getElementById("inputNovoNome");
+const erroNovoNome = document.getElementById("erroNovoNome");
+const novoNome = inputNovoNome.value.trim();
+if (!novoNome) {
+erroNovoNome.classList.remove("d-none");
+return;
 }
-
+try {
+await updateProfile(auth.currentUser, { displayName: novoNome });
+document.querySelectorAll(".js-usuario-nome").forEach(el => el.textContent = novoNome);
+document.querySelectorAll(".js-usuario-avatar").forEach(el => el.textContent = novoNome.charAt(0).toUpperCase());
+const modalEl = document.getElementById("modalTrocarNome");
+bootstrap.Modal.getInstance(modalEl).hide();
+} catch (erro) {
+console.error(erro);
+alert("Não foi possível atualizar o nome. Tente novamente em instantes.");
+}
+});
+// Redefinir senha diretamente pelo menu de perfil
+const toastEmail = document.getElementById("toastEmailEnviado");
+document.querySelectorAll(".js-btn-redefinir-senha").forEach(btnRedefinirSenha => {
+btnRedefinirSenha.addEventListener("click", async (e) => {
+e.preventDefault();
+const emailUsuario = auth.currentUser ? auth.currentUser.email : null;
+if (!emailUsuario) {
+alert("Não encontramos um e-mail cadastrado para esta conta.");
+return;
+}
+try {
+await sendPasswordResetEmail(auth, emailUsuario, {
+url: window.location.origin + "/redefinir-senha"
+});
+toastEmail.classList.add("show");
+setTimeout(() => toastEmail.classList.remove("show"), 5000);
+} catch (erro) {
+console.error(erro);
+alert("Não foi possível enviar o e-mail de redefinição. Tente novamente em instantes.");
+}
+});
+});
+function gerarCodigoDenuncia() {
+const sufixo = Math.random().toString(36).substring(2, 8).toUpperCase();
+return `SOS-${new Date().getFullYear()}-${sufixo}`;
+}
 // Valida o tamanho do arquivo assim que ele é escolhido (antes de tentar enviar)
 document.getElementById("anexoInput").addEventListener("change", function (e) {
-  const label = document.getElementById("anexoLabel");
-  const erro = document.getElementById("anexoErro");
-  const arquivo = e.target.files[0];
-
-  erro.classList.add("d-none");
-
-  if (!arquivo) {
-    label.textContent = "Clique ou arraste um arquivo aqui";
-    return;
-  }
-
-  const tamanhoMB = arquivo.size / (1024 * 1024);
-  if (tamanhoMB > TAMANHO_MAXIMO_MB) {
-    erro.classList.remove("d-none");
-    e.target.value = "";
-    label.textContent = "Clique ou arraste um arquivo aqui";
-    return;
-  }
-
-  label.textContent = arquivo.name;
+const label = document.getElementById("anexoLabel");
+const erro = document.getElementById("anexoErro");
+const arquivo = e.target.files[0];
+erro.classList.add("d-none");
+if (!arquivo) {
+label.textContent = "Clique ou arraste um arquivo aqui";
+return;
+}
+const tamanhoMB = arquivo.size / (1024 * 1024);
+if (tamanhoMB > TAMANHO_MAXIMO_MB) {
+erro.classList.remove("d-none");
+e.target.value = "";
+label.textContent = "Clique ou arraste um arquivo aqui";
+return;
+}
+label.textContent = arquivo.name;
 });
-
 // Sobe o arquivo pro Cloudinary (upload direto do navegador, sem servidor) e devolve a URL pública
 async function subirAnexoCloudinary(arquivo) {
-  const formData = new FormData();
-  formData.append("file", arquivo);
-  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-  const resposta = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
-    { method: "POST", body: formData }
-  );
-
-  if (!resposta.ok) {
-    throw new Error("Falha no upload do anexo");
-  }
-
-  const dados = await resposta.json();
-  return dados.secure_url;
+const formData = new FormData();
+formData.append("file", arquivo);
+formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+const resposta = await fetch(
+`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
+{ method: "POST", body: formData }
+);
+if (!resposta.ok) {
+throw new Error("Falha no upload do anexo");
 }
-
+const dados = await resposta.json();
+return dados.secure_url;
+}
 window.enviarDenuncia = async function () {
-  const arquivo = document.getElementById("anexoInput").files[0];
-  const btnEnviar = document.querySelector(".btn-submit");
-
-  const dados = {
-    nome: document.getElementById("nomeInput").value || null,
-    contato: document.getElementById("contatoInput").value || null,
-    endereco: document.getElementById("enderecoInput").value,
-    latitude: document.getElementById("latInput").value || null,
-    longitude: document.getElementById("lngInput").value || null,
-    tipoAnimal: document.getElementById("tipoAnimalSelect").value,
-    urgencia: document.getElementById("urgenciaSelect").value,
-    descricao: document.getElementById("descricaoTextarea").value,
-    anonimo: document.getElementById("anonimo").checked,
-    status: "Recebida",
-    criadoEm: new Date().toISOString(),
-    emailUsuario: auth.currentUser ? auth.currentUser.email : null
-  };
-
-  if (!dados.endereco || !dados.tipoAnimal || !dados.urgencia || !dados.descricao) {
-    alert("Preencha todos os campos obrigatórios (*).");
-    return;
-  }
-
-  const textoOriginalBtn = btnEnviar.innerHTML;
-  btnEnviar.disabled = true;
-
-  try {
-    const codigo = gerarCodigoDenuncia();
-
-    if (arquivo) {
-      btnEnviar.innerHTML = "Enviando anexo...";
-      const url = await subirAnexoCloudinary(arquivo);
-
-      dados.anexoUrl = url;
-      dados.anexoTipo = arquivo.type.startsWith("video/") ? "video" : "imagem";
-      dados.anexoNome = arquivo.name;
-    }
-
-    btnEnviar.innerHTML = "Enviando denúncia...";
-    await setDoc(doc(db, "denuncias", codigo), dados);
-    window.location.href = "/denuncia-enviada?codigo=" + codigo;
-  } catch (erro) {
-    console.error(erro);
-    alert("Ocorreu um erro ao enviar a denúncia. Tente novamente.");
-    btnEnviar.disabled = false;
-    btnEnviar.innerHTML = textoOriginalBtn;
-  }
+const arquivo = document.getElementById("anexoInput").files[0];
+const btnEnviar = document.querySelector(".btn-submit");
+const dados = {
+nome: document.getElementById("nomeInput").value || null,
+contato: document.getElementById("contatoInput").value || null,
+endereco: document.getElementById("enderecoInput").value,
+latitude: document.getElementById("latInput").value || null,
+longitude: document.getElementById("lngInput").value || null,
+tipoAnimal: document.getElementById("tipoAnimalSelect").value,
+urgencia: document.getElementById("urgenciaSelect").value,
+descricao: document.getElementById("descricaoTextarea").value,
+anonimo: document.getElementById("anonimo").checked,
+status: "Recebida",
+criadoEm: new Date().toISOString(),
+emailUsuario: auth.currentUser ? auth.currentUser.email : null
+};
+if (!dados.endereco || !dados.tipoAnimal || !dados.urgencia || !dados.descricao) {
+alert("Preencha todos os campos obrigatórios (*).");
+return;
+}
+const textoOriginalBtn = btnEnviar.innerHTML;
+btnEnviar.disabled = true;
+try {
+const codigo = gerarCodigoDenuncia();
+if (arquivo) {
+btnEnviar.innerHTML = "Enviando anexo...";
+const url = await subirAnexoCloudinary(arquivo);
+dados.anexoUrl = url;
+dados.anexoTipo = arquivo.type.startsWith("video/") ? "video" : "imagem";
+dados.anexoNome = arquivo.name;
+}
+btnEnviar.innerHTML = "Enviando denúncia...";
+await setDoc(doc(db, "denuncias", codigo), dados);
+window.location.href = "/denuncia-enviada?codigo=" + codigo;
+} catch (erro) {
+console.error(erro);
+alert("Ocorreu um erro ao enviar a denúncia. Tente novamente.");
+btnEnviar.disabled = false;
+btnEnviar.innerHTML = textoOriginalBtn;
+}
 };
 </script>
 </body>
