@@ -6,6 +6,9 @@
 
   <title>SOS Animais Matão - Login</title>
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
   <style>
     * {
       box-sizing: border-box;
@@ -20,13 +23,49 @@
       color: #2d1b36;
     }
 
+    /* ══ Cabeçalho com a marca SOS Animais Matão ══ */
+    .navbar {
+      background: #fff;
+      border-bottom: 1px solid #ede0f3;
+      padding: 14px 0;
+    }
+    .navbar .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .navbar-brand {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #6a1b9a;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .navbar-brand .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: #9c27b0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .navbar-brand .logo-icon i {
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
     .page-container {
-      min-height: 100vh;
+      min-height: calc(100vh - 68px);
       display: flex;
     }
 
     /* =========================
-       LADO ESQUERDO - FORMULÁRIO
+       FORMULÁRIO
     ========================= */
 
     .form-side {
@@ -34,28 +73,16 @@
       display: flex;
       flex-direction: column;
       padding: 40px 60px;
+      position: relative;
     }
 
     .top-bar {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
       margin-bottom: 60px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #7b3fb3;
-    }
-
-    .logo-icon {
-      font-size: 1.5rem;
     }
 
     .btn-voltar {
@@ -231,64 +258,10 @@
     }
 
     /* =========================
-       LADO DIREITO - ILUSTRAÇÃO
-    ========================= */
-
-    .image-side {
-      flex: 1;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .image-side img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .image-side::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(106,47,158,0.15) 0%, rgba(106,47,158,0.55) 65%, rgba(90,35,140,0.88) 100%);
-    }
-
-    .illustration-wrap {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 40px 40px 56px;
-    }
-
-    .image-side h2 {
-      color: white;
-      font-size: 1.6rem;
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
-
-    .image-side p {
-      color: rgba(255,255,255,0.85);
-      font-size: 0.95rem;
-      max-width: 320px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* =========================
        RESPONSIVO
     ========================= */
 
     @media (max-width: 860px) {
-
-      .image-side {
-        display: none;
-      }
 
       .form-side {
         padding: 30px 24px;
@@ -303,17 +276,22 @@
 
 <body>
 
+  <!-- Cabeçalho com a marca do site -->
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <div class="logo-icon"><i class="bi bi-heart-fill"></i></div>
+        SOS Animais Matão
+      </a>
+    </div>
+  </nav>
+
   <div class="page-container">
 
-    <!-- LADO ESQUERDO -->
+    <!-- FORMULÁRIO -->
     <div class="form-side">
 
       <div class="top-bar">
-
-        <div class="logo">
-          <span class="logo-icon">🐾</span>
-          <span>SOS Animais Matão</span>
-        </div>
 
         <a href="/" class="btn-voltar">
           ← Voltar
@@ -396,23 +374,6 @@
           <a href="/register">Não possui uma conta? Criar</a>
           <a href="{{ url_for('recovery') }}">Esqueci minha senha</a>
         </div>
-
-      </div>
-
-    </div>
-
-    <!-- LADO DIREITO -->
-    <div class="image-side">
-
-      <img
-        src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?fm=jpg&q=80&w=1200&auto=format&fit=crop"
-        alt="Filhote de cachorro"
-      >
-
-      <div class="illustration-wrap">
-
-        <h2>Cada login aproxima um focinho de um lar</h2>
-        <p>Acesse o painel e ajude a conectar animais resgatados a famílias que esperam por eles em Matão.</p>
 
       </div>
 

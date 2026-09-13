@@ -685,23 +685,6 @@ transform: translateY(0);
           </li>
         </ul>
       </div>
-
-      <button class="navbar-toggler border-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-
-    <div class="collapse navbar-collapse" id="navMenu">
-      <ul class="navbar-nav ms-auto align-items-center gap-1">
-<!-- <li class="nav-item"><a class="nav-link" href="/login">Login</a></li> -->
-<!-- <li class="nav-item"><a class="nav-link" href="#como-funciona">Como funciona</a></li>
-<li class="nav-item"><a class="nav-link" href="#ajuda">Buscar ajuda</a></li>
-<li class="nav-item"><a class="nav-link" href="#acompanhar">Acompanhar</a></li> -->
-<!-- <li class="nav-item ms-2"> -->
-<!-- <a class="nav-link btn-nav-primary" href="#" data-bs-toggle="modal" data-bs-target="#denunciaModal">
-Denunciar agora
-</a> -->
-      </ul>
     </div>
   </div>
 </nav>
@@ -730,6 +713,9 @@ Login para Orgãos <i class="bi bi-arrow-down"></i>
 <button type="button" class="btn-outline-custom mt-3 d-none" id="btnRealizarDenuncia" style="align-self: flex-start; width: fit-content;" data-bs-toggle="modal" data-bs-target="#denunciaModal">
 <i class="bi bi-megaphone-fill me-1"></i> Realizar denúncia
 </button>
+<a href="{{ url_for('consultar_denuncia') }}" class="btn-outline-custom mt-2 d-none" id="btnConsultarDenuncia" style="align-self: flex-start; width: fit-content;">
+<i class="bi bi-search me-1"></i> Consultar denúncia
+</a>
 </div>
 <!-- Modal de confirmação de saída -->
 <div class="modal fade" id="modalConfirmSair" tabindex="-1" aria-hidden="true">
@@ -1146,10 +1132,12 @@ onAuthStateChanged(auth, (user) => {
 const areasLogado = document.querySelectorAll(".js-area-logado");
 const areaDeslogado = document.getElementById("areaDeslogado");
 const btnDenuncia = document.getElementById("btnRealizarDenuncia");
+const btnConsultarDenuncia = document.getElementById("btnConsultarDenuncia");
 if (user) {
 areaDeslogado.classList.add("d-none");
 areasLogado.forEach(el => el.classList.remove("d-none"));
 btnDenuncia.classList.remove("d-none");
+btnConsultarDenuncia.classList.remove("d-none");
 const nome = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
 document.querySelectorAll(".js-usuario-nome").forEach(el => el.textContent = nome);
 document.querySelectorAll(".js-usuario-email").forEach(el => el.textContent = user.email || "");
@@ -1158,6 +1146,7 @@ document.querySelectorAll(".js-usuario-avatar").forEach(el => el.textContent = n
 areaDeslogado.classList.remove("d-none");
 areasLogado.forEach(el => el.classList.add("d-none"));
 btnDenuncia.classList.add("d-none");
+btnConsultarDenuncia.classList.add("d-none");
 }
 });
 // Abre o modal de confirmação ao clicar em "Sair" no menu de perfil
