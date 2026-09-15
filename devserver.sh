@@ -13,6 +13,7 @@ pip install flask-cors
 pip install google-generativeai
 pip install --upgrade firebase-admin google-cloud-firestore google-api-core
 pip install -r requirements.txt
+pip install cloudinary
 pip install 
 pip install python-dotenv
 npm install update

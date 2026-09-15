@@ -5,54 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Consultar denúncia - SOS Animais Matão</title>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
 <style>
-  :root {
-    --purple-light: #ede7f6;
-    --purple-main: #9c27b0;
-    --purple-dark: #6a1b9a;
-    --purple-accent: #ce93d8;
-    --text-dark: #1a1a2e;
-    --text-muted: #555;
-    --white: #fff;
-    --gray-bg: #f8f6fb;
-  }
-  * { box-sizing: border-box; }
-  body {
+  * {
+    box-sizing: border-box;
     margin: 0;
-    font-family: 'DM Sans', sans-serif;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  :root {
+    --purple-light: #f4ecfb;
+    --purple-main: #9d59d6;
+    --purple-dark: #7f43b8;
+    --purple-accent: #ce93d8;
+    --text-dark: #1a1123;
+    --text-muted: #777;
+    --white: #fff;
+    --gray-bg: #ffffff;
+  }
+
+  body {
     color: var(--text-dark);
     background: var(--gray-bg);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 16px 48px;
   }
-  h1, .display-font { font-family: 'Fraunces', serif; }
 
-  header.top-bar {
+  /* ══ Cabeçalho com a marca SOS Animais Matão (igual ao login) ══ */
+  .navbar {
     width: 100%;
-    max-width: 900px;
+    background: #fff;
+    border-bottom: 1px solid #ede0f3;
+    padding: 14px 0;
+  }
+  .navbar .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 0;
   }
-  header.top-bar .brand {
+  .navbar-brand {
     font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
     font-weight: 900;
-    font-size: 1.05rem;
-  }
-  header.top-bar a.menu-link {
-    font-weight: 700;
-    font-size: .85rem;
-    letter-spacing: .06em;
-    color: var(--text-dark);
+    color: #6a1b9a;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-  header.top-bar a.menu-link:hover { color: var(--purple-main); }
+  .navbar-brand .logo-icon {
+    width: 38px;
+    height: 38px;
+    background: #9c27b0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .navbar-brand .logo-icon i {
+    color: #fff;
+    font-size: 1.1rem;
+  }
+  .navbar .menu-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--purple-main);
+    border: 2px solid var(--purple-main);
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+  .navbar .menu-link:hover {
+    background-color: var(--purple-main);
+    color: white;
+  }
+
+  .content-wrap {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px 48px;
+  }
+
+  h1, .display-font { font-family: 'Fraunces', serif; }
 
   .card {
     background: var(--white);
@@ -62,54 +111,71 @@
     width: 100%;
     padding: 40px;
     margin-top: 20px;
+    align-self: center;
   }
   h2.title {
-    font-size: 1.6rem;
+    font-family: 'Fraunces', serif;
+    font-size: 1.7rem;
     font-weight: 900;
-    color: var(--purple-dark);
-    margin-bottom: 6px;
+    color: var(--text-dark);
+    margin-bottom: 8px;
     text-align: center;
   }
   p.subtitle {
     color: var(--text-muted);
-    font-size: .95rem;
+    font-size: .92rem;
+    line-height: 1.5;
     text-align: center;
     margin-bottom: 28px;
   }
   label {
-    font-weight: 600;
-    font-size: .82rem;
+    color: var(--purple-main);
+    font-size: 0.78rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    letter-spacing: .04em;
-    color: var(--purple-dark);
     display: block;
     margin-bottom: 8px;
   }
   input#codigoInput {
     width: 100%;
-    border: 1px solid #e2d9ec;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 12px 14px;
+    padding: 14px 16px;
     font-size: .95rem;
     text-transform: uppercase;
     outline: none;
+    transition: 0.2s;
+    background: #fff;
   }
   input#codigoInput:focus {
     border-color: var(--purple-main);
-    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.12);
+    box-shadow: 0 0 0 3px rgba(157, 89, 214, 0.12);
   }
   button#btnBuscar {
     width: 100%;
-    background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
     border: none;
-    color: #fff;
-    font-weight: 700;
-    padding: 13px;
-    border-radius: 12px;
-    margin-top: 18px;
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     cursor: pointer;
+    margin-top: 18px;
+    transition: 0.2s;
   }
-  button#btnBuscar:disabled { opacity: .6; cursor: not-allowed; }
+  button#btnBuscar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(126, 67, 184, 0.3);
+  }
+  button#btnBuscar:disabled {
+    opacity: .7;
+    cursor: not-allowed;
+    transform: none;
+  }
 
   .resultado {
     margin-top: 26px;
@@ -124,7 +190,7 @@
     font-size: .85rem;
     margin-bottom: 16px;
   }
-  .status-recebida { background: #ede7f6; color: var(--purple-dark); }
+  .status-recebida { background: var(--purple-light); color: var(--purple-dark); }
   .status-analise { background: #fff3cd; color: #8a6d1a; }
   .status-atendida, .status-resolvida { background: #e8f5e9; color: #2e7d32; }
   .status-arquivada { background: #eee; color: #666; }
@@ -176,50 +242,61 @@
   }
 
   .erro-msg {
-    margin-top: 18px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    background: #fdecea;
-    color: #c62828;
-    font-size: .9rem;
-    display: none;
+    margin-top: 15px;
+    padding: 11px;
+    border-radius: 8px;
+    background-color: #fff0f0;
+    color: #d32f2f;
     text-align: center;
+    font-size: 0.85rem;
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .card { padding: 28px 24px; }
   }
 </style>
 </head>
 <body>
 
-<header class="top-bar">
-  <span class="brand">SOS ANIMAIS MATÃO</span>
-  <a href="/" class="menu-link">MENU</a>
-</header>
+<nav class="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <div class="logo-icon"><i class="bi bi-heart-fill"></i></div>
+      SOS Animais Matão
+    </a>
+    <a href="/" class="menu-link">← Voltar</a>
+  </div>
+</nav>
 
-<div class="card">
-  <h2 class="title">Consultar denúncia</h2>
-  <p class="subtitle">Digite o código do protocolo que você recebeu ao enviar a denúncia.</p>
+<div class="content-wrap">
+  <div class="card">
+    <h2 class="title">Consultar denúncia</h2>
+    <p class="subtitle">Digite o código do protocolo que você recebeu ao enviar a denúncia.</p>
 
-  <label for="codigoInput">Código do protocolo</label>
-  <input type="text" id="codigoInput" placeholder="SOS-2026-XXXXXX">
-  <button id="btnBuscar">Consultar status</button>
+    <label for="codigoInput">Código do protocolo</label>
+    <input type="text" id="codigoInput" placeholder="SOS-2026-XXXXXX">
+    <button id="btnBuscar">Consultar status</button>
 
-  <div class="erro-msg" id="erroMsg"></div>
+    <p class="erro-msg" id="erroMsg"></p>
 
-  <div class="resultado" id="resultado">
-    <span class="status-badge" id="statusBadge"></span>
-    <div class="detalhe-row"><span class="label-item">Protocolo</span><span class="valor-item" id="rCodigo"></span></div>
-    <div class="detalhe-row"><span class="label-item">Tipo de animal</span><span class="valor-item" id="rTipoAnimal"></span></div>
-    <div class="detalhe-row"><span class="label-item">Urgência</span><span class="valor-item" id="rUrgencia"></span></div>
-    <div class="detalhe-row"><span class="label-item">Endereço</span><span class="valor-item" id="rEndereco"></span></div>
-    <div class="detalhe-row"><span class="label-item">Enviada em</span><span class="valor-item" id="rData"></span></div>
+    <div class="resultado" id="resultado">
+      <span class="status-badge" id="statusBadge"></span>
+      <div class="detalhe-row"><span class="label-item">Protocolo</span><span class="valor-item" id="rCodigo"></span></div>
+      <div class="detalhe-row"><span class="label-item">Tipo de animal</span><span class="valor-item" id="rTipoAnimal"></span></div>
+      <div class="detalhe-row"><span class="label-item">Urgência</span><span class="valor-item" id="rUrgencia"></span></div>
+      <div class="detalhe-row"><span class="label-item">Endereço</span><span class="valor-item" id="rEndereco"></span></div>
+      <div class="detalhe-row"><span class="label-item">Enviada em</span><span class="valor-item" id="rData"></span></div>
 
-    <div class="foto-vistoria" id="fotoVistoriaBox" style="display:none;">
-      <span class="rotulo-foto">Foto da vistoria</span>
-      <img id="rFotoVistoria" src="" alt="Foto enviada pelo órgão responsável">
-    </div>
+      <div class="foto-vistoria" id="fotoVistoriaBox" style="display:none;">
+        <span class="rotulo-foto">Foto da vistoria</span>
+        <img id="rFotoVistoria" src="" alt="Foto enviada pelo órgão responsável">
+      </div>
 
-    <div class="mensagem-orgao" id="mensagemOrgaoBox" style="display:none;">
-      <strong>Mensagem do órgão responsável</strong>
-      <span id="rMensagemOrgao"></span>
+      <div class="mensagem-orgao" id="mensagemOrgaoBox" style="display:none;">
+        <strong>Mensagem do órgão responsável</strong>
+        <span id="rMensagemOrgao"></span>
+      </div>
     </div>
   </div>
 </div>
