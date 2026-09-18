@@ -6,3 +6,5 @@ autopep8
 flask
 firebase-admin
 cloudinary
+python-dotenv
+requests
