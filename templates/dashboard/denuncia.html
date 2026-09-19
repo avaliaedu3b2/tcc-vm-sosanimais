@@ -9,126 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
-<style>
-:root {
-  --purple-light: #ede7f6;
-  --purple-main: #9c27b0;
-  --purple-dark: #6a1b9a;
-  --purple-accent: #ce93d8;
-  --text-dark: #1a1a2e;
-  --text-muted: #555;
-  --white: #fff;
-  --gray-bg: #f8f6fb;
-  --amarelo-bg: #fff8e6; --amarelo-fg: #8a6d1a; --amarelo-line: #f3e2ad;
-  --verde-bg: #eaf7ec; --verde-fg: #2e7d32; --verde-line: #bfe3c4;
-  --vermelho-bg: #fdecea; --vermelho-fg: #c62828; --vermelho-line: #f3c6c1;
-  --azul-bg: #eaf1fd; --azul-fg: #1565c0; --azul-line: #bcd6f5;
-}
-* { box-sizing: border-box; }
-body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background: var(--gray-bg); }
-h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
-
-.navbar { background: #fff; border-bottom: 1px solid #ede0f3; padding: 14px 0; }
-.navbar-brand {
-  font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 900;
-  color: var(--purple-dark) !important; display: flex; align-items: center; gap: 10px;
-}
-.navbar-brand .logo-icon {
-  width: 38px; height: 38px; background: var(--purple-main); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-}
-.navbar-brand .logo-icon i { color: #fff; font-size: 1.1rem; }
-.btn-sair { color: var(--text-dark); font-weight: 600; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-.btn-sair:hover { color: var(--purple-main); }
-
-.voltar-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: var(--purple-main); font-weight: 700; font-size: 0.88rem; text-decoration: none;
-  margin: 28px 0 6px;
-}
-.voltar-link:hover { color: var(--purple-dark); }
-
-.protocolo-titulo { font-size: 1.6rem; font-weight: 900; margin-bottom: 28px; }
-.protocolo-titulo small { display: block; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.03em; }
-
-.painel {
-  background: #fff; border-radius: 16px; border: 1px solid #eee;
-  padding: 24px; margin-bottom: 24px;
-}
-.painel h6 { font-weight: 700; font-size: 0.95rem; margin-bottom: 16px; }
-.painel .foto-animal { width: 100%; border-radius: 12px; object-fit: cover; max-height: 320px; margin-bottom: 4px; background: var(--purple-light); }
-
-.linha-info { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f3f1f7; font-size: 0.9rem; }
-.linha-info:last-child { border-bottom: none; }
-.linha-info i { color: var(--purple-main); margin-top: 2px; }
-.linha-info .rotulo { color: var(--text-muted); font-weight: 600; min-width: 130px; }
-.badge-especie { background: var(--purple-light); color: var(--purple-dark); font-weight: 700; padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; }
-.badge-urgencia { font-weight: 700; padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; }
-.badge-urgencia.urgencia-alta { background: var(--vermelho-bg); color: var(--vermelho-fg); }
-.badge-urgencia.urgencia-media { background: var(--amarelo-bg); color: var(--amarelo-fg); }
-.badge-urgencia.urgencia-baixa { background: var(--verde-bg); color: var(--verde-fg); }
-
-textarea.form-control { resize: vertical; }
-
-.anexos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-@media (max-width: 700px) { .anexos-grid { grid-template-columns: 1fr; } }
-.anexo-box {
-  border: 2px dashed #d8d3e0; border-radius: 12px; padding: 20px 12px;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  color: var(--text-muted); cursor: pointer; transition: border-color .2s, background .2s;
-  font-size: 0.82rem; position: relative;
-}
-.anexo-box:hover { border-color: var(--purple-main); background: var(--purple-light); }
-.anexo-box i { font-size: 1.4rem; color: var(--purple-main); margin-bottom: 6px; }
-.anexo-box strong { color: var(--text-dark); font-size: 0.85rem; }
-.anexo-box small { margin-top: 2px; }
-.anexo-box.enviando { opacity: 0.6; pointer-events: none; }
-.anexo-box.enviado { border-color: var(--verde-line); background: var(--verde-bg); }
-.anexo-box.erro-upload { border-color: var(--vermelho-line); background: var(--vermelho-bg); }
-.anexo-box a.ver-anexo { font-size: 0.78rem; color: var(--purple-main); font-weight: 700; margin-top: 4px; }
-
-/* Opções de status */
-.opcao-status {
-  display: flex; align-items: center; gap: 14px;
-  border: 1.5px solid; border-radius: 12px; padding: 14px 16px;
-  margin-bottom: 10px; cursor: pointer; transition: box-shadow .15s;
-}
-.opcao-status input { width: 18px; height: 18px; accent-color: var(--purple-main); margin-left: auto; }
-.opcao-status .icone-status { font-size: 1.15rem; flex-shrink: 0; }
-.opcao-status .texto-status strong { display: block; font-size: 0.92rem; }
-.opcao-status .texto-status span { font-size: 0.8rem; opacity: 0.85; }
-
-.opcao-status.analise { background: var(--amarelo-bg); border-color: var(--amarelo-line); color: var(--amarelo-fg); }
-.opcao-status.aprovar { background: var(--verde-bg); border-color: var(--verde-line); color: var(--verde-fg); }
-.opcao-status.recusar { background: var(--vermelho-bg); border-color: var(--vermelho-line); color: var(--vermelho-fg); }
-.opcao-status.resolvido { background: var(--azul-bg); border-color: var(--azul-line); color: var(--azul-fg); }
-.opcao-status.selecionada { box-shadow: 0 0 0 2px currentColor inset; }
-
-.btn-salvar-status {
-  width: 100%; background: var(--purple-dark); color: #fff; border: none;
-  padding: 13px; border-radius: 10px; font-weight: 700; font-size: 0.92rem;
-  transition: background .2s;
-}
-.btn-salvar-status:hover { background: var(--purple-main); }
-.btn-salvar-status:disabled { opacity: 0.6; }
-
-.accordion-button { font-weight: 700; font-size: 0.9rem; }
-.accordion-button:not(.collapsed) { background: var(--purple-light); color: var(--purple-dark); box-shadow: none; }
-.accordion-button:focus { box-shadow: none; }
-
-.evidencias-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-.evidencias-grid img { width: 96px; height: 96px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
-
-.status-atual-badge { font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 50px; display: inline-block; margin-bottom: 4px; }
-
-.toast-salvo {
-  position: fixed; bottom: 24px; right: 24px; background: var(--purple-dark); color: #fff;
-  padding: 14px 22px; border-radius: 10px; font-weight: 600; font-size: 0.88rem;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2); opacity: 0; transform: translateY(10px);
-  transition: opacity .25s, transform .25s; pointer-events: none;
-}
-.toast-salvo.show { opacity: 1; transform: translateY(0); }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/denuncia.css') }}"/>
 </head>
 <body>
 
@@ -142,7 +23,7 @@ textarea.form-control { resize: vertical; }
   </div>
 </nav>
 
-<div class="container" style="max-width: 1040px;">
+<div class="container container-detalhe">
   <a href="{{ url_for('dashboard') }}" class="voltar-link"><i class="bi bi-arrow-left"></i> Voltar para o painel</a>
 
   <div class="protocolo-titulo">
@@ -160,8 +41,8 @@ textarea.form-control { resize: vertical; }
         {% elif denuncia.anexoUrl %}
           <img class="foto-animal" src="{{ denuncia.anexoUrl }}" alt="Foto da denúncia {{ denuncia.id }}">
         {% else %}
-          <div class="foto-animal d-flex align-items-center justify-content-center" style="height:220px; color:var(--purple-main);">
-            <i class="bi bi-image" style="font-size:2rem;"></i>
+          <div class="foto-animal foto-placeholder d-flex align-items-center justify-content-center">
+            <i class="bi bi-image"></i>
           </div>
         {% endif %}
       </div>

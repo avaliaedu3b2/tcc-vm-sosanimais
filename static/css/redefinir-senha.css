@@ -1,0 +1,186 @@
+/* SOS Animais Matão — estilos da página de redefinição de senha (templates/login/redefinir-senha.html) */
+
+:root{
+  --purple: #b58ef0;
+  --purple-dark: #9a6de0;
+  --purple-text: #8b5cf6;
+  --ink: #1c1c24;
+  --muted: #7a7a89;
+  --border: #e6e4ee;
+  --green: #22c55e;
+  --toast-bg: #12141c;
+  --toast-bg2: #0e2a1f;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  background:#f7f6fb;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:48px 16px;
+  gap:32px;
+}
+/* Toast — escondido até o sucesso de verdade */
+.toast{
+  display:none;
+  width:100%;
+  max-width:520px;
+  background:linear-gradient(135deg, var(--toast-bg2) 0%, var(--toast-bg) 55%);
+  border-radius:16px;
+  padding:20px 24px;
+  align-items:flex-start;
+  gap:14px;
+  color:#fff;
+  box-shadow:0 20px 40px -12px rgba(0,0,0,0.35);
+  animation:slideDown .5s ease;
+}
+.toast.show{ display:flex; }
+@keyframes slideDown{
+  from{opacity:0; transform:translateY(-12px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.toast-icon{
+  width:28px;height:28px;
+  border-radius:50%;
+  background:#1e8a4c;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.toast-body{flex:1;}
+.toast-title{font-size:15px;font-weight:600;margin:0 0 4px;}
+.toast-text{font-size:13px;line-height:1.5;color:#c7c7d4;margin:0;}
+.toast-back{
+  background:none;border:none;
+  color:#c9a8f7;
+  font-size:14px;font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  align-self:center;
+}
+.toast-back:hover{color:#fff;}
+/* Card */
+.card{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:36px 32px;
+  box-shadow:0 1px 2px rgba(20,20,30,0.03);
+}
+.card h1{
+  font-size:22px;
+  font-weight:700;
+  color:var(--ink);
+  margin:0 0 8px;
+  text-align:center;
+}
+.card p.sub{
+  font-size:14px;
+  color:var(--muted);
+  margin:0 0 28px;
+  text-align:center;
+}
+label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.field{margin-bottom:14px;}
+.field-wrap{
+  position:relative;
+}
+input[type="password"], input[type="text"]{
+  width:100%;
+  padding:12px 44px 12px 16px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  font-size:14px;
+  letter-spacing:2px;
+  color:var(--ink);
+  outline:none;
+  transition:border-color .15s;
+}
+input[type="password"]:focus, input[type="text"]:focus{
+  border-color:var(--purple);
+}
+.toggle-eye{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  cursor:pointer;
+  color:var(--muted);
+  display:flex;
+  padding:2px;
+}
+.toggle-eye:hover{color:var(--ink);}
+.checklist{
+  list-style:none;
+  margin:10px 0 22px;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.checklist li{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:var(--muted);
+  transition:color .15s;
+}
+.checklist li .dot{
+  width:14px;height:14px;
+  border-radius:50%;
+  border:1.5px solid var(--muted);
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .15s;
+}
+.checklist li.ok{color:var(--green);}
+.checklist li.ok .dot{
+  border-color:var(--green);
+  background:var(--green);
+}
+.checklist li.ok .dot svg{display:block;}
+.checklist li .dot svg{display:none;width:8px;height:8px;}
+button.submit{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:999px;
+  background:var(--purple);
+  color:#fff;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .15s, opacity .15s;
+  margin-top:6px;
+}
+button.submit:hover:not(:disabled){background:var(--purple-dark);}
+button.submit:disabled{opacity:.55; cursor:not-allowed;}
+.erro-msg{
+  margin-top:14px;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
+  background:#fdecea;
+  color:#c62828;
+  display:none;
+  text-align:center;
+}
+@media (max-width:480px){
+  .toast{flex-direction:row;align-items:flex-start;}
+  .toast-back{align-self:flex-start;}
+}

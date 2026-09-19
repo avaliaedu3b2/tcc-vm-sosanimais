@@ -193,6 +193,9 @@ def denuncia_enviada():
 def consultar_denuncia():
     return render_template('consultar-denuncia.html')
 
+@app.route("/busque-ajuda")
+def busque_ajuda():
+    return render_template("busque-ajuda.html")
 
 @app.route('/login/loginorgao')
 def loginorgao():

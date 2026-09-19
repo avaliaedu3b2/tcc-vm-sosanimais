@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Busque ajuda - SOS Animais Matão</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/busque-ajuda.css') }}"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <div class="logo-icon"><i class="bi bi-heart-fill"></i></div>
+      SOS Animais Matão
+    </a>
+    <a href="/" class="menu-link">Menu</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <h1>Outras maneiras de denunciar.</h1>
+
+    <div class="hero-grid">
+      <img class="hero-foto"
+           src="{{ url_for('static', filename='img/cachorro-gato.jpeg') }}"
+           alt="Um cachorro e um gato deitados lado a lado">
+
+      <div class="hero-texto">
+        <h2>Ajude a proteger quem não pode se defender</h2>
+        <p>
+          Animais dependem da atitude das pessoas ao seu redor. Denunciar maus-tratos
+          é um ato de responsabilidade que pode salvar vidas e evitar que a situação continue.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="conteudo">
+  <div class="container">
+
+    <section class="bloco">
+      <h2>Telefones importantes</h2>
+      <p class="descricao">
+        Ao presenciar maus-tratos a animais, escolha o canal de denúncia adequado. Em
+        emergências, acione atendimento imediato; em casos não urgentes, utilize os meios
+        apropriados para registro.
+      </p>
+
+      <ul class="lista-canais">
+        <li class="canal">
+          <span class="canal-nome">Polícia Militar</span>
+          <a class="canal-numero" href="tel:190">190</a>
+        </li>
+        <li class="canal">
+          <span class="canal-nome">Polícia Civil</span>
+          <a class="canal-numero" href="tel:197">197</a>
+        </li>
+        <li class="canal">
+          <span class="canal-nome">Disque Denúncia</span>
+          <a class="canal-numero" href="tel:181">181</a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="bloco">
+      <h2>Denúncia online</h2>
+      <p class="descricao">
+        Também é possível denunciar online de forma rápida e segura. Essa opção é ideal para
+        situações não urgentes e permite enviar mais detalhes sobre o caso, inclusive de forma
+        anônima.
+      </p>
+
+      <ul class="lista-canais">
+        <li class="canal">
+          <span class="canal-nome">Ministério Público</span>
+          <a class="canal-link" href="https://www.mpsp.mp.br/" target="_blank" rel="noopener">acesse</a>
+        </li>
+        <li class="canal">
+          <span class="canal-nome">IBAMA</span>
+          <a class="canal-link" href="https://www.gov.br/ibama/pt-br" target="_blank" rel="noopener">acesse</a>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  © 2025 SOS Animais Matão — Projeto TCC. Todos os direitos reservados.
+</footer>
+
+</body>
+</html>

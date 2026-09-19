@@ -1,0 +1,26 @@
+/* SOS Animais Matão — estilos extras do login de órgãos (templates/login/loginorgao.html)
+   Carregar DEPOIS de login.css, que traz o restante do visual. */
+
+/* ══ Mensagem de erro / aviso (substitui o #erroMsg usado no login comum) ══ */
+.login-message {
+  display: none;
+  margin-top: 15px;
+  padding: 11px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.login-message.show {
+  display: block;
+}
+
+.login-message.erro {
+  background-color: #fff0f0;
+  color: #d32f2f;
+}
+
+.login-message.info {
+  background-color: #fffbeb;
+  color: #b45309;
+}
