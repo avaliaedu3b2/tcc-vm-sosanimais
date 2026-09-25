@@ -308,6 +308,57 @@ h1, h2, h3, .display-font {
   object-position: center;
 }
 
+/* ══ Carrossel de imagens dentro do hero-right ══ */
+.hero-right .carousel,
+.hero-right .carousel-inner,
+.hero-right .carousel-item {
+  height: 100%;
+}
+
+.hero-right .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-right .carousel-control-prev,
+.hero-right .carousel-control-next {
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  opacity: 0.85;
+}
+
+.hero-right .carousel-control-prev { left: 18px; }
+.hero-right .carousel-control-next { right: 18px; }
+
+.hero-right .carousel-control-prev:hover,
+.hero-right .carousel-control-next:hover { opacity: 1; }
+
+.hero-right .carousel-indicators {
+  z-index: 3;
+  bottom: 220px;
+  margin-bottom: 0;
+}
+
+.hero-right .carousel-indicators [data-bs-target] {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.6);
+  border: none;
+}
+
+.hero-right .carousel-indicators .active {
+  background-color: #fff;
+}
+
 .hero-right .overlay {
   position: absolute;
   inset: 0;
@@ -317,6 +368,12 @@ h1, h2, h3, .display-font {
   align-items: flex-start;
   justify-content: flex-end;
   padding: 48px 48px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-right .overlay a {
+  pointer-events: auto;
 }
 
 .hero-right .overlay h2 {
@@ -735,6 +792,9 @@ footer ul li a:hover { color: var(--purple-accent); }
   }
   .hero-right .overlay {
     padding: 28px;
+  }
+  .hero-right .carousel-indicators {
+    bottom: 170px;
   }
   .stats-bar .stat-item {
     margin-bottom: 16px;
