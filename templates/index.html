@@ -36,6 +36,11 @@
               </a>
             </li>
             <li>
+              <a class="dropdown-item js-btn-historico" href="#">
+                <i class="bi bi-clock-history"></i> Histórico de denúncias
+              </a>
+            </li>
+            <li>
               <a class="dropdown-item text-danger js-btn-abrir-confirm-sair" href="#">
                 <i class="bi bi-box-arrow-right"></i> Sair
               </a>
@@ -107,6 +112,25 @@
   </div>
   </div>
   </div>
+  <!-- Modal: histórico de denúncias do usuário logado -->
+  <div class="modal fade" id="modalHistorico" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content confirm-modal">
+  <div class="modal-header">
+  <h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Histórico de denúncias</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+  </div>
+  <div class="modal-body">
+  <div id="historicoCarregando" class="text-center text-muted py-4">
+  <div class="spinner-border spinner-border-sm me-2" role="status"></div> Carregando suas denúncias...
+  </div>
+  <p id="historicoVazio" class="text-center text-muted py-4 d-none">Você ainda não fez nenhuma denúncia.</p>
+  <p id="historicoErro" class="text-center text-danger py-4 d-none">Não foi possível carregar seu histórico. Tente novamente.</p>
+  <div id="historicoLista" class="historico-lista"></div>
+  </div>
+  </div>
+  </div>
+  </div>
   <!-- Toast exibido ao enviar o e-mail de redefinição de senha -->
   <div class="toast-email" id="toastEmailEnviado">
   <div class="toast-email-icon">
@@ -126,9 +150,6 @@
         <div class="overlay">
           <h2>FAÇA SUA<br><em>DENÚNCIA.</em></h2>
           <p>Denuncie com <strong>segurança</strong>. Sua voz pode fazer a diferença para um animal que precisa de você.</p>
-          <a href="#" class="btn-overlay" onclick="return window.abrirModalDenuncia(event)">
-            <i class="bi bi-send-fill"></i> Acessar mais informações
-          </a>
         </div>
       </div>
 
@@ -137,9 +158,6 @@
         <div class="overlay">
           <h2>CADA RESGATE<br><em>É UMA VITÓRIA.</em></h2>
           <p>Todo animal resgatado começa com <strong>uma denúncia</strong>. Ajude a escrever mais histórias como essa.</p>
-          <a href="#" class="btn-overlay" onclick="return window.abrirModalDenuncia(event)">
-            <i class="bi bi-send-fill"></i> Acessar mais informações
-          </a>
         </div>
       </div>
 
@@ -148,21 +166,10 @@
         <div class="overlay">
           <h2>PROTEÇÃO É<br><em>DEVER DE TODOS.</em></h2>
           <p>Maus-tratos não podem ser ignorados. <strong>Denuncie</strong> e ajude a proteger quem não tem voz.</p>
-          <a href="#" class="btn-overlay" onclick="return window.abrirModalDenuncia(event)">
-            <i class="bi bi-send-fill"></i> Acessar mais informações
-          </a>
         </div>
       </div>
 
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Próximo</span>
-    </button>
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
       <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -250,7 +257,7 @@
   <div class="card-body">
   <h5 class="card-title">Busque ajuda.</h5>
   <p class="card-text">"Saiba para onde encaminhar denúncias e como agir quando encontrar um animal em situação de risco."</p>
-  <a href="#" class="card-link" id="ajuda">Ver opções <i class="bi bi-arrow-right"></i></a>
+  <a href="{{ url_for('busque_ajuda') }}" class="card-link">Ver opções <i class="bi bi-arrow-right"></i></a>
   </div>
   </div>
   </div>
@@ -293,7 +300,7 @@
   <h6>Navegação</h6>
   <ul>
   <li><a href="#como-funciona">Como funciona</a></li>
-  <li><a href="#ajuda">Buscar ajuda</a></li>
+  <li><a href="{{ url_for('busque_ajuda') }}">Buscar ajuda</a></li>
   <li><a href="consultar-denuncia">Acompanhar</a></li>
   </ul>
   </div>
@@ -507,7 +514,7 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
   // cole aqui o MESMO objeto firebaseConfig que você usa no login.html / register.html
   const firebaseConfig = {
   apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
@@ -573,6 +580,70 @@
   document.getElementById("btnSair").addEventListener("click", () => {
   signOut(auth).then(() => {
   window.location.href = "{{ url_for('index') }}";
+  });
+  });
+  // ── Histórico de denúncias do usuário logado ──
+  const URL_CONSULTAR = "{{ url_for('consultar_denuncia') }}";
+  function escaparHtml(t) {
+  return String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function classeStatusHistorico(status) {
+  const s = String(status || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (s.includes("analise")) return "hist-status-analise";
+  if (s.includes("aprovada") || s.includes("atendida") || s.includes("resolvida")) return "hist-status-resolvida";
+  if (s.includes("recusada")) return "hist-status-recusada";
+  if (s.includes("arquivada")) return "hist-status-arquivada";
+  return "hist-status-recebida";
+  }
+  function formatarDataHistorico(iso) {
+  const d = new Date(iso);
+  return isNaN(d) ? "" : d.toLocaleDateString("pt-BR");
+  }
+  async function carregarHistorico() {
+  const elCarregando = document.getElementById("historicoCarregando");
+  const elVazio = document.getElementById("historicoVazio");
+  const elErro = document.getElementById("historicoErro");
+  const elLista = document.getElementById("historicoLista");
+  elCarregando.classList.remove("d-none");
+  elVazio.classList.add("d-none");
+  elErro.classList.add("d-none");
+  elLista.innerHTML = "";
+  try {
+  const user = auth.currentUser;
+  if (!user || !user.email) throw new Error("Usuário não logado");
+  // Inclui as denúncias anônimas: o e-mail é gravado em todas, o anonimato só esconde o nome para o órgão
+  const snap = await getDocs(query(collection(db, "denuncias"), where("emailUsuario", "==", user.email)));
+  const itens = snap.docs
+  .map(d => ({ codigo: d.id, ...d.data() }))
+  .sort((a, b) => String(b.criadoEm || "").localeCompare(String(a.criadoEm || "")));
+  if (itens.length === 0) {
+  elVazio.classList.remove("d-none");
+  } else {
+  elLista.innerHTML = itens.map(i => `
+  <a class="historico-item" href="${URL_CONSULTAR}?codigo=${encodeURIComponent(i.codigo)}">
+  <div class="historico-topo">
+  <span class="historico-protocolo">${escaparHtml(i.codigo)}</span>
+  <span class="historico-status ${classeStatusHistorico(i.status)}">${escaparHtml(i.status || "Recebida")}</span>
+  </div>
+  <div class="historico-meta">
+  ${escaparHtml(i.tipoAnimal || "Animal")} · ${escaparHtml(formatarDataHistorico(i.criadoEm))}
+  ${i.anonimo ? '<span class="historico-anonima"><i class="bi bi-incognito"></i> Anônima</span>' : ""}
+  </div>
+  <div class="historico-endereco"><i class="bi bi-geo-alt-fill"></i> ${escaparHtml(i.endereco || "")}</div>
+  </a>`).join("");
+  }
+  } catch (erro) {
+  console.error(erro);
+  elErro.classList.remove("d-none");
+  } finally {
+  elCarregando.classList.add("d-none");
+  }
+  }
+  document.querySelectorAll(".js-btn-historico").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+  e.preventDefault();
+  bootstrap.Modal.getOrCreateInstance(document.getElementById("modalHistorico")).show();
+  carregarHistorico();
   });
   });
   // Abre o modal para trocar o nome de exibição pelo menu de perfil
@@ -714,6 +785,18 @@
   btnEnviar.innerHTML = textoOriginalBtn;
   }
   };
+  </script>
+  <script>
+  // Clicar no carrossel do hero avança para a próxima imagem
+  (function () {
+    var el = document.getElementById('heroCarousel');
+    if (!el) return;
+    el.addEventListener('click', function (e) {
+      // ignora cliques nas bolinhas, links e botões
+      if (e.target.closest('.carousel-indicators, a, button')) return;
+      bootstrap.Carousel.getOrCreateInstance(el).next();
+    });
+  })();
   </script>
   </body>
   </html>

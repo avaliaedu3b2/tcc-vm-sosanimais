@@ -1,7 +1,8 @@
 import os
 import firebase_admin
 from firebase_admin import credentials
-from flask import flask
+from flask import Flask
+
 def create_app():
     app = flask(__name__, template_folder='../static')
     app.secret_key = 'super_secret_key'
@@ -16,8 +17,8 @@ def create_app():
             except exception as e:
                 print("atenção: firebase não foi localizado corretamente.", e)
                 
-                from app,controllers.home_controller import home_bp
-                from aoo.controllers.auth_controller import auth_bp
+                from app.controllers.home_controller import home_bp
+                from app.controllers.auth_controller import auth_bp
                 
                 app.register_blueprint(home_bp)
                 app.register_blueprint(auth_bp)

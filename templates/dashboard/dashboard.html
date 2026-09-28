@@ -75,7 +75,7 @@
 </div>
 
 <div class="container painel-header">
-  <h1>Denúncias pendentes</h1>
+  <h1 id="tituloPainel">Denúncias pendentes</h1>
   <span class="orgao-tag"><i class="bi bi-building"></i> {{ orgao.nome_orgao if orgao else "Instituto Guarda Animal" }}</span>
 
   <!-- Busca por protocolo/ID -->
@@ -89,6 +89,19 @@
     </div>
   </div>
 
+  <!-- Abas: pendentes x já finalizadas (resolvidas ou recusadas) -->
+  <div class="tabs-status" id="tabsStatus">
+    <button type="button" class="tab-status ativo" data-tab="pendentes">
+      Pendentes <span class="tab-count" id="countPendentes">0</span>
+    </button>
+    <button type="button" class="tab-status" data-tab="resolvidas">
+      Resolvidas <span class="tab-count" id="countResolvidas">0</span>
+    </button>
+    <button type="button" class="tab-status" data-tab="reincidencia">
+      <i class="bi bi-geo-alt-fill"></i> Reincidência
+    </button>
+  </div>
+
   <div class="filtro-especies" id="filtroEspecies">
     <button type="button" class="chip-filtro ativo" data-especie="todos"><i class="bi bi-check2-all"></i> Todos</button>
     <button type="button" class="chip-filtro" data-especie="cao"><i class="bi bi-circle"></i> Cão</button>
@@ -98,10 +111,16 @@
   </div>
 </div>
 
-<div class="container cards-wrap">
+<div class="container cards-wrap" id="wrapDenuncias">
   <div class="row g-4" id="gridDenuncias">
     {% for d in denuncias %}
-    <div class="col-md-6 col-lg-4 item-denuncia" data-especie="{{ d.tipoAnimal|lower }}" data-id="{{ d.id|lower }}">
+    {% set status_lower = (d.status or '')|lower %}
+    {% set eh_analise = 'nálise' in status_lower or 'nalise' in status_lower %}
+    {% set eh_atendida = 'tendida' in status_lower or 'esolvida' in status_lower %}
+    {% set eh_recusada = 'ecusada' in status_lower %}
+    {% set eh_arquivada = 'rquivada' in status_lower %}
+    {% set eh_finalizada = eh_atendida or eh_recusada %}
+    <div class="col-md-6 col-lg-4 item-denuncia" data-especie="{{ d.tipoAnimal|lower }}" data-id="{{ d.id|lower }}" data-finalizada="{{ 'true' if eh_finalizada else 'false' }}" data-endereco="{{ d.endereco or '' }}">
       <div class="animal-card">
         <div class="card-img-wrap">
           {% if d.anexoUrl and d.anexoTipo == 'video' %}
@@ -127,7 +146,7 @@
             {% else %}<i class="bi bi-emoji-smile"></i> Outro
             {% endif %}
           </span>
-          <span class="status-badge {{ 'status-analise' if 'nálise' in d.status or 'nalise' in d.status else ('status-atendida' if 'tendida' in d.status or 'esolvida' in d.status else ('status-arquivada' if 'rquivada' in d.status else 'status-recebida')) }}">
+          <span class="status-badge {{ 'status-analise' if eh_analise else ('status-atendida' if eh_atendida else ('status-recusada' if eh_recusada else ('status-arquivada' if eh_arquivada else 'status-recebida'))) }}">
             {{ d.status }}
           </span>
         </div>
@@ -166,6 +185,11 @@
   </div>
 </div>
 
+<!-- Painel da aba Reincidência: locais com mais de uma denúncia -->
+<div class="container reincidencia-wrap d-none" id="wrapReincidencia">
+  <div id="listaReincidencia"></div>
+</div>
+
 <script>
   const chips = document.querySelectorAll('.chip-filtro');
   const chipTodos = document.querySelector('.chip-filtro[data-especie="todos"]');
@@ -173,10 +197,62 @@
   const inputBusca = document.getElementById('buscaId');
   const btnLimparBusca = document.getElementById('btnLimparBusca');
   const vazioBusca = document.getElementById('vazioBusca');
+  const tabsStatus = document.querySelectorAll('.tab-status');
+  const countPendentes = document.getElementById('countPendentes');
+  const countResolvidas = document.getElementById('countResolvidas');
+  const tituloPainel = document.getElementById('tituloPainel');
+
+  const wrapDenuncias = document.getElementById('wrapDenuncias');
+  const wrapReincidencia = document.getElementById('wrapReincidencia');
+  const listaReincidencia = document.getElementById('listaReincidencia');
+  const buscaProtocoloBox = document.querySelector('.busca-protocolo');
+  const filtroEspeciesBox = document.getElementById('filtroEspecies');
+
+  // Agrupa as denúncias pelo endereço e monta o ranking de locais reincidentes
+  function renderReincidencia() {
+    const contagem = {};
+
+    itens.forEach(item => {
+      const enderecoOriginal = (item.dataset.endereco || '').trim();
+      if (!enderecoOriginal) return;
+      const chave = enderecoOriginal.toLowerCase();
+      if (!contagem[chave]) {
+        contagem[chave] = { texto: enderecoOriginal, qtd: 0 };
+      }
+      contagem[chave].qtd++;
+    });
+
+    const ranking = Object.values(contagem)
+      .filter(item => item.qtd > 1)
+      .sort((a, b) => b.qtd - a.qtd);
+
+    listaReincidencia.innerHTML = '';
+
+    if (ranking.length === 0) {
+      listaReincidencia.innerHTML = `
+        <div class="vazio">
+          <h5>Nenhum local reincidente</h5>
+          <p class="mb-0">Ainda não há endereços com mais de uma denúncia registrada.</p>
+        </div>`;
+      return;
+    }
+
+    ranking.forEach((item, i) => {
+      const linha = document.createElement('div');
+      linha.className = 'reincidencia-item';
+      linha.innerHTML = `
+        <span class="reincidencia-rank">${i + 1}º</span>
+        <span class="reincidencia-local"><i class="bi bi-geo-alt-fill"></i> ${item.texto}</span>
+        <span class="reincidencia-qtd">${item.qtd} denúncias</span>
+      `;
+      listaReincidencia.appendChild(linha);
+    });
+  }
 
   function aplicarFiltro() {
     const ativos = [...chips].filter(c => c !== chipTodos && c.classList.contains('ativo')).map(c => c.dataset.especie);
     const termoBusca = inputBusca.value.trim().toLowerCase();
+    const abaAtual = document.querySelector('.tab-status.ativo').dataset.tab;
 
     if (ativos.length === 0) {
       chipTodos.classList.add('ativo');
@@ -185,24 +261,37 @@
     }
 
     let algumVisivel = false;
+    let totalPendentes = 0;
+    let totalResolvidas = 0;
 
     itens.forEach(item => {
       const tipo = item.dataset.especie;
       const cao = tipo === 'cão' || tipo === 'cao';
+      const finalizada = item.dataset.finalizada === 'true';
 
       const passaEspecie = ativos.length === 0
         ? true
         : (ativos.includes('cao') && cao ? true : ativos.includes(tipo));
 
       const passaBusca = termoBusca === '' || item.dataset.id.includes(termoBusca);
+      const passaFiltrosComuns = passaEspecie && passaBusca;
 
-      const visivel = passaEspecie && passaBusca;
+      // Conta quantas denúncias existem em cada aba, já considerando espécie/busca
+      if (passaFiltrosComuns) {
+        if (finalizada) totalResolvidas++; else totalPendentes++;
+      }
+
+      const passaAba = abaAtual === 'resolvidas' ? finalizada : !finalizada;
+      const visivel = passaFiltrosComuns && passaAba;
+
       item.style.display = visivel ? '' : 'none';
       if (visivel) algumVisivel = true;
     });
 
-    // Só mostra a mensagem de "não encontrado" quando há busca ativa
-    if (termoBusca !== '' && !algumVisivel) {
+    countPendentes.textContent = totalPendentes;
+    countResolvidas.textContent = totalResolvidas;
+
+    if (!algumVisivel) {
       vazioBusca.classList.remove('d-none');
     } else {
       vazioBusca.classList.add('d-none');
@@ -210,6 +299,32 @@
 
     btnLimparBusca.classList.toggle('show', termoBusca !== '');
   }
+
+  // Alterna entre as abas "Pendentes", "Resolvidas" e "Reincidência"
+  tabsStatus.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabsStatus.forEach(t => t.classList.remove('ativo'));
+      tab.classList.add('ativo');
+      const aba = tab.dataset.tab;
+
+      if (aba === 'reincidencia') {
+        tituloPainel.textContent = 'Locais com mais denúncias';
+        wrapDenuncias.classList.add('d-none');
+        vazioBusca.classList.add('d-none');
+        buscaProtocoloBox.classList.add('d-none');
+        filtroEspeciesBox.classList.add('d-none');
+        wrapReincidencia.classList.remove('d-none');
+        renderReincidencia();
+      } else {
+        tituloPainel.textContent = aba === 'resolvidas' ? 'Denúncias resolvidas' : 'Denúncias pendentes';
+        wrapReincidencia.classList.add('d-none');
+        buscaProtocoloBox.classList.remove('d-none');
+        filtroEspeciesBox.classList.remove('d-none');
+        wrapDenuncias.classList.remove('d-none');
+        aplicarFiltro();
+      }
+    });
+  });
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
@@ -249,6 +364,19 @@
       modal.show();
     });
   }
+
+  // Popula os contadores das abas e aplica o estado inicial assim que a página carrega
+  aplicarFiltro();
+
+  // Torna o card inteiro clicável, redirecionando para a mesma página do link "Ver denúncia"
+  document.querySelectorAll('.animal-card').forEach(card => {
+    const link = card.querySelector('.card-link');
+    if (!link) return;
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return; // clique direto no link continua funcionando normalmente
+      window.location.href = link.href;
+    });
+  });
 
 </script>
 

@@ -15,10 +15,10 @@
 
 <nav class="navbar">
   <div class="container d-flex justify-content-between align-items-center">
-    <span class="navbar-brand">
+    <a class="navbar-brand" href="{{ url_for('dashboard') }}">
       <span class="logo-icon"><i class="bi bi-heart-fill"></i></span>
       SOS Animais Matão
-    </span>
+    </a>
     <a class="btn-sair" href="{{ url_for('logout') }}">Sair <i class="bi bi-box-arrow-right"></i></a>
   </div>
 </nav>
@@ -123,34 +123,70 @@
 
     <!-- Coluna direita -->
     <div class="col-lg-5">
+      {% set eh_finalizada = denuncia.status in ['Resolvida', 'Recusada'] %}
       <div class="painel">
         <h6>Alterar status da denúncia</h6>
 
-        <label class="opcao-status analise" data-msg="msgAnalise">
+        <label class="opcao-status analise {{ 'selecionada' if denuncia.status == 'Em análise' }}" data-msg="msgAnalise">
           <i class="bi bi-clock icone-status"></i>
           <span class="texto-status"><strong>Em análise</strong><span>A denúncia está sendo analisada</span></span>
-          <input type="radio" name="statusDenuncia" value="Em análise">
+          <input type="radio" name="statusDenuncia" value="Em análise" {{ 'checked' if denuncia.status == 'Em análise' }} {{ 'disabled' if eh_finalizada }}>
         </label>
 
-        <label class="opcao-status aprovar" data-msg="msgAprovada">
+        <label class="opcao-status aprovar {{ 'selecionada' if denuncia.status == 'Aprovada' }}" data-msg="msgAprovada">
           <i class="bi bi-check-circle-fill icone-status"></i>
           <span class="texto-status"><strong>Aprovar denúncia</strong><span>Reconhecer como procedente</span></span>
-          <input type="radio" name="statusDenuncia" value="Aprovada">
+          <input type="radio" name="statusDenuncia" value="Aprovada" {{ 'checked' if denuncia.status == 'Aprovada' }} {{ 'disabled' if eh_finalizada }}>
         </label>
 
-        <label class="opcao-status recusar" data-msg="msgRecusada">
+        <label class="opcao-status recusar {{ 'selecionada' if denuncia.status == 'Recusada' }}" data-msg="msgRecusada">
           <i class="bi bi-x-circle-fill icone-status"></i>
           <span class="texto-status"><strong>Recusar denúncia</strong><span>Não procedente</span></span>
-          <input type="radio" name="statusDenuncia" value="Recusada">
+          <input type="radio" name="statusDenuncia" value="Recusada" {{ 'checked' if denuncia.status == 'Recusada' }} {{ 'disabled' if eh_finalizada }}>
         </label>
 
-        <label class="opcao-status resolvido" data-msg="msgResolvida">
+        <label class="opcao-status resolvido {{ 'selecionada' if denuncia.status == 'Resolvida' }}" data-msg="msgResolvida">
           <i class="bi bi-flag-fill icone-status"></i>
           <span class="texto-status"><strong>Caso resolvido</strong><span>Providências tomadas</span></span>
-          <input type="radio" name="statusDenuncia" value="Resolvida">
+          <input type="radio" name="statusDenuncia" value="Resolvida" {{ 'checked' if denuncia.status == 'Resolvida' }} {{ 'disabled' if eh_finalizada }}>
         </label>
 
-        <button class="btn-salvar-status mt-2" id="btnSalvarStatus">Salvar status</button>
+        <button class="btn-salvar-status mt-2 {{ 'btn-finalizado' if eh_finalizada }}" id="btnSalvarStatus" {{ 'disabled' if eh_finalizada }}>{{ 'Finalizada' if eh_finalizada else 'Salvar status' }}</button>
+
+        <button type="button" class="btn-reabrir mt-2 {{ '' if eh_finalizada else 'd-none' }}" id="btnReabrir">
+          <i class="bi bi-arrow-counterclockwise"></i> Reabrir caso
+        </button>
+      </div>
+
+      <div class="painel">
+        <h6>Histórico da denúncia</h6>
+        {% if denuncia.historico %}
+        {% set cores_status = {'Em análise': 'amarelo', 'Aprovada': 'verde', 'Recusada': 'vermelho', 'Resolvida': 'azul'} %}
+        {% set icones_tipo = {'status': 'bi-arrow-repeat', 'anexo': 'bi-paperclip', 'observacao': 'bi-chat-left-text'} %}
+        <div class="historico-lista">
+          {% for h in denuncia.historico|reverse %}
+          <div class="historico-item">
+            <span class="historico-ponto {{ cores_status.get(h.status, 'cinza') if h.status else 'cinza' }}">
+              <i class="bi {{ icones_tipo.get(h.tipo, 'bi-clock-history') }}"></i>
+            </span>
+            <div class="historico-conteudo">
+              <div class="historico-topo">
+                {% if h.status %}
+                <span class="historico-badge {{ cores_status.get(h.status, 'cinza') }}">{{ h.status }}</span>
+                {% endif %}
+                <span class="historico-data">{{ h.data }}{{ ' — ' ~ h.autor if h.autor else '' }}</span>
+              </div>
+              <p class="historico-desc">{{ h.descricao if h.descricao else ('Status alterado para "' ~ h.status ~ '"' if h.status else 'Alteração registrada') }}</p>
+              {% if h.observacoes %}
+              <p class="historico-obs">{{ h.observacoes }}</p>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted small mb-0">Nenhuma alteração registrada ainda.</p>
+        {% endif %}
       </div>
 
       <div class="painel">
@@ -222,10 +258,25 @@
 <div class="toast-salvo" id="toastSalvo">Status salvo com sucesso.</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Navbar inteira clicável (exceto o botão Sair), redirecionando para a dashboard -->
+<script>
+  const navbarEl = document.querySelector('.navbar');
+  if (navbarEl) {
+    navbarEl.style.cursor = 'pointer';
+    navbarEl.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-sair')) return; // deixa o botão Sair funcionar normalmente
+      window.location.href = "{{ url_for('dashboard') }}";
+    });
+  }
+</script>
+
 <script>
   // Marca visualmente a opção de status selecionada
   document.querySelectorAll('.opcao-status').forEach(opcao => {
     opcao.addEventListener('click', () => {
+      const radio = opcao.querySelector('input[type="radio"]');
+      if (!radio || radio.disabled) return;
       document.querySelectorAll('.opcao-status').forEach(o => o.classList.remove('selecionada'));
       opcao.classList.add('selecionada');
     });
@@ -297,7 +348,33 @@
 <!-- Salvar status + observações -->
 <script>
   const btnSalvar = document.getElementById('btnSalvarStatus');
+  const btnReabrir = document.getElementById('btnReabrir');
   const toast = document.getElementById('toastSalvo');
+  const radiosStatus = document.querySelectorAll('input[name="statusDenuncia"]');
+
+  function travarStatus() {
+    radiosStatus.forEach(r => r.disabled = true);
+    btnSalvar.classList.add('btn-finalizado');
+    btnSalvar.disabled = true;
+    btnSalvar.textContent = 'Finalizada';
+    if (btnReabrir) btnReabrir.classList.remove('d-none');
+  }
+
+  function destravarStatus() {
+    radiosStatus.forEach(r => {
+      r.disabled = false;
+      r.checked = false;
+    });
+    document.querySelectorAll('.opcao-status').forEach(o => o.classList.remove('selecionada'));
+    btnSalvar.classList.remove('btn-finalizado');
+    btnSalvar.disabled = false;
+    btnSalvar.textContent = 'Salvar status';
+    if (btnReabrir) btnReabrir.classList.add('d-none');
+  }
+
+  if (btnReabrir) {
+    btnReabrir.addEventListener('click', destravarStatus);
+  }
 
   btnSalvar.addEventListener('click', async () => {
     const radioSelecionado = document.querySelector('input[name="statusDenuncia"]:checked');
@@ -314,6 +391,8 @@
     btnSalvar.disabled = true;
     btnSalvar.textContent = 'Salvando...';
 
+    let finalizadaAgora = false;
+
     try {
       const resposta = await fetch(`/api/denuncia/${codigoDenuncia}/status`, {
         method: 'POST',
@@ -329,6 +408,10 @@
       if (resposta.ok && dados.sucesso) {
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2500);
+
+        if (radioSelecionado.value === 'Resolvida' || radioSelecionado.value === 'Recusada') {
+          finalizadaAgora = true;
+        }
       } else {
         alert(dados.erro || 'Não foi possível salvar agora. Tente novamente.');
       }
@@ -336,8 +419,13 @@
       console.error(erro);
       alert('Erro de conexão. Tente novamente.');
     } finally {
-      btnSalvar.disabled = false;
-      btnSalvar.textContent = 'Salvar status';
+      if (finalizadaAgora) {
+        // Caso marcado como resolvido ou recusado: trava a edição do status
+        travarStatus();
+      } else {
+        btnSalvar.disabled = false;
+        btnSalvar.textContent = 'Salvar status';
+      }
     }
   });
 </script>

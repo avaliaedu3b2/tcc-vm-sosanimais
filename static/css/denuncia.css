@@ -101,6 +101,108 @@ textarea.form-control { resize: vertical; }
 }
 .btn-salvar-status:hover { background: var(--purple-main); }
 .btn-salvar-status:disabled { opacity: 0.6; }
+.btn-salvar-status.btn-finalizado {
+  background: var(--verde-fg);
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.btn-reabrir {
+  width: 100%;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid #ddd;
+  padding: 11px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: border-color .2s, color .2s;
+}
+.btn-reabrir:hover {
+  border-color: var(--purple-main);
+  color: var(--purple-main);
+}
+
+/* Histórico da denúncia */
+.historico-lista {
+  position: relative;
+  padding-left: 4px;
+}
+.historico-item {
+  display: flex;
+  gap: 14px;
+  position: relative;
+  padding-bottom: 20px;
+}
+.historico-item:last-child { padding-bottom: 0; }
+.historico-item::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 26px;
+  bottom: -4px;
+  width: 2px;
+  background: #ece8f2;
+}
+.historico-item:last-child::before { display: none; }
+.historico-ponto {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 0;
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+}
+.historico-ponto.amarelo { background: var(--amarelo-bg); color: var(--amarelo-fg); }
+.historico-ponto.verde { background: var(--verde-bg); color: var(--verde-fg); }
+.historico-ponto.vermelho { background: var(--vermelho-bg); color: var(--vermelho-fg); }
+.historico-ponto.azul { background: var(--azul-bg); color: var(--azul-fg); }
+.historico-ponto.cinza { background: #eee; color: #666; }
+
+.historico-conteudo { flex: 1; padding-top: 2px; }
+.historico-topo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.historico-badge {
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 50px;
+  background: var(--purple-light);
+  color: var(--purple-dark);
+}
+.historico-badge.amarelo { background: var(--amarelo-bg); color: var(--amarelo-fg); }
+.historico-badge.verde { background: var(--verde-bg); color: var(--verde-fg); }
+.historico-badge.vermelho { background: var(--vermelho-bg); color: var(--vermelho-fg); }
+.historico-badge.azul { background: var(--azul-bg); color: var(--azul-fg); }
+.historico-badge.cinza { background: #eee; color: #666; }
+
+.historico-data { font-size: 0.78rem; color: var(--text-muted); }
+.historico-desc {
+  font-size: 0.87rem;
+  color: var(--text-dark);
+  font-weight: 600;
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+.historico-obs {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 4px 0 0;
+  line-height: 1.5;
+}
 
 .accordion-button { font-weight: 700; font-size: 0.9rem; }
 .accordion-button:not(.collapsed) { background: var(--purple-light); color: var(--purple-dark); box-shadow: none; }

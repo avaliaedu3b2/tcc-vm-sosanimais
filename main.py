@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import requests
 import cloudinary
@@ -107,12 +108,22 @@ def atualizar_status_denuncia(codigo):
     if not ref.get().exists:
         return jsonify({'sucesso': False, 'erro': 'Denúncia não encontrada.'}), 404
 
+    entrada_historico = {
+        'tipo': 'status',
+        'status': status,
+        'descricao': f'Status alterado para "{status}"',
+        'observacoes': observacoes or None,
+        'autor': session.get('orgao_nome'),
+        'data': datetime.now().strftime('%d/%m/%Y %H:%M'),
+    }
+
     ref.update({
         'status': status,
         'observacoes': observacoes,
         'mensagemDenunciante': mensagem,
         'atualizadoEm': firestore.SERVER_TIMESTAMP,
-        'atualizadoPor': session['orgao_id']
+        'atualizadoPor': session['orgao_id'],
+        'historico': firestore.ArrayUnion([entrada_historico])
     })
 
     return jsonify({'sucesso': True}), 200
@@ -158,10 +169,26 @@ def upload_anexo_denuncia(codigo):
 
     url_arquivo = resultado.get('secure_url')
 
+    rotulos_anexo = {
+        'documento': 'documento',
+        'foto': 'foto da vistoria',
+        'relatorio': 'relatório final'
+    }
+
+    entrada_historico = {
+        'tipo': 'anexo',
+        'status': None,
+        'descricao': f"Anexou {rotulos_anexo.get(tipo_anexo, 'arquivo')}",
+        'observacoes': None,
+        'autor': session.get('orgao_nome'),
+        'data': datetime.now().strftime('%d/%m/%Y %H:%M'),
+    }
+
     ref.update({
         campo_firestore: url_arquivo,
         'atualizadoEm': firestore.SERVER_TIMESTAMP,
-        'atualizadoPor': session['orgao_id']
+        'atualizadoPor': session['orgao_id'],
+        'historico': firestore.ArrayUnion([entrada_historico])
     })
 
     return jsonify({'sucesso': True, 'url': url_arquivo}), 200

@@ -315,6 +315,10 @@ h1, h2, h3, .display-font {
   height: 100%;
 }
 
+.hero-right .carousel {
+  cursor: pointer;
+}
+
 .hero-right .carousel-item img {
   width: 100%;
   height: 100%;
@@ -322,29 +326,13 @@ h1, h2, h3, .display-font {
   object-position: center;
 }
 
-.hero-right .carousel-control-prev,
-.hero-right .carousel-control-next {
-  z-index: 3;
-  width: 44px;
-  height: 44px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,0.15);
-  border-radius: 50%;
-  backdrop-filter: blur(4px);
-  opacity: 0.85;
-}
-
-.hero-right .carousel-control-prev { left: 18px; }
-.hero-right .carousel-control-next { right: 18px; }
-
-.hero-right .carousel-control-prev:hover,
-.hero-right .carousel-control-next:hover { opacity: 1; }
-
 .hero-right .carousel-indicators {
   z-index: 3;
-  bottom: 220px;
-  margin-bottom: 0;
+  bottom: 48px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  justify-content: center;
 }
 
 .hero-right .carousel-indicators [data-bs-target] {
@@ -794,7 +782,7 @@ footer ul li a:hover { color: var(--purple-accent); }
     padding: 28px;
   }
   .hero-right .carousel-indicators {
-    bottom: 170px;
+    bottom: 28px;
   }
   .stats-bar .stat-item {
     margin-bottom: 16px;
@@ -845,3 +833,67 @@ footer ul li a:hover { color: var(--purple-accent); }
 .anexo-dropzone .bi {
   font-size: 1.5rem;
 }
+
+/* ══ Histórico de denúncias (modal do menu de perfil) ══ */
+.historico-lista { display: flex; flex-direction: column; gap: 10px; }
+
+.historico-item {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid #ece4f3;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--text-dark);
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+
+.historico-item:hover {
+  border-color: var(--purple-main);
+  box-shadow: 0 6px 18px rgba(156,39,176,0.12);
+  transform: translateY(-1px);
+  color: var(--text-dark);
+}
+
+.historico-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.historico-protocolo { font-weight: 700; font-size: 0.92rem; color: var(--purple-dark); }
+
+.historico-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.hist-status-recebida { background: var(--purple-light); color: var(--purple-dark); }
+.hist-status-analise { background: #fff3cd; color: #8a6d1a; }
+.hist-status-resolvida { background: #e8f5e9; color: #2e7d32; }
+.hist-status-recusada { background: #fdecea; color: #c62828; }
+.hist-status-arquivada { background: #eee; color: #666; }
+
+.historico-meta { font-size: 0.82rem; color: var(--text-muted); }
+
+.historico-anonima {
+  margin-left: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--purple-main);
+}
+
+.historico-endereco {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.historico-endereco i { color: var(--purple-accent); margin-right: 4px; }

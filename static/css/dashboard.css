@@ -207,6 +207,46 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 .busca-protocolo .btn-limpar:hover { color: var(--purple-dark); }
 .busca-protocolo .btn-limpar.show { display: inline-flex; align-items: center; gap: 4px; }
 
+/* Abas: Pendentes x Resolvidas */
+.tabs-status {
+  display: flex;
+  gap: 24px;
+  margin: 22px 0 4px;
+  border-bottom: 1px solid #ede0f3;
+}
+.tab-status {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 4px 2px 12px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.tab-status:hover { color: var(--purple-main); }
+.tab-status.ativo {
+  color: var(--purple-main);
+  border-bottom-color: var(--purple-main);
+}
+.tab-count {
+  display: inline-block;
+  min-width: 22px;
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 50px;
+  margin-left: 6px;
+}
+.tab-status.ativo .tab-count {
+  background: var(--purple-main);
+  color: #fff;
+}
+
 /* Filtro multi-seleção */
 .filtro-especies {
   display: flex;
@@ -248,6 +288,7 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 .animal-card:hover {
   transform: translateY(-4px);
@@ -326,6 +367,7 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 .status-recebida { background: var(--purple-light); color: var(--purple-dark); }
 .status-analise { background: #fff3cd; color: #8a6d1a; }
 .status-atendida, .status-resolvida { background: #e8f5e9; color: #2e7d32; }
+.status-recusada { background: #fdecea; color: var(--alta); }
 .status-arquivada { background: #eee; color: #666; }
 
 .animal-card .card-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
@@ -380,3 +422,50 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
   border-radius: 20px;
 }
 .vazio h5 { color: var(--purple-dark); margin-bottom: 6px; }
+
+/* Aba Reincidência: ranking de locais com mais denúncias */
+.reincidencia-wrap { padding: 24px 0 80px; }
+.reincidencia-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+  padding: 16px 24px;
+  margin-bottom: 14px;
+  transition: transform .2s, box-shadow .2s;
+}
+.reincidencia-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(156,39,176,0.14);
+}
+.reincidencia-rank {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: 1.25rem;
+  min-width: 2.4rem;
+  color: var(--purple-accent);
+}
+.reincidencia-item:nth-child(1) .reincidencia-rank { color: var(--alta); }
+.reincidencia-item:nth-child(2) .reincidencia-rank { color: var(--media); }
+.reincidencia-item:nth-child(3) .reincidencia-rank { color: var(--purple-main); }
+.reincidencia-local {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.reincidencia-local i { color: var(--purple-main); }
+.reincidencia-qtd {
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 6px 16px;
+  border-radius: 50px;
+  white-space: nowrap;
+}

@@ -129,10 +129,13 @@
         mostrar(fotoBox, false);
       }
 
-      // Mensagem do órgão para o denunciante, se houver
+      // Mensagem do órgão para o denunciante:
+      // prioriza as Observações do órgão; se estiver vazia, usa a mensagem padrão do status
       const mensagemBox = document.getElementById("mensagemOrgaoBox");
-      if (jaAnalisada && d.mensagemDenunciante) {
-        document.getElementById("rMensagemOrgao").textContent = d.mensagemDenunciante;
+      const mensagemFinal = (d.observacoes && d.observacoes.trim()) ? d.observacoes : d.mensagemDenunciante;
+
+      if (jaAnalisada && mensagemFinal) {
+        document.getElementById("rMensagemOrgao").textContent = mensagemFinal;
         mostrar(mensagemBox, true);
       } else {
         mostrar(mensagemBox, false);
