@@ -29,6 +29,13 @@ h1, h2, h3, .display-font {
   padding: 14px 0;
 }
 
+/* Logo alinhada à esquerda, na mesma margem do texto do hero */
+.navbar > .container {
+  max-width: none;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
 .navbar-brand {
   font-family: 'Fraunces', serif;
   font-size: 1.3rem;
@@ -299,6 +306,7 @@ h1, h2, h3, .display-font {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--purple-light);
 }
 
 .hero-right img {
@@ -319,16 +327,29 @@ h1, h2, h3, .display-font {
   cursor: pointer;
 }
 
+/* As artes já têm texto embutido (formato 4:5), então usamos "contain"
+   para não cortar o texto. As sobras laterais são preenchidas com a
+   própria imagem desfocada (--bg), sem borda de cor. */
+.hero-right .carousel-item::before {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  background: var(--bg) center / cover no-repeat;
+  filter: blur(28px);
+}
+
 .hero-right .carousel-item img {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
 .hero-right .carousel-indicators {
   z-index: 3;
-  bottom: 48px;
+  bottom: 6px;
   left: 0;
   right: 0;
   margin: 0;
@@ -384,6 +405,54 @@ h1, h2, h3, .display-font {
   margin-bottom: 24px;
   max-width: 340px;
 }
+
+/* Frases sobre as fotos (texto editável, separado da imagem) */
+.hero-right .overlay {
+  background: none;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding: 5% 6% 28px;
+}
+
+.hero-right .overlay p {
+  max-width: none;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0,0,0,.35);
+}
+
+.hero-right .overlay .ov-top {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(.7rem, 1.05vw, 1rem);
+  font-weight: 400;
+  letter-spacing: .2em;
+  line-height: 1.7;
+}
+
+.hero-right .overlay .ov-top strong { font-weight: 800; }
+
+.hero-right .overlay .ov-frase {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 2.3vw, 2.3rem);
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  margin-bottom: 18px;
+}
+
+.hero-right .overlay .ov-frase strong { font-weight: 900; }
+
+.hero-right .overlay .ov-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(.7rem, 1vw, .95rem);
+  letter-spacing: .2em;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.hero-right .overlay .ov-sub strong { font-weight: 800; }
 
 .btn-overlay {
   display: inline-flex;
@@ -775,14 +844,24 @@ footer ul li a:hover { color: var(--purple-accent); }
   .hero-left {
     padding: 60px 28px;
   }
+  .navbar > .container {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
   .hero-right {
-    height: 320px;
+    height: auto;
+  }
+  .hero-right .carousel,
+  .hero-right .carousel-inner,
+  .hero-right .carousel-item,
+  .hero-right .carousel-item img {
+    height: auto;
   }
   .hero-right .overlay {
-    padding: 28px;
+    padding: 18px 16px 26px;
   }
   .hero-right .carousel-indicators {
-    bottom: 28px;
+    bottom: 6px;
   }
   .stats-bar .stat-item {
     margin-bottom: 16px;
