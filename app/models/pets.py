@@ -1,8 +1,10 @@
-from dataclass import dataclass
+from dataclasses import dataclass
+from datetime import date
+from typing import Optional
+
 
 @dataclass
 class Pets:
-    str
     nome: str
     especie: str
     raca: str
@@ -13,12 +15,13 @@ class Pets:
     peso: float
     vacinado: bool
     castrado: bool
-    microchip: Optional[str]
-    condicao_saude: Optional[str]
     status: str
     data_registro: date
     localizacao: str
-    tutor_id: Optional[str]
-    orgao_id: Optional[str]
-    foto_url: Optional[str]
-    descricao: Optional[str]
+    id: Optional[str] = None
+    microchip: Optional[str] = None
+    condicao_saude: Optional[str] = None
+    tutor_id: Optional[str] = None
+    orgao_id: Optional[str] = None
+    foto_url: Optional[str] = None
+    descricao: Optional[str] = None

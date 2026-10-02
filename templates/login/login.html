@@ -93,7 +93,6 @@
 
           </div>
 
-          <!-- BOTÃO -->
           <button
             type="submit"
             class="btn-submit"
@@ -102,12 +101,9 @@
             Realizar Denuncia
           </button>
 
-          <!-- ERRO -->
           <p id="erroMsg"></p>
 
         </form>
-
-        <!-- LINKS -->
         <div class="links">
           <a href="/register">Não possui uma conta? Criar</a>
           <a href="{{ url_for('recovery') }}">Esqueci minha senha</a>
@@ -191,10 +187,7 @@
       try {
         await signInWithEmailAndPassword(auth, email, senha);
 
-        /*
-         * Login realizado com sucesso.
-         * Envia o usuário para o dashboard.
-         */
+        
          window.location.href = "/";
       } catch (error) {
         console.error(error);

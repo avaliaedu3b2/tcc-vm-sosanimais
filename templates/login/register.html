@@ -14,7 +14,6 @@
 
 <body>
 
-  <!-- Cabeçalho com a marca do site -->
   <nav class="navbar">
     <div class="container">
       <a class="navbar-brand" href="/">
@@ -26,7 +25,6 @@
 
   <div class="page-container">
 
-    <!-- FORMULÁRIO -->
     <div class="form-side">
 
       <div class="top-bar">
@@ -111,7 +109,6 @@
 
           </div>
 
-          <!-- CONFIRMAR SENHA -->
           <div class="input-group">
 
             <label for="confirmarSenha">Confirmar senha</label>
@@ -165,11 +162,6 @@
     </div>
 
   </div>
-
-
-  <!-- =========================
-       FIREBASE
-  ========================= -->
 
   <script type="module">
 
@@ -258,17 +250,13 @@
       btnRegister.textContent = "Criando conta...";
 
       try {
-
-        // Cria usuário no Firebase Authentication
         const resultado = await createUserWithEmailAndPassword(auth, email, senha);
         const usuario = resultado.user;
 
-        // Salva o nome no perfil do Firebase
         await updateProfile(usuario, {
           displayName: nome
         });
 
-        // Salva os dados no Firestore
         await setDoc(
           doc(db, "users", usuario.uid),
           {
@@ -279,7 +267,6 @@
           }
         );
 
-        // Vai para o login
         window.location.href = "/login";
 
       } catch (error) {

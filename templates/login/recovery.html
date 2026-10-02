@@ -12,7 +12,6 @@
 </head>
 <body>
 
-<!-- Cabeçalho com a marca do site (igual ao da página de login) -->
 <nav class="navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -62,9 +61,6 @@
   const actionCodeSettings = {
     url: window.location.origin + "/redefinir-senha",
   };
-
-  // marca que o e-mail foi enviado e volta pra tela anterior,
-  // que vai mostrar o alert() ao carregar (ver trecho adicionado no dashboard.html)
   function avisarEVoltar() {
     sessionStorage.setItem("sosanimais_email_redefinicao_enviado", "1");
     if (document.referrer && document.referrer.startsWith(window.location.origin)) {
@@ -91,7 +87,7 @@
       if (erro.code === "auth/invalid-email") {
         texto = "E-mail inválido. Confira e tente de novo.";
       } else if (erro.code === "auth/user-not-found") {
-        // por segurança, não revela se o e-mail existe ou não
+
         avisarEVoltar();
         return;
       } else if (erro.code === "auth/too-many-requests") {

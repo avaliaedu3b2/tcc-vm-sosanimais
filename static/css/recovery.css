@@ -1,4 +1,3 @@
-/* SOS Animais Matão — estilos da página de recuperar senha (templates/login/recovery.html) */
 
 :root{
   --purple: #b58ef0;
@@ -18,7 +17,6 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
 
-/* ══ Cabeçalho com a marca SOS Animais Matão (igual ao login) ══ */
 .navbar{
   background:#fff;
   border-bottom:1px solid #ede0f3;

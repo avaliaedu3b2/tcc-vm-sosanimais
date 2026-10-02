@@ -1,5 +1,3 @@
-/* SOS Animais Matão — estilos da página de login (templates/login/login.html) */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,8 +10,6 @@ body {
   background: #ffffff;
   color: #2d1b36;
 }
-
-/* ══ Cabeçalho com a marca SOS Animais Matão ══ */
 .navbar {
   background: #fff;
   border-bottom: 1px solid #ede0f3;
@@ -225,10 +221,6 @@ h1 {
   font-size: 0.85rem;
 }
 
-/* =========================
-   LINKS
-========================= */
-
 .links {
   text-align: center;
   margin-top: 26px;
@@ -246,10 +238,6 @@ h1 {
   color: #7b3fb3;
   font-weight: bold;
 }
-
-/* =========================
-   RESPONSIVO
-========================= */
 
 @media (max-width: 860px) {
 
