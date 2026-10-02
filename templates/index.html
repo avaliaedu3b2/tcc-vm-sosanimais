@@ -12,9 +12,7 @@
         <img class="logo-icon" src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo SOS Animais Matão">
         SOS Animais Matão
       </a>
-  
-      <!-- Menu de perfil: fica sempre visível no canto direito, mesmo com o menu mobile fechado -->
-      <div class="d-flex align-items-center order-lg-3 ms-auto">
+        <div class="d-flex align-items-center order-lg-3 ms-auto">
         <div class="dropdown perfil-dropdown d-none js-area-logado" id="areaLogadoNav">
           <button class="perfil-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="js-usuario-avatar">U</span>
@@ -472,7 +470,6 @@
   }
   })
   .catch(() => {
-  // silencioso: usuário pode digitar o endereço manualmente
   });
   }
   document.getElementById('btnUsarLocalizacao').addEventListener('click', function () {
@@ -802,12 +799,10 @@
   };
   </script>
   <script>
-  // Clicar no carrossel do hero avança para a próxima imagem
   (function () {
     var el = document.getElementById('heroCarousel');
     if (!el) return;
     el.addEventListener('click', function (e) {
-      // ignora cliques nas bolinhas, links e botões
       if (e.target.closest('.carousel-indicators, a, button')) return;
       bootstrap.Carousel.getOrCreateInstance(el).next();
     });

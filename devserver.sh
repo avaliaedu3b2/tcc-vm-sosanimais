@@ -16,5 +16,6 @@ pip install -r requirements.txt
 pip install cloudinary
 pip install 
 pip install python-dotenv
+pip install google.cloud.firestore
 npm install update
 export FIREBASE_WEB_API_KEY="AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw"

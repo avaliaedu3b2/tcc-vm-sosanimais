@@ -420,7 +420,6 @@
       alert('Erro de conexão. Tente novamente.');
     } finally {
       if (finalizadaAgora) {
-        // Caso marcado como resolvido ou recusado: trava a edição do status
         travarStatus();
       } else {
         btnSalvar.disabled = false;

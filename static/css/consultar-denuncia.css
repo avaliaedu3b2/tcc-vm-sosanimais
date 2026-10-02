@@ -1,17 +1,9 @@
-/* ==========================================================================
-   consultar-denuncia.css
-   Estilos da página de consulta de denúncia por protocolo
-   ========================================================================== */
-
-/* ── Reset ───────────────────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
-
-/* ── Variáveis de cor ────────────────────────────────────────────────────── */
 :root {
   --purple-light: #f4ecfb;
   --purple-main: #9d59d6;
@@ -22,8 +14,6 @@
   --white: #fff;
   --gray-bg: #ffffff;
 }
-
-/* ── Base ────────────────────────────────────────────────────────────────── */
 body {
   color: var(--text-dark);
   background: var(--gray-bg);
@@ -193,7 +183,6 @@ button#btnBuscar:disabled {
   transform: none;
 }
 
-/* ── Resultado da consulta ───────────────────────────────────────────────── */
 .resultado {
   margin-top: 26px;
   display: none;
@@ -291,7 +280,6 @@ button#btnBuscar:disabled {
   margin-bottom: 6px;
 }
 
-/* ── Mensagem de erro ────────────────────────────────────────────────────── */
 .erro-msg {
   margin-top: 15px;
   padding: 11px;
@@ -303,12 +291,10 @@ button#btnBuscar:disabled {
   display: none;
 }
 
-/* ── Utilitários de visibilidade (substituem o style inline) ─────────────── */
 .oculto {
   display: none;
 }
 
-/* ── Responsivo ──────────────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .card {
     padding: 28px 24px;

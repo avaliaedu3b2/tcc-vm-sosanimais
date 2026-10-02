@@ -1,5 +1,3 @@
-/* SOS Animais Matão — estilos da tela de detalhes da denúncia (templates/dashboard/denuncia.html) */
-
 :root {
   --purple-light: #ede7f6;
   --purple-main: #9c27b0;
@@ -221,7 +219,6 @@ textarea.form-control { resize: vertical; }
 }
 .toast-salvo.show { opacity: 1; transform: translateY(0); }
 
-/* ══ Ajustes que estavam como style="" inline no HTML ══ */
 .container.container-detalhe {
   max-width: 1040px;
 }

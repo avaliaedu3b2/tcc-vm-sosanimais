@@ -1,9 +1,4 @@
-/* ==========================================================================
-   denuncia-enviada.css
-   Estilos da página de confirmação de denúncia enviada
-   ========================================================================== */
 
-/* ── Reset ───────────────────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,7 +6,6 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ── Variáveis de cor ────────────────────────────────────────────────────── */
 :root {
   --purple-light: #f4ecfb;
   --purple-main: #9d59d6;
@@ -22,7 +16,6 @@
   --white: #fff;
 }
 
-/* ── Base ────────────────────────────────────────────────────────────────── */
 body {
   color: var(--text-dark);
 }
@@ -32,7 +25,6 @@ h1,
   font-family: 'Fraunces', serif;
 }
 
-/* ── Cabeçalho com a marca SOS Animais Matão (igual ao login) ────────────── */
 .navbar {
   width: 100%;
   background: #fff;
