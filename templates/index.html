@@ -808,5 +808,21 @@
     });
   })();
   </script>
+    <script>
+  // Números reais: total de denúncias e animais resgatados (casos resolvidos)
+  fetch('/api/estatisticas')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var resg = document.getElementById('resgatadosCount');
+      if (resg && typeof d.animaisResgatados === 'number') {
+        resg.textContent = d.animaisResgatados.toLocaleString('pt-BR');
+      }
+      var den = document.getElementById('denunciasCount');
+      if (den && typeof d.denuncias === 'number') {
+        den.textContent = d.denuncias.toLocaleString('pt-BR');
+      }
+    })
+    .catch(function () { /* mantém o valor que já está na página */ });
+  </script>
   </body>
   </html>

@@ -9,19 +9,35 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}"/>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/denuncia.css') }}"/>
+<style>
+  .campo-resgatados {
+    background: #e8f0fe;
+    border: 1px solid #c5d8f8;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .campo-resgatados label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1565c0;
+    margin-bottom: 8px;
+  }
+  .campo-resgatados .form-control { border-radius: 10px; }
+</style>
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="container d-flex justify-content-between align-items-center">
-    <a class="navbar-brand" href="{{ url_for('dashboard') }}">
-      <span class="logo-icon"><i class="bi bi-heart-fill"></i></span>
-      SOS Animais Matão
-    </a>
-    <a class="btn-sair" href="{{ url_for('logout') }}">Sair <i class="bi bi-box-arrow-right"></i></a>
-  </div>
-</nav>
+<header class="site-header site-header--acoes">
+  <a class="site-brand" href="{{ url_for('dashboard') }}">
+    <img class="site-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo SOS Animais Matão">
+    SOS Animais Matão
+  </a>
+  <a class="btn-sair" href="{{ url_for('logout') }}">Sair <i class="bi bi-box-arrow-right"></i></a>
+</header>
 
 <div class="container container-detalhe">
   <a href="{{ url_for('dashboard') }}" class="voltar-link"><i class="bi bi-arrow-left"></i> Voltar para o painel</a>
@@ -151,6 +167,15 @@
           <input type="radio" name="statusDenuncia" value="Resolvida" {{ 'checked' if denuncia.status == 'Resolvida' }} {{ 'disabled' if eh_finalizada }}>
         </label>
 
+        <!-- Aparece só quando "Caso resolvido" está selecionado -->
+        <div class="campo-resgatados {{ '' if denuncia.status == 'Resolvida' else 'd-none' }}" id="campoResgatados">
+          <label for="animaisResgatadosInput">Quantos animais foram resgatados?</label>
+          <input type="number" min="0" step="1" inputmode="numeric" class="form-control"
+                 id="animaisResgatadosInput" placeholder="Ex.: 2"
+                 value="{{ denuncia.animaisResgatados if denuncia.animaisResgatados is defined else '' }}"
+                 {{ 'disabled' if eh_finalizada }}>
+        </div>
+
         <button class="btn-salvar-status mt-2 {{ 'btn-finalizado' if eh_finalizada }}" id="btnSalvarStatus" {{ 'disabled' if eh_finalizada }}>{{ 'Finalizada' if eh_finalizada else 'Salvar status' }}</button>
 
         <button type="button" class="btn-reabrir mt-2 {{ '' if eh_finalizada else 'd-none' }}" id="btnReabrir">
@@ -259,9 +284,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Navbar inteira clicável (exceto o botão Sair), redirecionando para a dashboard -->
+<!-- Cabeçalho inteiro clicável (exceto o botão Sair), redirecionando para a dashboard -->
 <script>
-  const navbarEl = document.querySelector('.navbar');
+  const navbarEl = document.querySelector('.site-header');
   if (navbarEl) {
     navbarEl.style.cursor = 'pointer';
     navbarEl.addEventListener('click', (e) => {
@@ -352,7 +377,17 @@
   const toast = document.getElementById('toastSalvo');
   const radiosStatus = document.querySelectorAll('input[name="statusDenuncia"]');
 
+  const campoResgatados = document.getElementById('campoResgatados');
+  const resgatadosInput = document.getElementById('animaisResgatadosInput');
+
+  function atualizarCampoResgatados() {
+    const sel = document.querySelector('input[name="statusDenuncia"]:checked');
+    campoResgatados.classList.toggle('d-none', !(sel && sel.value === 'Resolvida'));
+  }
+  radiosStatus.forEach(r => r.addEventListener('change', atualizarCampoResgatados));
+
   function travarStatus() {
+    resgatadosInput.disabled = true;
     radiosStatus.forEach(r => r.disabled = true);
     btnSalvar.classList.add('btn-finalizado');
     btnSalvar.disabled = true;
@@ -361,6 +396,8 @@
   }
 
   function destravarStatus() {
+    resgatadosInput.disabled = false;
+    campoResgatados.classList.add('d-none');
     radiosStatus.forEach(r => {
       r.disabled = false;
       r.checked = false;
@@ -388,6 +425,18 @@
     const mensagem = document.getElementById(idMensagem) ? document.getElementById(idMensagem).value : '';
     const observacoes = document.getElementById('observacoesInput').value;
 
+    // Caso resolvido: o número de animais resgatados é obrigatório
+    let animaisResgatados = null;
+    if (radioSelecionado.value === 'Resolvida') {
+      const valor = resgatadosInput.value.trim();
+      if (valor === '' || !/^\d+$/.test(valor)) {
+        alert('Informe quantos animais foram resgatados (use 0 se nenhum).');
+        resgatadosInput.focus();
+        return;
+      }
+      animaisResgatados = parseInt(valor, 10);
+    }
+
     btnSalvar.disabled = true;
     btnSalvar.textContent = 'Salvando...';
 
@@ -400,7 +449,8 @@
         body: JSON.stringify({
           status: radioSelecionado.value,
           observacoes: observacoes,
-          mensagemDenunciante: mensagem
+          mensagemDenunciante: mensagem,
+          animaisResgatados: animaisResgatados
         })
       });
       const dados = await resposta.json();

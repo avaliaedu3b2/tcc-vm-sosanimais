@@ -104,6 +104,16 @@ def atualizar_status_denuncia(codigo):
     if status not in status_validos:
         return jsonify({'sucesso': False, 'erro': 'Status inválido.'}), 400
 
+    # Caso resolvido: exige o número de animais resgatados (inteiro >= 0)
+    animais_resgatados = 0
+    if status == 'Resolvida':
+        try:
+            animais_resgatados = int(dados.get('animaisResgatados'))
+            if animais_resgatados < 0:
+                raise ValueError
+        except (TypeError, ValueError):
+            return jsonify({'sucesso': False, 'erro': 'Informe o número de animais resgatados.'}), 400
+
     ref = db.collection('denuncias').document(codigo)
     if not ref.get().exists:
         return jsonify({'sucesso': False, 'erro': 'Denúncia não encontrada.'}), 404
@@ -111,7 +121,10 @@ def atualizar_status_denuncia(codigo):
     entrada_historico = {
         'tipo': 'status',
         'status': status,
-        'descricao': f'Status alterado para "{status}"',
+        'descricao': (
+            f'Caso resolvido — {animais_resgatados} animal(is) resgatado(s)'
+            if status == 'Resolvida' else f'Status alterado para "{status}"'
+        ),
         'observacoes': observacoes or None,
         'autor': session.get('orgao_nome'),
         'data': datetime.now().strftime('%d/%m/%Y %H:%M'),
@@ -121,6 +134,7 @@ def atualizar_status_denuncia(codigo):
         'status': status,
         'observacoes': observacoes,
         'mensagemDenunciante': mensagem,
+        'animaisResgatados': animais_resgatados,
         'atualizadoEm': firestore.SERVER_TIMESTAMP,
         'atualizadoPor': session['orgao_id'],
         'historico': firestore.ArrayUnion([entrada_historico])
@@ -194,6 +208,24 @@ def upload_anexo_denuncia(codigo):
     return jsonify({'sucesso': True, 'url': url_arquivo}), 200
 
 
+# --- Números exibidos na página inicial ---
+@app.route('/api/estatisticas')
+def estatisticas():
+    total_denuncias = 0
+    animais_resgatados = 0
+
+    for doc in db.collection('denuncias').select(['status', 'animaisResgatados']).stream():
+        d = doc.to_dict()
+        total_denuncias += 1
+        if d.get('status') == 'Resolvida':
+            animais_resgatados += int(d.get('animaisResgatados') or 0)
+
+    return jsonify({
+        'denuncias': total_denuncias,
+        'animaisResgatados': animais_resgatados
+    })
+
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -234,7 +266,50 @@ def cadastroorgao():
     return render_template('login/cadastroorgao.html')
 
 
-# --- Consulta de CNPJ na Receita Federal (BrasilAPI) ---
+# --- Consulta de CNPJ na Receita Federal (BrasilAPI, com ReceitaWS de reserva) ---
+HEADERS_CNPJ = {'User-Agent': 'Mozilla/5.0 (SOSAnimaisMatao)'}
+CACHE_CNPJ = {}  # cnpj -> dados já confirmados (evita o limite de requisições)
+
+
+def _consultar_brasilapi(cnpj):
+    r = requests.get(
+        f'https://brasilapi.com.br/api/cnpj/v1/{cnpj}',
+        headers=HEADERS_CNPJ,
+        timeout=10
+    )
+    print(f'[consultar_cnpj] BrasilAPI status {r.status_code}: {r.text[:200]}')
+
+    if r.status_code == 200:
+        d = r.json()
+        return 'ok', {
+            'razao_social': d.get('razao_social'),
+            'nome_fantasia': d.get('nome_fantasia'),
+            'situacao': d.get('descricao_situacao_cadastral'),
+        }
+    if r.status_code == 404:
+        return 'nao_encontrado', None
+    return 'indisponivel', None
+
+
+def _consultar_receitaws(cnpj):
+    r = requests.get(
+        f'https://receitaws.com.br/v1/cnpj/{cnpj}',
+        headers=HEADERS_CNPJ,
+        timeout=10
+    )
+    print(f'[consultar_cnpj] ReceitaWS status {r.status_code}: {r.text[:200]}')
+
+    if r.status_code == 200:
+        d = r.json()
+        if d.get('status') == 'OK':
+            return 'ok', {
+                'razao_social': d.get('nome'),
+                'nome_fantasia': d.get('fantasia'),
+                'situacao': d.get('situacao'),
+            }
+    return 'indisponivel', None
+
+
 @app.route('/api/consultar-cnpj/<cnpj>')
 def consultar_cnpj(cnpj):
     cnpj_limpo = ''.join(filter(str.isdigit, cnpj))
@@ -242,31 +317,27 @@ def consultar_cnpj(cnpj):
     if len(cnpj_limpo) != 14:
         return jsonify({'valido': False, 'erro': 'CNPJ deve ter 14 dígitos'}), 400
 
-    try:
-        resposta = requests.get(
-            f'https://brasilapi.com.br/api/cnpj/v1/{cnpj_limpo}',
-            timeout=15
-        )
+    if cnpj_limpo in CACHE_CNPJ:
+        return jsonify({'valido': True, **CACHE_CNPJ[cnpj_limpo]})
 
-        if resposta.status_code == 200:
-            dados = resposta.json()
-            return jsonify({
-                'valido': True,
-                'razao_social': dados.get('razao_social'),
-                'nome_fantasia': dados.get('nome_fantasia'),
-                'situacao': dados.get('descricao_situacao_cadastral')
-            })
+    for consulta in (_consultar_brasilapi, _consultar_receitaws):
+        try:
+            resultado, dados = consulta(cnpj_limpo)
+        except Exception as erro:
+            print(f'[consultar_cnpj] {consulta.__name__} falhou: {erro}')
+            continue
 
-        print(f'[consultar_cnpj] BrasilAPI retornou status {resposta.status_code}: {resposta.text[:300]}')
+        if resultado == 'ok':
+            CACHE_CNPJ[cnpj_limpo] = dados
+            return jsonify({'valido': True, **dados})
 
-        if resposta.status_code == 404:
+        if resultado == 'nao_encontrado':
             return jsonify({'valido': False, 'erro': 'CNPJ não encontrado na Receita Federal'}), 404
 
-        return jsonify({'valido': False, 'erro': 'A Receita Federal está temporariamente indisponível. Tente novamente em instantes.'}), 502
-
-    except requests.RequestException as erro:
-        print(f'[consultar_cnpj] Erro ao chamar BrasilAPI: {erro}')
-        return jsonify({'valido': False, 'erro': 'Erro ao consultar a Receita Federal. Tente novamente.'}), 500
+    return jsonify({
+        'valido': False,
+        'erro': 'A Receita Federal está temporariamente indisponível. Tente novamente em instantes.'
+    }), 502
 
 
 # --- Cadastro de órgão (fica pendente até aprovação manual no Firestore Console) ---
