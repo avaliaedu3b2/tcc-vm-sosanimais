@@ -15,7 +15,12 @@
 
 {% include 'partials/header.html' %}
 
+
 <section class="hero">
+  <div class="top-bar">
+    <a href="/" class="btn-voltar" id="btnVoltar">← Voltar</a>
+  </div>
+
   <div class="container">
     <h1>Outras maneiras de denunciar.</h1>
 
@@ -88,6 +93,16 @@
 <footer>
   © 2025 SOS Animais Matão — Projeto TCC. Todos os direitos reservados.
 </footer>
+
+
+<script>
+  document.getElementById("btnVoltar").addEventListener("click", function (e) {
+    if (document.referrer && document.referrer.startsWith(window.location.origin)) {
+      e.preventDefault();
+      window.history.back();
+    }
+  });
+</script>
 
 </body>
 </html>

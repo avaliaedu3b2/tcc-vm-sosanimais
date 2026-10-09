@@ -15,10 +15,6 @@ body {
   display: flex;
 }
 
-/* =========================
-   FORMULÁRIO
-========================= */
-
 .form-side {
   flex: 1;
   display: flex;
@@ -80,10 +76,6 @@ h1 {
   margin-bottom: 36px;
 }
 
-/* =========================
-   CAMPOS
-========================= */
-
 .input-group {
   margin-bottom: 22px;
 }
@@ -140,9 +132,6 @@ h1 {
   background: #f4ecfb;
 }
 
-/* =========================
-   BOTÃO
-========================= */
 
 .btn-submit {
   width: 100%;
@@ -171,9 +160,6 @@ h1 {
   transform: none;
 }
 
-/* =========================
-   ERRO
-========================= */
 
 #erroMsg {
   display: none;

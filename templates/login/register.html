@@ -45,7 +45,6 @@
 
         <form id="registerForm">
 
-          <!-- NOME -->
           <div class="input-group">
 
             <label for="nome">Nome completo</label>
@@ -62,7 +61,6 @@
 
           </div>
 
-          <!-- EMAIL -->
           <div class="input-group">
 
             <label for="email">E-mail</label>
@@ -79,7 +77,6 @@
 
           </div>
 
-          <!-- SENHA -->
           <div class="input-group">
 
             <label for="senha">Senha</label>
@@ -138,7 +135,6 @@
 
           </div>
 
-          <!-- BOTÃO -->
           <button
             type="submit"
             class="btn-submit"
@@ -147,12 +143,10 @@
             Criar Conta
           </button>
 
-          <!-- ERRO -->
           <p id="erroMsg"></p>
 
         </form>
 
-        <!-- LINKS -->
         <div class="links">
           <a href="/login">Já possui uma conta? Entrar</a>
         </div>
@@ -198,7 +192,6 @@
     const db = getFirestore(app);
 
 
-    /* MOSTRAR / OCULTAR SENHA */
 
     function configurarToggleSenha(inputId, botaoId, iconId) {
       const input = document.getElementById(inputId);
@@ -225,7 +218,6 @@
     configurarToggleSenha("confirmarSenha", "toggleConfirmarSenha", "iconEyeConfirmar");
 
 
-    /* CRIAR CONTA */
 
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();

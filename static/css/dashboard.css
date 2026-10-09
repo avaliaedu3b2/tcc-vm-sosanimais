@@ -163,7 +163,6 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
   margin-top: 6px;
 }
 
-/* Busca por protocolo/ID */
 .busca-protocolo {
   margin-top: 26px;
   max-width: 420px;
@@ -205,7 +204,6 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 .busca-protocolo .btn-limpar:hover { color: var(--purple-dark); }
 .busca-protocolo .btn-limpar.show { display: inline-flex; align-items: center; gap: 4px; }
 
-/* Abas: Pendentes x Resolvidas */
 .tabs-status {
   display: flex;
   gap: 24px;
@@ -420,7 +418,6 @@ h1, h2, h5, .display-font { font-family: 'Fraunces', serif; }
 }
 .vazio h5 { color: var(--purple-dark); margin-bottom: 6px; }
 
-/* Aba Reincidência: ranking de locais com mais denúncias */
 .reincidencia-wrap { padding: 24px 0 80px; }
 .reincidencia-item {
   display: flex;

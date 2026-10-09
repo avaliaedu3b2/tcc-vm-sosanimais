@@ -39,7 +39,6 @@
 
         <form id="formCadastro" novalidate>
 
-          <!-- NOME DO ÓRGÃO -->
           <div class="input-group">
 
             <label for="nomeOrgao">Nome do órgão</label>
@@ -57,7 +56,6 @@
 
           </div>
 
-          <!-- EMAIL -->
           <div class="input-group">
 
             <label for="email">E-mail</label>
@@ -76,7 +74,6 @@
 
           </div>
 
-          <!-- CNPJ -->
           <div class="input-group">
 
             <label for="cnpj">CNPJ</label>
@@ -96,7 +93,6 @@
 
           </div>
 
-          <!-- SENHA -->
           <div class="input-group">
 
             <label for="senha">Senha</label>
@@ -128,7 +124,6 @@
 
           </div>
 
-          <!-- CONFIRMAR SENHA -->
           <div class="input-group">
 
             <label for="confirmarSenha">Confirmar senha</label>
@@ -159,7 +154,6 @@
 
           </div>
 
-          <!-- BOTÃO -->
           <button
             type="submit"
             class="btn-submit"
@@ -169,7 +163,6 @@
 
         </form>
 
-        <!-- LINKS -->
         <div class="links">
           <a href="/login/loginorgao">Já tem uma conta? Entrar</a>
         </div>
@@ -180,18 +173,11 @@
 
   </div>
 
-
-  <!-- =========================
-       JAVASCRIPT: máscara de CNPJ, verificação na Receita, mostrar/ocultar senha e validação
-  ========================= -->
-
   <script>
-
-    /* MÁSCARA E VERIFICAÇÃO DE CNPJ */
 
     const cnpjInput = document.getElementById('cnpj');
     const cnpjStatus = document.getElementById('cnpjStatus');
-    let cnpjEstado = null; // null | 'confirmado' | 'nao_encontrado' | 'indisponivel'
+    let cnpjEstado = null; 
 
     cnpjInput.addEventListener('input', (e) => {
       let value = e.target.value.replace(/\D/g, '');
@@ -202,7 +188,6 @@
       value = value.replace(/(\d{4})(\d)/, '$1-$2');
       e.target.value = value;
 
-      // Reseta o status enquanto o CNPJ ainda está sendo digitado/alterado
       cnpjEstado = null;
       cnpjStatus.className = 'cnpj-status';
       cnpjStatus.textContent = '';
@@ -227,7 +212,6 @@
           cnpjStatus.textContent = `✓ ${dados.razao_social || 'CNPJ encontrado'}`;
           setInvalid(cnpjInput, false);
 
-          // Preenche o nome do órgão automaticamente, se estiver vazio
           if (nomeOrgao.value.trim() === '' && dados.razao_social) {
             nomeOrgao.value = dados.razao_social;
           }
@@ -236,8 +220,7 @@
           cnpjStatus.className = 'cnpj-status show not-found';
           cnpjStatus.textContent = dados.erro || 'CNPJ não encontrado na Receita Federal.';
         } else {
-          // Receita indisponível/instável: não bloqueia o cadastro, só avisa.
-          // A conferência final é feita manualmente na hora da aprovação.
+
           cnpjEstado = 'indisponivel';
           cnpjStatus.className = 'cnpj-status show checking';
           cnpjStatus.textContent = 'Não foi possível confirmar automaticamente agora — o CNPJ será conferido na aprovação.';
@@ -250,7 +233,6 @@
     }
 
 
-    /* MOSTRAR / OCULTAR SENHA (funciona para os dois campos) */
 
     const eyeOpenPath = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>';
     const eyeOffPath = '<path d="M3 3l18 18"/><path d="M10.6 5.2A11.6 11.6 0 0 1 12 5c7 0 11 7 11 7a17.6 17.6 0 0 1-4.1 4.9M6.6 6.6C3.4 8.6 1 12 1 12s4 7 11 7a10.6 10.6 0 0 0 5.4-1.5"/><path d="M9.5 9.5a3 3 0 0 0 4.2 4.2"/>';
@@ -273,7 +255,6 @@
     });
 
 
-    /* VALIDAÇÃO E ENVIO */
 
     const form = document.getElementById('formCadastro');
     const nomeOrgao = document.getElementById('nomeOrgao');

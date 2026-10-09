@@ -26,7 +26,6 @@ h2,
   font-family: 'Fraunces', serif;
 }
 
-/* ── Cabeçalho com a marca SOS Animais Matão (igual ao login) ────────────── */
 .navbar {
   width: 100%;
   background: #fff;
@@ -89,10 +88,9 @@ h2,
   color: white;
 }
 
-/* ── Faixa roxa de destaque ──────────────────────────────────────────────── */
 .hero {
   background: var(--purple-light);
-  padding: 48px 0 56px;
+  padding: 40px 0 56px;
 }
 
 .hero .container,
@@ -140,7 +138,6 @@ h2,
   max-width: 340px;
 }
 
-/* ── Seções de conteúdo ─────────────────────────────────────────────────── */
 .conteudo {
   padding: 44px 0 72px;
 }
@@ -168,7 +165,6 @@ h2,
   margin-bottom: 24px;
 }
 
-/* ── Lista de canais (telefones e links) ─────────────────────────────────── */
 .lista-canais {
   list-style: none;
 }
@@ -216,7 +212,6 @@ h2,
   color: var(--purple-dark);
 }
 
-/* ── Rodapé ──────────────────────────────────────────────────────────────── */
 footer {
   background: var(--text-dark);
   color: rgba(255, 255, 255, 0.7);
@@ -225,7 +220,6 @@ footer {
   font-size: 0.8rem;
 }
 
-/* ── Responsivo ──────────────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .hero {
     padding: 36px 0 40px;
@@ -256,5 +250,44 @@ footer {
 
   .canal-nome {
     font-size: 0.95rem;
+  }
+}
+
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 60px;
+}
+
+.btn-voltar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #9d59d6;
+  border: 2px solid #9d59d6;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-voltar:hover {
+  background-color: #9d59d6;
+  color: white;
+}
+
+.hero .top-bar {
+  padding: 0 60px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 860px) {
+  .hero .top-bar {
+    padding: 0 24px;
   }
 }

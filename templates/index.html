@@ -63,9 +63,7 @@
   <a href="{{ url_for('login') }}" class="btn-primary-custom">
   <i class="bi bi-megaphone-fill"></i> Login para Usuários
   </a>
-  <!-- <a href="#como-funciona" class="btn-outline-custom">
-  Login para Empresas <i class="bi bi-arrow-down"></i>
-  </a> -->
+
   <a href="{{ url_for('login_orgaos') }}" class="btn-outline-custom">
   Login para Orgãos <i class="bi bi-arrow-down"></i>
   </a>
@@ -77,7 +75,7 @@
   <i class="bi bi-search me-1"></i> Consultar denúncia
   </a>
   </div>
-  <!-- Modal de confirmação de saída -->
+
   <div class="modal fade" id="modalConfirmSair" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
   <div class="modal-content confirm-modal">
@@ -93,7 +91,7 @@
   </div>
   </div>
   </div>
-  <!-- Modal para trocar o nome de exibição -->
+
   <div class="modal fade" id="modalTrocarNome" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
   <div class="modal-content confirm-modal">
@@ -110,7 +108,7 @@
   </div>
   </div>
   </div>
-  <!-- Modal: histórico de denúncias do usuário logado -->
+
   <div class="modal fade" id="modalHistorico" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
   <div class="modal-content confirm-modal">
@@ -129,7 +127,7 @@
   </div>
   </div>
   </div>
-  <!-- Toast exibido ao enviar o e-mail de redefinição de senha -->
+
   <div class="toast-email" id="toastEmailEnviado">
   <div class="toast-email-icon">
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -193,7 +191,7 @@
     </div>
   </div>
   </div> </section>
-  <!-- ══ STATS BAR ══ --> <div class="stats-bar">
+<div class="stats-bar">
   <div class="container">
   <div class="row g-5 justify-content-center text-center">
   <div class="col-auto">
@@ -216,7 +214,7 @@
   </div>
   </div>
   </div> </div>
-  <!-- ══ COMO FUNCIONA ══ --> <section class="how-section" id="como-funciona">
+  <section class="how-section" id="como-funciona">
   <div class="container">
   <div class="text-center fade-up">
   <h2 class="section-title">Como funciona?</h2>
@@ -253,14 +251,14 @@
   </div>
   </div>
   </div> </section>
-  <!-- ══ CARDS ══ --> <section class="cards-section" id="ajuda">
+ <section class="cards-section" id="ajuda">
   <div class="container">
   <div class="row g-4 justify-content-center">
   <h2 class="section-title">O que você precisa?</h2>
   <p class="section-subtitle">Escolha a opção que melhor se encaixa na sua situação.</p>
   </div>
   <div class="row g-4 justify-content-center">
-  <!-- Card 1 -->
+ 
   <div class="col-md-4 fade-up">
   <div class="animal-card text-center">
   <div class="card-img-wrap">
@@ -277,7 +275,7 @@
   </div>
   </div>
   </div>
-  <!-- Card 2 -->
+
   <div class="col-md-4 fade-up">
   <div class="animal-card text-center">
   <div class="card-img-wrap">
@@ -294,14 +292,14 @@
   </div>
   </div>
   </div> </section>
-  <!-- ══ CTA ══ --> <section class="cta-section">
+  <section class="cta-section">
   <div class="container position-relative" style="z-index:1">
   <div class="fade-up">
   <h2>Um animal precisa de você<br><em>agora.</em></h2>
   <p>Não espere. Cada minuto importa. Faça sua denúncia de forma rápida, segura e anônima.</p>
   </div>
   </div> </section>
-  <!-- ══ FOOTER ══ --> <footer>
+   <footer>
   <div class="container">
   <div class="row g-4">
   <div class="col-md-4">
@@ -338,7 +336,7 @@
   © 2025 SOS Animais Matão — Projeto TCC. Todos os direitos reservados.
   </p>
   </div> </footer>
-  <!-- ══ MODAL DENÚNCIA ══ --><div class="modal fade" id="denunciaModal" tabindex="-1" aria-labelledby="denunciaModalLabel" aria-hidden="true">
+<div class="modal fade" id="denunciaModal" tabindex="-1" aria-labelledby="denunciaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
   <div class="modal-content">
   <div class="modal-header">
@@ -359,7 +357,7 @@
   <label class="form-label">Contato (opcional)</label>
   <input type="text" id="contatoInput" class="form-control" placeholder="Telefone ou e-mail"/>
   </div>
-  <!-- Endereço + Localização -->
+
   <div class="col-12">
   <label class="form-label">Endereço do ocorrido *</label>
   <div class="input-group">
@@ -369,9 +367,9 @@
   </button>
   </div>
   <small class="text-muted" id="localizacaoStatus"></small>
-  <!-- Mapa -->
+
   <div id="mapaDenuncia" style="height: 220px; border-radius: 10px; margin-top: 10px; display:none;"></div>
-  <!-- Coordenadas ocultas para envio -->
+
   <input type="hidden" id="latInput" name="latitude"/>
   <input type="hidden" id="lngInput" name="longitude"/>
   </div>
@@ -398,7 +396,7 @@
   <label class="form-label">Descreva o que está acontecendo *</label>
   <textarea id="descricaoTextarea" class="form-control" rows="4" placeholder="Descreva a situação com o máximo de detalhes..."></textarea>
   </div>
-  <!-- Anexo de foto/vídeo -->
+
   <div class="col-12">
   <label class="form-label">Anexar foto ou vídeo (opcional)</label>
   <label for="anexoInput" class="d-flex flex-column align-items-center justify-content-center text-muted"
@@ -428,7 +426,7 @@
   </div>
   </div>
   </div> </div>
-  <!-- Leaflet CSS/JS (colocar uma vez no <head> e antes do </body> do seu index.html) --> <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
   let mapaDenunciaInstance = null;
   let marcadorDenuncia = null;
@@ -442,14 +440,14 @@
   }).addTo(mapaDenunciaInstance);
   } else {
   mapaDenunciaInstance.setView([lat, lng], 16);
-  // corrige bug comum do Leaflet dentro de modal (tamanho não calculado)
+
   setTimeout(() => mapaDenunciaInstance.invalidateSize(), 200);
   }
   if (marcadorDenuncia) {
   marcadorDenuncia.setLatLng([lat, lng]);
   } else {
   marcadorDenuncia = L.marker([lat, lng], { draggable: true }).addTo(mapaDenunciaInstance);
-  // permite o usuário ajustar o pino arrastando
+
   marcadorDenuncia.on('dragend', function (e) {
   const pos = e.target.getLatLng();
   document.getElementById('latInput').value = pos.lat;
@@ -460,7 +458,7 @@
   document.getElementById('latInput').value = lat;
   document.getElementById('lngInput').value = lng;
   }
-  // Converte coordenadas em endereço legível (Nominatim - OpenStreetMap)
+
   function reverseGeocode(lat, lng) {
   fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
   .then(res => res.json())
@@ -492,7 +490,6 @@
   }
   );
   });
-  // Atualiza o texto do label de anexo quando um arquivo é selecionado
   document.getElementById('anexoInput').addEventListener('change', function (e) {
   const label = document.getElementById('anexoLabel');
   if (e.target.files.length > 0) {
@@ -500,9 +497,8 @@
   } else {
   label.textContent = 'Clique ou arraste um arquivo aqui';
   }
-  }); </script> <!-- Bootstrap JS --> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  }); </script> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-  // Fade-up on scroll
   const fadeEls = document.querySelectorAll('.fade-up');
   const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
@@ -516,18 +512,14 @@
   document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   if (params.get("abrirDenuncia") === "1") {
-  // marca a intenção; o próprio módulo de auth decide se pode abrir (precisa estar logado)
   window.__abrirDenunciaAoLogar = true;
-  // limpa a URL pra não reabrir se o usuário atualizar a página
   window.history.replaceState({}, document.title, window.location.pathname);
   }
   }); </script>
-  <!-- ══ FIREBASE AUTH + DENÚNCIA (upload via Cloudinary) ══ -->
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
   import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-  // cole aqui o MESMO objeto firebaseConfig que você usa no login.html / register.html
   const firebaseConfig = {
   apiKey: "AIzaSyCKKcD1NYxO_sJVevtwoHom95pNdAwLRUw",
   authDomain: "projetoeq2alexandremarra.firebaseapp.com",
@@ -539,7 +531,6 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-  // ── Configuração do Cloudinary (troque pelos seus valores) ──
   const CLOUDINARY_CLOUD_NAME = "c4rfqhdm";
   const CLOUDINARY_UPLOAD_PRESET = "fatvhpsj";
   const TAMANHO_MAXIMO_MB = 10;
@@ -557,7 +548,6 @@
   document.querySelectorAll(".js-usuario-nome").forEach(el => el.textContent = nome);
   document.querySelectorAll(".js-usuario-email").forEach(el => el.textContent = user.email || "");
   document.querySelectorAll(".js-usuario-avatar").forEach(el => el.textContent = nome.charAt(0).toUpperCase());
-  // Se o usuário chegou com ?abrirDenuncia=1 e já está logado, abre o modal agora
   if (window.__abrirDenunciaAoLogar) {
   window.__abrirDenunciaAoLogar = false;
   new bootstrap.Modal(document.getElementById("denunciaModal")).show();
@@ -570,7 +560,6 @@
   window.__abrirDenunciaAoLogar = false;
   }
   });
-  // Só permite abrir o modal de denúncia se o usuário estiver logado; caso contrário, manda pro login
   window.abrirModalDenuncia = function (e) {
   if (e && e.preventDefault) e.preventDefault();
   if (auth.currentUser) {
@@ -580,7 +569,6 @@
   }
   return false;
   };
-  // Abre o modal de confirmação ao clicar em "Sair" no menu de perfil
   document.querySelectorAll(".js-btn-abrir-confirm-sair").forEach(btnAbrirConfirmSair => {
   btnAbrirConfirmSair.addEventListener("click", (e) => {
   e.preventDefault();
@@ -594,7 +582,6 @@
   window.location.href = "{{ url_for('index') }}";
   });
   });
-  // ── Histórico de denúncias do usuário logado ──
   const URL_CONSULTAR = "{{ url_for('consultar_denuncia') }}";
   function escaparHtml(t) {
   return String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -623,7 +610,6 @@
   try {
   const user = auth.currentUser;
   if (!user || !user.email) throw new Error("Usuário não logado");
-  // Inclui as denúncias anônimas: o e-mail é gravado em todas, o anonimato só esconde o nome para o órgão
   const snap = await getDocs(query(collection(db, "denuncias"), where("emailUsuario", "==", user.email)));
   const itens = snap.docs
   .map(d => ({ codigo: d.id, ...d.data() }))
@@ -658,7 +644,6 @@
   carregarHistorico();
   });
   });
-  // Abre o modal para trocar o nome de exibição pelo menu de perfil
   document.querySelectorAll(".js-btn-trocar-nome").forEach(btnTrocarNome => {
   btnTrocarNome.addEventListener("click", (e) => {
   e.preventDefault();
@@ -690,7 +675,6 @@
   alert("Não foi possível atualizar o nome. Tente novamente em instantes.");
   }
   });
-  // Redefinir senha diretamente pelo menu de perfil
   const toastEmail = document.getElementById("toastEmailEnviado");
   document.querySelectorAll(".js-btn-redefinir-senha").forEach(btnRedefinirSenha => {
   btnRedefinirSenha.addEventListener("click", async (e) => {
@@ -716,7 +700,6 @@
   const sufixo = Math.random().toString(36).substring(2, 8).toUpperCase();
   return `SOS-${new Date().getFullYear()}-${sufixo}`;
   }
-  // Valida o tamanho do arquivo assim que ele é escolhido (antes de tentar enviar)
   document.getElementById("anexoInput").addEventListener("change", function (e) {
   const label = document.getElementById("anexoLabel");
   const erro = document.getElementById("anexoErro");
@@ -735,7 +718,6 @@
   }
   label.textContent = arquivo.name;
   });
-  // Sobe o arquivo pro Cloudinary (upload direto do navegador, sem servidor) e devolve a URL pública
   async function subirAnexoCloudinary(arquivo) {
   const formData = new FormData();
   formData.append("file", arquivo);
@@ -809,7 +791,6 @@
   })();
   </script>
     <script>
-  // Números reais: total de denúncias e animais resgatados (casos resolvidos)
   fetch('/api/estatisticas')
     .then(function (r) { return r.json(); })
     .then(function (d) {
@@ -822,7 +803,7 @@
         den.textContent = d.denuncias.toLocaleString('pt-BR');
       }
     })
-    .catch(function () { /* mantém o valor que já está na página */ });
+    .catch(function () { });
   </script>
   </body>
   </html>

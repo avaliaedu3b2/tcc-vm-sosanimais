@@ -1,5 +1,3 @@
-/* SOS Animais Matão — estilos da página de redefinição de senha (templates/login/redefinir-senha.html) */
-
 :root{
   --purple: #b58ef0;
   --purple-dark: #9a6de0;
@@ -23,7 +21,6 @@ body{
   padding:48px 16px;
   gap:32px;
 }
-/* Toast — escondido até o sucesso de verdade */
 .toast{
   display:none;
   width:100%;

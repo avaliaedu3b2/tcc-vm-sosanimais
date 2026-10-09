@@ -15,7 +15,14 @@
 
 {% include 'partials/header.html' %}
 
-<div class="content-wrap">
+<div class="page-container">
+  <div class="form-side">
+
+    <div class="top-bar">
+      <a href="/" class="btn-voltar" id="btnVoltar">← Voltar</a>
+    </div>
+
+    <div class="form-content">
   <div class="card">
     <h2 class="title">Consultar denúncia</h2>
     <p class="subtitle">Digite o código do protocolo que você recebeu ao enviar a denúncia.</p>
@@ -43,6 +50,9 @@
         <strong>Mensagem do órgão responsável</strong>
         <span id="rMensagemOrgao"></span>
       </div>
+    </div>
+  </div>
+
     </div>
   </div>
 </div>
@@ -109,8 +119,6 @@
       document.getElementById("rEndereco").textContent = d.endereco || "-";
       document.getElementById("rData").textContent = d.criadoEm ? new Date(d.criadoEm).toLocaleString("pt-BR") : "-";
 
-      // Foto da vistoria: só aparece depois que o órgão analisou a denúncia
-      // (status diferente de "Recebida") e anexou uma foto.
       const fotoBox = document.getElementById("fotoVistoriaBox");
       const statusAtual = (d.status || "").toLowerCase();
       const jaAnalisada = statusAtual && statusAtual !== "recebida";
@@ -122,8 +130,7 @@
         mostrar(fotoBox, false);
       }
 
-      // Mensagem do órgão para o denunciante:
-      // prioriza as Observações do órgão; se estiver vazia, usa a mensagem padrão do status
+ 
       const mensagemBox = document.getElementById("mensagemOrgaoBox");
       const mensagemFinal = (d.observacoes && d.observacoes.trim()) ? d.observacoes : d.mensagemDenunciante;
 
@@ -156,6 +163,16 @@
     codigoInput.value = codigoParam;
     buscar();
   }
+</script>
+
+
+<script>
+  document.getElementById("btnVoltar").addEventListener("click", function (e) {
+    if (document.referrer && document.referrer.startsWith(window.location.origin)) {
+      e.preventDefault();
+      window.history.back();
+    }
+  });
 </script>
 
 </body>

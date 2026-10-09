@@ -75,7 +75,6 @@ textarea.form-control { resize: vertical; }
 .anexo-box.erro-upload { border-color: var(--vermelho-line); background: var(--vermelho-bg); }
 .anexo-box a.ver-anexo { font-size: 0.78rem; color: var(--purple-main); font-weight: 700; margin-top: 4px; }
 
-/* Opções de status */
 .opcao-status {
   display: flex; align-items: center; gap: 14px;
   border: 1.5px solid; border-radius: 12px; padding: 14px 16px;
@@ -125,7 +124,6 @@ textarea.form-control { resize: vertical; }
   color: var(--purple-main);
 }
 
-/* Histórico da denúncia */
 .historico-lista {
   position: relative;
   padding-left: 4px;

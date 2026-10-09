@@ -28,8 +28,6 @@ h1, h2, h3, .display-font {
   border-bottom: 1px solid #ede0f3;
   padding: 14px 0;
 }
-
-/* Logo alinhada à esquerda, na mesma margem do texto do hero */
 .navbar > .container {
   max-width: none;
   padding-left: 60px;
@@ -71,7 +69,6 @@ h1, h2, h3, .display-font {
 
 .nav-link:hover { color: var(--purple-main) !important; }
 
-/* ══ Menu de usuário (perfil) ══ */
 .perfil-dropdown { position: relative; }
 
 .perfil-btn {
@@ -316,7 +313,6 @@ h1, h2, h3, .display-font {
   object-position: center;
 }
 
-/* ══ Carrossel de imagens dentro do hero-right ══ */
 .hero-right .carousel,
 .hero-right .carousel-inner,
 .hero-right .carousel-item {
@@ -327,9 +323,6 @@ h1, h2, h3, .display-font {
   cursor: pointer;
 }
 
-/* As artes já têm texto embutido (formato 4:5), então usamos "contain"
-   para não cortar o texto. As sobras laterais são preenchidas com a
-   própria imagem desfocada (--bg), sem borda de cor. */
 .hero-right .carousel-item::before {
   content: "";
   position: absolute;
@@ -406,7 +399,6 @@ h1, h2, h3, .display-font {
   max-width: 340px;
 }
 
-/* Frases sobre as fotos (texto editável, separado da imagem) */
 .hero-right .overlay {
   background: none;
   align-items: center;
@@ -880,7 +872,6 @@ footer ul li a:hover { color: var(--purple-accent); }
   transform: translateY(0);
 }
 
-/* ══ Ajustes que estavam como style="" inline no HTML ══ */
 .btn-align-start {
   align-self: flex-start;
   width: fit-content;
@@ -898,7 +889,7 @@ footer ul li a:hover { color: var(--purple-accent); }
   height: 220px;
   border-radius: 10px;
   margin-top: 10px;
-  display: none; /* o JS troca para block quando a localização é obtida */
+  display: none; 
 }
 
 .anexo-dropzone {
@@ -913,7 +904,6 @@ footer ul li a:hover { color: var(--purple-accent); }
   font-size: 1.5rem;
 }
 
-/* ══ Histórico de denúncias (modal do menu de perfil) ══ */
 .historico-lista { display: flex; flex-direction: column; gap: 10px; }
 
 .historico-item {

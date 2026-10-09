@@ -87,7 +87,6 @@ h1,
   color: white;
 }
 
-/* ── Layout da página ────────────────────────────────────────────────────── */
 .page {
   display: grid;
   grid-template-columns: 1fr;
@@ -117,7 +116,6 @@ h1,
   line-height: 1.5;
 }
 
-/* ── Caixa do protocolo ──────────────────────────────────────────────────── */
 .protocolo-box {
   background: var(--white);
   border: 1px solid var(--purple-accent);
@@ -143,7 +141,6 @@ h1,
   color: var(--purple-dark);
 }
 
-/* ── Botão de consulta ───────────────────────────────────────────────────── */
 .btn-consultar {
   display: inline-block;
   border: none;
@@ -165,7 +162,6 @@ h1,
   box-shadow: 0 8px 20px rgba(126, 67, 184, 0.3);
 }
 
-/* ── Rodapé ──────────────────────────────────────────────────────────────── */
 footer {
   grid-column: 1 / -1;
   background: var(--text-dark);
@@ -175,7 +171,6 @@ footer {
   font-size: 0.8rem;
 }
 
-/* ── Responsivo ──────────────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .left-panel {
     padding: 40px 28px;

@@ -12,7 +12,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 5px 0;   /* igual ao navbar-brand do Bootstrap na index */
+    padding: 5px 0;   
     font-family: 'Fraunces', serif;
     font-size: 1.3rem;
     font-weight: 900;
@@ -33,8 +33,6 @@
   @media (max-width: 600px) {
     .site-header { padding: 12px 20px; }
   }
-  
-  /* Variante com itens à direita (menu de perfil, botão Sair) */
   .site-header--acoes {
     display: flex;
     align-items: center;
