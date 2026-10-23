@@ -353,3 +353,42 @@ button#btnBuscar:disabled {
     padding: 30px 24px;
   }
 }
+
+.anexos-orgao {
+  margin-top: 18px;
+}
+
+.link-anexo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border: 1px solid #e6e2ec;
+  border-radius: 10px;
+  color: var(--purple-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.link-anexo:hover {
+  background: var(--purple-light);
+  border-color: var(--purple-main);
+}
+
+.link-anexo.oculto,
+.anexos-orgao.oculto {
+  display: none;
+}
+
+.anexos-orgao .rotulo-foto {
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--purple-dark);
+  display: block;
+  margin-bottom: 8px;
+}

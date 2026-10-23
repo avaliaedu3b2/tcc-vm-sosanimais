@@ -1,4 +1,5 @@
 import os
+import uuid
 from datetime import datetime
 
 import requests
@@ -7,6 +8,7 @@ import cloudinary.uploader
 from dotenv import load_dotenv
 from flask import render_template, Flask, request, jsonify, session, redirect, url_for
 import firebase_admin
+from werkzeug.utils import secure_filename
 from firebase_admin import auth, credentials, firestore
 
 from app.repositories.orgao_repository import OrgaoRepository
@@ -104,7 +106,6 @@ def atualizar_status_denuncia(codigo):
     if status not in status_validos:
         return jsonify({'sucesso': False, 'erro': 'Status inválido.'}), 400
 
-    # Caso resolvido: exige o número de animais resgatados (inteiro >= 0)
     animais_resgatados = 0
     if status == 'Resolvida':
         try:
@@ -143,7 +144,6 @@ def atualizar_status_denuncia(codigo):
     return jsonify({'sucesso': True}), 200
 
 
-# --- Upload de anexo (documento/foto/relatório) para uma denúncia, via Cloudinary ---
 @app.route('/api/denuncia/<codigo>/upload', methods=['POST'])
 def upload_anexo_denuncia(codigo):
     if 'orgao_id' not in session:
@@ -169,19 +169,30 @@ def upload_anexo_denuncia(codigo):
     if not ref.get().exists:
         return jsonify({'sucesso': False, 'erro': 'Denúncia não encontrada.'}), 404
 
-    tipo_recurso = 'video' if (arquivo.mimetype or '').startswith('video') else 'auto'
+    mimetype = arquivo.mimetype or ''
+    opcoes_upload = {'folder': f'sosanimais/denuncias/{codigo}'}
+
+    if mimetype.startswith('video'):
+        tipo_recurso = 'video'
+    elif mimetype.startswith('image'):
+        tipo_recurso = 'image'
+    else:
+        tipo_recurso = 'raw'
+        base, extensao = os.path.splitext(secure_filename(arquivo.filename))
+        opcoes_upload['public_id'] = f"{base or 'arquivo'}_{uuid.uuid4().hex[:8]}{extensao.lower()}"
 
     try:
         resultado = cloudinary.uploader.upload(
             arquivo,
-            folder=f'sosanimais/denuncias/{codigo}',
-            resource_type=tipo_recurso
+            resource_type=tipo_recurso,
+            **opcoes_upload
         )
     except Exception as erro:
         print(f'[upload_anexo_denuncia] Erro ao enviar para o Cloudinary: {erro}')
         return jsonify({'sucesso': False, 'erro': 'Não foi possível enviar o arquivo. Tente novamente.'}), 500
 
     url_arquivo = resultado.get('secure_url')
+    print(f'[upload_anexo_denuncia] URL do anexo: {url_arquivo}')
 
     rotulos_anexo = {
         'documento': 'documento',
@@ -208,7 +219,6 @@ def upload_anexo_denuncia(codigo):
     return jsonify({'sucesso': True, 'url': url_arquivo}), 200
 
 
-# --- Números exibidos na página inicial ---
 @app.route('/api/estatisticas')
 def estatisticas():
     total_denuncias = 0
@@ -266,9 +276,8 @@ def cadastroorgao():
     return render_template('login/cadastroorgao.html')
 
 
-# --- Consulta de CNPJ na Receita Federal (BrasilAPI, com ReceitaWS de reserva) ---
 HEADERS_CNPJ = {'User-Agent': 'Mozilla/5.0 (SOSAnimaisMatao)'}
-CACHE_CNPJ = {}  # cnpj -> dados já confirmados (evita o limite de requisições)
+CACHE_CNPJ = {}
 
 
 def _consultar_brasilapi(cnpj):
@@ -340,7 +349,6 @@ def consultar_cnpj(cnpj):
     }), 502
 
 
-# --- Cadastro de órgão (fica pendente até aprovação manual no Firestore Console) ---
 @app.route('/api/cadastro-orgao', methods=['POST'])
 def cadastro_orgao():
     dados = request.get_json(silent=True) or {}
@@ -381,7 +389,6 @@ def cadastro_orgao():
     }), 201
 
 
-# --- Login de órgão ---
 @app.route('/api/login-orgao', methods=['POST'])
 def login_orgao():
     dados = request.get_json(silent=True) or {}
@@ -419,7 +426,6 @@ def login_orgao():
             'erro': 'Seu cadastro não foi aprovado. Entre em contato com o suporte.'
         }), 403
 
-    # status == 'aprovado'
     session['orgao_id'] = uid
     session['orgao_nome'] = orgao.nome_orgao
 

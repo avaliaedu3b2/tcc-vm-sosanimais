@@ -46,6 +46,16 @@
         <img id="rFotoVistoria" src="" alt="Foto enviada pelo órgão responsável">
       </div>
 
+      <div class="anexos-orgao oculto" id="anexosOrgaoBox">
+        <span class="rotulo-foto">Documentos do órgão</span>
+        <a class="link-anexo oculto" id="rLinkDocumento" href="#" target="_blank" rel="noopener">
+          <i class="bi bi-paperclip"></i> Documento anexado
+        </a>
+        <a class="link-anexo oculto" id="rLinkRelatorio" href="#" target="_blank" rel="noopener">
+          <i class="bi bi-file-earmark-text"></i> Relatório final
+        </a>
+      </div>
+
       <div class="mensagem-orgao oculto" id="mensagemOrgaoBox">
         <strong>Mensagem do órgão responsável</strong>
         <span id="rMensagemOrgao"></span>
@@ -129,6 +139,18 @@
       } else {
         mostrar(fotoBox, false);
       }
+
+      const anexosBox = document.getElementById("anexosOrgaoBox");
+      const linkDoc = document.getElementById("rLinkDocumento");
+      const linkRel = document.getElementById("rLinkRelatorio");
+      const temDoc = jaAnalisada && !!d.anexoDocumentoUrl;
+      const temRel = jaAnalisada && !!d.anexoRelatorioUrl;
+
+      if (temDoc) linkDoc.href = d.anexoDocumentoUrl;
+      if (temRel) linkRel.href = d.anexoRelatorioUrl;
+      mostrar(linkDoc, temDoc);
+      mostrar(linkRel, temRel);
+      mostrar(anexosBox, temDoc || temRel);
 
  
       const mensagemBox = document.getElementById("mensagemOrgaoBox");
