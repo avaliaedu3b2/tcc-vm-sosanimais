@@ -15,7 +15,16 @@ from app.repositories.orgao_repository import OrgaoRepository
 
 load_dotenv()
 
-cred = credentials.Certificate("serviceAccountKey.json")
+CAMINHOS_CREDENCIAL = [
+    os.environ.get("FIREBASE_CREDENTIALS_PATH"),
+    "/etc/secrets/serviceAccountKey.json",
+    "serviceAccountKey.json",
+]
+caminho_credencial = next((c for c in CAMINHOS_CREDENCIAL if c and os.path.exists(c)), None)
+if caminho_credencial is None:
+    raise RuntimeError("serviceAccountKey.json não encontrado.")
+
+cred = credentials.Certificate(caminho_credencial)
 firebase_admin.initialize_app(cred)
 
 cloudinary.config(
