@@ -271,9 +271,11 @@ def denuncia_enviada():
 def consultar_denuncia():
     return render_template('consultar-denuncia.html')
 
+
 @app.route("/busque-ajuda")
 def busque_ajuda():
     return render_template("busque-ajuda.html")
+
 
 @app.route('/login/loginorgao')
 def loginorgao():
@@ -408,20 +410,23 @@ def login_orgao():
 
     uid, erro = orgao_repository.verificar_login(email, senha)
 
-    print(f'[login_orgao] email={email} cnpj={cnpj} uid={uid} erro={erro}')
+    print(f'[login_orgao] email={email} cnpj={cnpj} uid={uid} erro={erro}', flush=True)
 
     erro_generico = {'sucesso': False, 'erro': 'Email, CNPJ ou senha incorretos.'}
 
+    # TODO: remover os campos 'debug' depois de resolver o 401 no Render
     if erro:
-        return jsonify(erro_generico), 401
+        return jsonify({**erro_generico, 'debug': f'verificar_login: {erro}'}), 401
 
     orgao = orgao_repository.get_orgao(uid)
 
-    print(f'[login_orgao] orgao encontrado no Firestore: {orgao}')
+    print(f'[login_orgao] orgao encontrado no Firestore: {orgao}', flush=True)
 
-    if orgao is None or orgao.cnpj != cnpj:
-        print(f'[login_orgao] comparando cnpj -> recebido={cnpj} salvo={orgao.cnpj if orgao else None}')
-        return jsonify(erro_generico), 401
+    if orgao is None:
+        return jsonify({**erro_generico, 'debug': f'orgao nao encontrado para uid={uid}'}), 401
+
+    if orgao.cnpj != cnpj:
+        return jsonify({**erro_generico, 'debug': f'cnpj recebido={cnpj} salvo={orgao.cnpj}'}), 401
 
     if orgao.status == 'pendente':
         return jsonify({
