@@ -62,20 +62,37 @@ class OrgaoRepository:
         Retorna (uid, erro) -- um dos dois sempre é None.
         """
         api_key = os.environ.get("FIREBASE_WEB_API_KEY")
-        url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={api_key}"
+
+        if not api_key:
+            print("[verificar_login] FIREBASE_WEB_API_KEY não está definida", flush=True)
+            return None, "Configuração ausente: FIREBASE_WEB_API_KEY não definida no servidor."
+
+        url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword"
 
         try:
-            resposta = requests.post(url, json={
-                "email": email,
-                "password": password,
-                "returnSecureToken": True
-            }, timeout=10)
-        except requests.RequestException:
+            resposta = requests.post(
+                url,
+                params={"key": api_key},
+                json={
+                    "email": email,
+                    "password": password,
+                    "returnSecureToken": True
+                },
+                timeout=10
+            )
+        except requests.RequestException as e:
+            print(f"[verificar_login] falha de rede: {e}", flush=True)
             return None, "Erro de conexão ao autenticar. Tente novamente."
 
         if resposta.status_code == 200:
             return resposta.json()["localId"], None
-        
-        
 
-        return None, "Email ou senha incorretos."
+        try:
+            motivo = resposta.json().get("error", {}).get("message", "desconhecido")
+        except ValueError:
+            motivo = f"resposta inválida (HTTP {resposta.status_code})"
+
+        print(f"[verificar_login] Firebase recusou: {motivo}", flush=True)
+
+        # TODO: remover o motivo entre parênteses depois de resolver o 401
+        return None, f"Email ou senha incorretos. ({motivo})"
